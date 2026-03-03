@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Granola Open Items — PM Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2D6A4F;
+    --green-light: #52B788;
+    --green-pale: #D8F3DC;
+    --black: #0D0D0D;
+    --off-white: #F7F5F0;
+    --warm-white: #FDFCFA;
+    --text: #1A1A1A;
+    --text-2: #55554E;
+    --text-3: #88887F;
+    --border: #E5E2DB;
+    --card: #FFFFFF;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--warm-white); color:var(--text); line-height:1.65; font-size:16px; -webkit-font-smoothing:antialiased; }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(253,252,250,0.92); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; justify-content:space-between; }
+  .nav-brand { font-family:'DM Serif Display',serif; font-size:0.95rem; color:var(--green); }
+  .nav-links { display:flex; gap:28px; list-style:none; }
+  .nav-links a { font-size:0.72rem; font-weight:500; color:var(--text-3); text-decoration:none; letter-spacing:0.07em; text-transform:uppercase; transition:color 0.15s; }
+  .nav-links a:hover { color:var(--green); }
+
+  .wrap { max-width:800px; margin:0 auto; padding:0 32px; }
+  section { padding:88px 0; border-bottom:1px solid var(--border); }
+
+  h1 { font-family:'DM Serif Display',serif; font-size:clamp(2.6rem,5vw,4.2rem); line-height:1.05; letter-spacing:-0.02em; color:var(--black); font-weight:400; }
+  h2 { font-family:'DM Serif Display',serif; font-size:clamp(1.6rem,3vw,2rem); line-height:1.2; letter-spacing:-0.01em; color:var(--black); font-weight:400; margin-bottom:16px; }
+  p { color:var(--text-2); font-weight:300; font-size:0.975rem; }
+
+  .eyebrow { font-size:0.7rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--green); display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+  .eyebrow::before { content:''; display:block; width:20px; height:1px; background:var(--green); }
+  .lead { font-size:1.05rem; font-weight:300; color:var(--text-2); line-height:1.75; margin-bottom:40px; max-width:620px; }
+
+  .hero { padding:144px 0 88px; border-bottom:1px solid var(--border); }
+  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:var(--green-pale); color:var(--green); font-size:0.72rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border-radius:100px; margin-bottom:28px; }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--green-light); animation:blink 2s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 em { font-style:italic; color:var(--green); }
+  .hero > .wrap > p { font-size:1.05rem; max-width:540px; margin:20px 0 48px; line-height:1.7; }
+  .meta-row { display:flex; flex-wrap:wrap; border-top:1px solid var(--border); padding-top:32px; gap:0; }
+  .meta-item { padding-right:32px; margin-right:32px; border-right:1px solid var(--border); }
+  .meta-item:last-child { border-right:none; }
+  .meta-label { font-size:0.65rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
+  .meta-val { font-size:0.9rem; font-weight:500; color:var(--text); }
+
+  .loop { display:flex; margin:32px 0; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .loop-step { flex:1; padding:20px 16px; text-align:center; border-right:1px solid var(--border); background:var(--off-white); }
+  .loop-step:last-child { border-right:none; background:var(--green); }
+  .loop-lbl { font-size:0.6rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
+  .loop-step:last-child .loop-lbl { color:rgba(255,255,255,0.6); }
+  .loop-word { font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--text); }
+  .loop-step:last-child .loop-word { color:#fff; }
+  .loop-note { font-size:0.6rem; color:rgba(255,255,255,0.65); margin-top:3px; letter-spacing:0.06em; }
+
+  .callout { border-left:3px solid var(--green); background:var(--green-pale); padding:20px 24px; border-radius:0 8px 8px 0; margin:32px 0; }
+  .callout p { color:var(--green); font-size:1rem; font-weight:400; line-height:1.65; }
+
+  .decisions { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:40px; }
+  .decision { padding:32px 36px; border-bottom:1px solid var(--border); display:grid; grid-template-columns:36px 1fr; gap:20px; background:var(--card); transition:background 0.15s; }
+  .decision:last-child { border-bottom:none; }
+  .decision:hover { background:#FAFAF8; }
+  .d-num { font-family:'DM Serif Display',serif; font-size:1.8rem; color:var(--border); line-height:1; padding-top:2px; }
+  .d-title { font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--black); margin-bottom:8px; line-height:1.3; }
+  .d-body { font-size:0.9rem; color:var(--text-2); font-weight:300; line-height:1.7; margin-bottom:12px; }
+  .d-rejected { display:flex; gap:8px; align-items:baseline; font-size:0.82rem; color:var(--text-3); font-weight:300; background:var(--off-white); border-radius:6px; padding:10px 14px; }
+  .d-rej-tag { font-size:0.65rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#B04A40; white-space:nowrap; }
+
+  .phases { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:40px; }
+  .phase { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
+  .phase-head { padding:18px 20px; }
+  .phase:nth-child(1) .phase-head { background:var(--green); }
+  .phase:nth-child(2) .phase-head { background:#1A3A5C; }
+  .phase:nth-child(3) .phase-head { background:#3D1A5C; }
+  .phase-tag { font-size:0.6rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:3px; }
+  .phase-name { font-family:'DM Serif Display',serif; font-size:1.15rem; color:#fff; }
+  .phase-body { padding:18px 20px; background:var(--card); }
+  .phase-item { font-size:0.82rem; color:var(--text-2); font-weight:300; padding:5px 0; border-bottom:1px solid var(--border); line-height:1.5; display:flex; gap:8px; }
+  .phase-item:last-child { border-bottom:none; }
+  .phase-item::before { content:'->'; color:var(--green-light); font-size:0.75rem; flex-shrink:0; padding-top:1px; }
+
+  .metrics-wrap { margin-top:40px; }
+  .metric-ns { background:var(--green); border-radius:10px; padding:28px 32px; margin-bottom:12px; }
+  .metric-ns-tag { font-size:0.65rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:8px; }
+  .metric-ns-name { font-family:'DM Serif Display',serif; font-size:1.25rem; color:#fff; margin-bottom:8px; }
+  .metric-ns-def { font-size:0.875rem; color:rgba(255,255,255,0.7); font-weight:300; line-height:1.6; }
+  .metrics-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .metric { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:22px; transition:border-color 0.15s; }
+  .metric:hover { border-color:var(--green-light); }
+  .metric-cat { font-size:0.62rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:8px; }
+  .metric-name { font-size:0.9rem; font-weight:600; color:var(--text); margin-bottom:6px; line-height:1.4; }
+  .metric-def { font-size:0.82rem; color:var(--text-3); font-weight:300; line-height:1.6; margin-bottom:10px; }
+  .metric-target { font-size:0.72rem; font-weight:500; color:var(--green); background:var(--green-pale); display:inline-block; padding:3px 10px; border-radius:100px; }
+  .not-measuring { margin-top:12px; border:1px solid var(--border); border-left:3px solid #B04A40; background:var(--off-white); border-radius:0 8px 8px 0; padding:18px 22px; }
+  .nm-tag { font-size:0.65rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#B04A40; margin-bottom:6px; }
+  .not-measuring p { font-size:0.875rem; color:var(--text-2); font-weight:300; }
+
+  .tradeoffs { margin-top:40px; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .tradeoff { padding:28px 32px; border-bottom:1px solid var(--border); display:grid; grid-template-columns:180px 1fr; gap:32px; background:var(--card); }
+  .tradeoff:last-child { border-bottom:none; }
+  .to-label { font-size:0.875rem; font-weight:600; color:var(--text); line-height:1.4; }
+  .to-body { font-size:0.875rem; color:var(--text-2); font-weight:300; line-height:1.7; }
+
+  .cta-section { background:var(--black); padding:72px 0; }
+  .cta-inner { display:flex; align-items:center; justify-content:space-between; gap:32px; }
+  .cta-section h2 { color:#fff; font-size:1.6rem; }
+  .cta-section p { color:rgba(255,255,255,0.5); margin-top:8px; font-size:0.875rem; }
+  .cta-btn { display:inline-flex; align-items:center; gap:8px; background:var(--green); color:#fff; font-size:0.875rem; font-weight:500; padding:14px 24px; border-radius:8px; text-decoration:none; white-space:nowrap; transition:background 0.15s, transform 0.1s; flex-shrink:0; }
+  .cta-btn:hover { background:var(--green-light); transform:translateY(-1px); }
+
+  footer { padding:28px 32px; text-align:center; background:var(--off-white); border-top:1px solid var(--border); }
+  footer p { font-size:0.75rem; color:var(--text-3); font-weight:300; }
+
+  .fade { opacity:0; transform:translateY(16px); transition:opacity 0.5s ease, transform 0.5s ease; }
+  .fade.in { opacity:1; transform:none; }
+
+  @media(max-width:640px) {
+    .nav-links { display:none; }
+    .phases { grid-template-columns:1fr; }
+    .metrics-grid { grid-template-columns:1fr; }
+    .tradeoff { grid-template-columns:1fr; gap:10px; }
+    .cta-inner { flex-direction:column; text-align:center; }
+    .meta-row { gap:16px; }
+    .meta-item { border-right:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Granola — Open Items</span>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#decisions">Decisions</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#metrics">Metrics</a></li>
+    <li><a href="#tradeoffs">Tradeoffs</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-tag"><span class="dot"></span> PM Case Study &nbsp;&middot;&nbsp; Feature Design</div>
+    <h1>Granola<br><em>Open Items</em></h1>
+    <p>Proposing a native cross-meeting action tracker for Granola &mdash; turning the best meeting notetaker into a system that ensures meetings actually lead to something.</p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">Product</div><div class="meta-val">Granola AI</div></div>
+      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Feature Addition</div></div>
+      <div class="meta-item"><div class="meta-label">Scope</div><div class="meta-val">Discovery &rarr; PRD</div></div>
+      <div class="meta-item"><div class="meta-label">Method</div><div class="meta-val">BMAD Framework</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <div class="eyebrow">01 &mdash; The Problem</div>
+    <h2>Granola stops at recall.<br>The real value is what happens after.</h2>
+    <p class="lead">Granola has solved the hardest part of meetings: capture. But its value loop ends there. Commitments made across meetings stay buried in individual notes, organized by when the meeting happened &mdash; not by what still needs doing.</p>
+
+    <div class="loop fade">
+      <div class="loop-step"><div class="loop-lbl">Step 1</div><div class="loop-word">Meet</div></div>
+      <div class="loop-step"><div class="loop-lbl">Step 2</div><div class="loop-word">Capture</div></div>
+      <div class="loop-step"><div class="loop-lbl">Step 3</div><div class="loop-word">Recall</div></div>
+      <div class="loop-step"><div class="loop-lbl">Missing</div><div class="loop-word">Act</div><div class="loop-note">Open Items fills this</div></div>
+    </div>
+
+    <p style="margin-bottom:16px;">For users in 4&ndash;7 meetings daily, the cognitive load of tracking personal commitments across a growing note library is high enough that they maintain a <strong style="color:var(--text);font-weight:500;">parallel task system outside Granola</strong> &mdash; always slightly out of date, always one more thing to maintain.</p>
+    <p>Granola&rsquo;s co-founder has stated the ambition: <em>&ldquo;It is not about just capturing a meeting, but a space where you can work, even post meetings.&rdquo;</em> Open Items is the first concrete step toward that.</p>
+  </div>
+</section>
+
+<section id="decisions">
+  <div class="wrap">
+    <div class="eyebrow">02 &mdash; Key Decisions</div>
+    <h2>The choices that shaped the feature</h2>
+    <p class="lead">Three decisions where I explicitly chose a direction and rejected an alternative. The reasoning is the work.</p>
+
+    <div class="decisions fade">
+      <div class="decision">
+        <div class="d-num">01</div>
+        <div>
+          <div class="d-title">Precision over recall in extraction &mdash; conservative by default</div>
+          <p class="d-body">The highest-risk moment is the first impression. If the first list a user sees contains items that are not their commitments, they conclude the feature is broken and never return. Better to surface 6 high-confidence items than 12 that include noise. Recall improves iteratively. First impressions do not.</p>
+          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Broad extraction with user-side filtering &mdash; puts the burden on users and confirms the feature is untrustworthy before trust is established.</div>
+        </div>
+      </div>
+
+      <div class="decision">
+        <div class="d-num">02</div>
+        <div>
+          <div class="d-title">60-day full trial, then paid only &mdash; no permanent free tier</div>
+          <p class="d-body">Two failure modes were evaluated: a permanent free tier (subsidizes non-converters, spends the pricing lever prematurely) and a capped preview (creates friction at peak engagement). A full trial avoids both. The user accumulates 60 days of evidence the feature is load-bearing before facing a conversion decision with real stakes. Trial expiry is framed around specific items and history at risk &mdash; not feature marketing.</p>
+          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Permanent free tier with caps &mdash; adversarial conversion moment, eliminates future pricing flexibility, subsidizes non-converting users at scale.</div>
+        </div>
+      </div>
+
+      <div class="decision">
+        <div class="d-num">03</div>
+        <div>
+          <div class="d-title">The Anti-Jira Principle: Open Items must never require user input to function</div>
+          <p class="d-body">Smart grouping, priority inference, custom labels &mdash; all valuable in Phase 2. But every addition must be additive, never required. If a user never touches a configuration option, Open Items must still be fully useful. The moment users are filling in fields to make the list work, the product has become a worse version of every task manager they already use.</p>
+          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Mandatory priority fields, required labelling, AI-inferred due dates &mdash; all violate the principle and erode what makes this distinctly Granola.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="solution">
+  <div class="wrap">
+    <div class="eyebrow">03 &mdash; The Solution</div>
+    <h2>Open Items</h2>
+    <p class="lead">A native Granola view that automatically extracts personal commitments from meeting notes and surfaces them in a single consolidated list &mdash; with source context, across all meetings, in one place. No setup. No configuration.</p>
+
+    <div class="callout">
+      <p><strong>Vision:</strong> Transform Granola from a place where your meetings live into a system that ensures your meetings actually lead to something.</p>
+    </div>
+
+    <p style="margin-bottom:32px;">Each item carries the action text, a context snippet from the transcript (enough to act without reopening the note), the source meeting and date, and a status: Open, Done, or Dismissed. Done and Dismissed are intentionally distinct &mdash; completing a task and deciding it is no longer relevant are different signals, and conflating them degrades list quality over time.</p>
+
+    <div class="phases fade">
+      <div class="phase">
+        <div class="phase-head">
+          <div class="phase-tag">Phase 1 &mdash; MVP</div>
+          <div class="phase-name">Personal</div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-item">Auto-extraction, cross-meeting view</div>
+          <div class="phase-item">Done + Dismissed states</div>
+          <div class="phase-item">Context snippets + source links</div>
+          <div class="phase-item">Sidebar badge for new items</div>
+          <div class="phase-item">60-day trial then paid</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-head">
+          <div class="phase-tag">Phase 2 &mdash; Growth</div>
+          <div class="phase-name">Team</div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-item">Team view across shared folders</div>
+          <div class="phase-item">AI-inferred priority (opt-in override)</div>
+          <div class="phase-item">Smart AI grouping by theme</div>
+          <div class="phase-item">Custom labels and tags</div>
+          <div class="phase-item">Item assignment to teammates</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-head">
+          <div class="phase-tag">Phase 3 &mdash; Vision</div>
+          <div class="phase-name">Enterprise</div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-item">Open Items in People + Companies views</div>
+          <div class="phase-item">Commitments by contact or deal</div>
+          <div class="phase-item">Export to Linear, Notion, Asana</div>
+          <div class="phase-item">System of record across the org</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="metrics">
+  <div class="wrap">
+    <div class="eyebrow">04 &mdash; Success Metrics</div>
+    <h2>Measuring list trust,<br>not list completion</h2>
+    <p class="lead">The north star is whether Open Items becomes part of the daily workflow. Completion rate within a fixed timeframe is explicitly not a metric &mdash; and the reasoning matters.</p>
+
+    <div class="metrics-wrap fade">
+      <div class="metric-ns">
+        <div class="metric-ns-tag">North Star</div>
+        <div class="metric-ns-name">Weekly Active Open Items Users / Weekly Active Granola Users</div>
+        <p class="metric-ns-def">The single number that tells us if the feature is becoming part of the core workflow &mdash; not just a feature that was tried once and abandoned.</p>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-cat">Extraction Quality</div>
+          <div class="metric-name">Immediate Dismissal Rate</div>
+          <p class="metric-def">Items dismissed within 60 seconds. The strongest passive proxy for extraction noise &mdash; no survey required.</p>
+          <span class="metric-target">Below 15%</span>
+        </div>
+        <div class="metric">
+          <div class="metric-cat">Habit Formation</div>
+          <div class="metric-name">Session Entry via Open Items</div>
+          <p class="metric-def">% of daily active users opening Granola via Open Items. Strongest signal the feature has become load-bearing.</p>
+          <span class="metric-target">20% within 90 days</span>
+        </div>
+        <div class="metric">
+          <div class="metric-cat">Monetization</div>
+          <div class="metric-name">Trial-to-Paid Conversion</div>
+          <p class="metric-def">% upgrading at or before trial expiry. Benchmarked against Granola&rsquo;s existing conversion rates for other paid features.</p>
+          <span class="metric-target">Exceed existing benchmark</span>
+        </div>
+      </div>
+      <div class="not-measuring">
+        <div class="nm-tag">Explicitly Not Measuring</div>
+        <p>Completion rate within a defined timeframe. A 2-hour action and a 2-week follow-up cannot be held to the same window &mdash; a fixed timeframe creates false precision and incentivizes optimizing extraction toward short-horizon items. List trust is the right proxy for value.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tradeoffs">
+  <div class="wrap">
+    <div class="eyebrow">05 &mdash; Tradeoffs</div>
+    <h2>What we gave up and why</h2>
+    <p class="lead">Two tradeoffs significant enough to name explicitly. The full list is in the PRD.</p>
+
+    <div class="tradeoffs fade">
+      <div class="tradeoff">
+        <div class="to-label">Feature gravity locks the pricing decision</div>
+        <p class="to-body">Once Open Items is included in the paid plan, it is almost impossible to move it to a higher tier later. The window to treat it as a premium differentiator is at launch &mdash; after that it becomes table stakes. This means the MVP pricing call is effectively permanent. That is an acceptable cost for the retention mechanics it enables, but it needs to be a conscious decision, not a default.</p>
+      </div>
+      <div class="tradeoff">
+        <div class="to-label">Extraction quality is the only dependency that can kill the feature on day one</div>
+        <p class="to-body">Every other risk is recoverable. Noisy extraction at first impression is not. If the first list a user sees does not feel accurate, the negative impression is almost impossible to reverse at scale. This means the extraction prompt must be validated with human-rated quality checks before launch &mdash; not just automated metrics. The cost is time. The cost of skipping it is a failed feature.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-section">
+  <div class="wrap">
+    <div class="cta-inner">
+      <div>
+        <h2>Read the full PRD</h2>
+        <p>33 functional requirements, 11 non-functional requirements, complete scoping table, user journey phase analysis, and open questions.</p>
+      </div>
+      <a href="granola-open-items-prd.docx" class="cta-btn" download>
+        Download PRD
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Granola Open Items &mdash; PM Case Study &nbsp;&middot;&nbsp; Hypothetical feature design, not affiliated with Granola Inc.</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
