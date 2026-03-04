@@ -137,9 +137,150 @@
     .meta-row { gap:16px; }
     .meta-item { border-right:none; }
   }
+
+  /* ── SECTION NAV ── */
+  .section-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    display: none;
+  }
+
+  .section-nav-toggle {
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+
+  .section-nav-toggle .arrow {
+    font-size: 0.6rem;
+    transition: transform 0.2s;
+  }
+
+  .section-nav-toggle.open .arrow {
+    transform: rotate(180deg);
+  }
+
+  .section-nav-menu {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 180px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .section-nav-menu.open {
+    display: flex;
+  }
+
+  .section-nav-menu a {
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+
+  .section-nav-menu a:hover,
+  .section-nav-menu a.active {
+    background: var(--green-pale);
+    color: var(--green);
+  }
+
+  /* Desktop: sidebar nav */
+  .sidebar-nav {
+    display: none;
+    position: fixed;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 6px;
+    z-index: 200;
+  }
+
+  .sidebar-nav a {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+    text-align: right;
+  }
+
+  .sidebar-nav a:hover,
+  .sidebar-nav a.active {
+    color: var(--green);
+    background: var(--green-pale);
+  }
+
+  @media (max-width: 900px) {
+    .section-nav { display: block; }
+    .sidebar-nav { display: none !important; }
+  }
+
+  @media (min-width: 901px) {
+    .section-nav { display: none; }
+    .sidebar-nav { display: flex; }
+  }
+
 </style>
 </head>
 <body>
+
+
+<!-- Desktop sidebar nav -->
+<nav class="sidebar-nav" id="sidebarNav">
+  <a href="#problem">Problem</a>
+  <a href="#decisions">Decisions</a>
+  <a href="#solution">Solution</a>
+  <a href="#metrics">Metrics</a>
+  <a href="#tradeoffs">Tradeoffs</a>
+</nav>
+
+<!-- Mobile floating nav -->
+<div class="section-nav" id="sectionNav">
+  <button class="section-nav-toggle" id="navToggle" onclick="toggleNav()">
+    Jump to section <span class="arrow">▲</span>
+  </button>
+  <div class="section-nav-menu" id="navMenu">
+    <a href="#problem" onclick="closeNav()">Problem</a>
+    <a href="#decisions" onclick="closeNav()">Decisions</a>
+    <a href="#solution" onclick="closeNav()">Solution</a>
+    <a href="#metrics" onclick="closeNav()">Metrics</a>
+    <a href="#tradeoffs" onclick="closeNav()">Tradeoffs</a>
+  </div>
+</div>
 
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
@@ -372,6 +513,41 @@
     const doc = document.documentElement;
     bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
   });
+
+  function toggleNav() {
+    const menu = document.getElementById('navMenu');
+    const toggle = document.getElementById('navToggle');
+    menu.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+
+  function closeNav() {
+    document.getElementById('navMenu').classList.remove('open');
+    document.getElementById('navToggle').classList.remove('open');
+  }
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    const nav = document.getElementById('sectionNav');
+    if (!nav.contains(e.target)) closeNav();
+  });
+
+  // Active section highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const allNavLinks = document.querySelectorAll('.sidebar-nav a, .section-nav-menu a');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        allNavLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => sectionObserver.observe(s));
+
 </script>
 </body>
 </html>
