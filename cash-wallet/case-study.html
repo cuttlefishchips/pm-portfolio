@@ -885,7 +885,124 @@
       .stat:last-child { border-bottom: none; }
       .zones, .personas, .solutions, .constraints { grid-template-columns: 1fr; }
     }
-  </style>
+  
+  /* ── SECTION NAV ── */
+  .section-nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    display: none;
+  }
+
+  .section-nav-toggle {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+
+  .section-nav-toggle .arrow {
+    font-size: 0.6rem;
+    transition: transform 0.2s;
+  }
+
+  .section-nav-toggle.open .arrow {
+    transform: rotate(180deg);
+  }
+
+  .section-nav-menu {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 200px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .section-nav-menu.open {
+    display: flex;
+  }
+
+  .section-nav-menu a {
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--ink-2);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+
+  .section-nav-menu a:hover,
+  .section-nav-menu a.active {
+    background: var(--bg-2);
+    color: var(--accent);
+  }
+
+  /* Desktop sidebar nav */
+  .sidebar-nav {
+    display: none;
+    position: fixed;
+    top: 50%;
+    right: 24px;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 6px;
+    z-index: 200;
+  }
+
+  .sidebar-nav a {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+    text-align: right;
+  }
+
+  .sidebar-nav a:hover,
+  .sidebar-nav a.active {
+    color: var(--accent);
+    background: var(--bg-2);
+  }
+
+  @media (max-width: 900px) {
+    .section-nav { display: block; }
+    .sidebar-nav { display: none !important; }
+  }
+
+  @media (min-width: 901px) {
+    .section-nav { display: none; }
+    .sidebar-nav { display: flex; }
+  }
+
+</style>
 </head>
 <body>
 
@@ -899,6 +1016,33 @@
   </div>
   <a href="../index.html" class="back-link">Back to Portfolio</a>
 </nav>
+
+<!-- Desktop sidebar nav -->
+<nav class="sidebar-nav" id="sidebarNav">
+  <a href="#overview">Overview</a>
+  <a href="#context">Context</a>
+  <a href="#users">Users</a>
+  <a href="#solution">Solution</a>
+  <a href="#ux">UX Design</a>
+  <a href="#metrics">Metrics</a>
+  <a href="#learnings">Learnings</a>
+</nav>
+
+<!-- Mobile floating nav -->
+<div class="section-nav" id="sectionNav">
+  <button class="section-nav-toggle" id="navToggle" onclick="toggleNav()">
+    Jump to section <span class="arrow">▲</span>
+  </button>
+  <div class="section-nav-menu" id="navMenu">
+    <a href="#overview" onclick="closeNav()">Overview</a>
+    <a href="#context" onclick="closeNav()">Context</a>
+    <a href="#users" onclick="closeNav()">Users</a>
+    <a href="#solution" onclick="closeNav()">Solution</a>
+    <a href="#ux" onclick="closeNav()">UX Design</a>
+    <a href="#metrics" onclick="closeNav()">Metrics</a>
+    <a href="#learnings" onclick="closeNav()">Learnings</a>
+  </div>
+</div>
 
 <div class="page">
 
@@ -934,7 +1078,7 @@
   <section id="overview">
     <div class="container">
       <p class="section-label">01 - Overview</p>
-      <div class="aside-row">
+      <div>
         <div>
           <h2>A verified investor who never deposits is a missed investment</h2>
           <p>[Company] is a vertically integrated platform - deal sourcing, tokenisation, custody, exchange, and a secondary market. Accredited investors can access private equity, private credit, funds, luxury assets, and real estate from SGD 500.</p>
@@ -953,20 +1097,7 @@
           </div>
           <p>The work here covers the full product thinking: problem framing, personas, journey analysis, solution design, requirements, and UX.</p>
         </div>
-        <div>
-          <div class="aside-box">
-            <div class="aside-box-label">On this page</div>
-            <ul>
-              <li><a href="#overview" class="active">Overview</a></li>
-              <li><a href="#context">Context and constraints</a></li>
-              <li><a href="#users">Users</a></li>
-              <li><a href="#solution">Solution</a></li>
-              <li><a href="#ux">UX design</a></li>
-              <li><a href="#metrics">Metrics</a></li>
-              <li><a href="#learnings">Learnings</a></li>
-            </ul>
-          </div>
-        </div>
+
       </div>
     </div>
   </section>
@@ -1391,6 +1522,38 @@
   }, { rootMargin: '-30% 0px -60% 0px' });
 
   sections.forEach(s => observer.observe(s));
+  function toggleNav() {
+    const menu = document.getElementById('navMenu');
+    const toggle = document.getElementById('navToggle');
+    menu.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+
+  function closeNav() {
+    document.getElementById('navMenu').classList.remove('open');
+    document.getElementById('navToggle').classList.remove('open');
+  }
+
+  document.addEventListener('click', (e) => {
+    const nav = document.getElementById('sectionNav');
+    if (nav && !nav.contains(e.target)) closeNav();
+  });
+
+  const pageSections = document.querySelectorAll('section[id]');
+  const allNavLinks = document.querySelectorAll('.sidebar-nav a, .section-nav-menu a');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        allNavLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  pageSections.forEach(s => sectionObserver.observe(s));
+
 </script>
 
 </body>
