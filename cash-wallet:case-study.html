@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[Company] Cash Wallet - Reiko Tan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #111111;
+      --ink-2: #444444;
+      --ink-3: #888888;
+      --rule: #e0e0e0;
+      --bg: #fafaf8;
+      --bg-2: #f2f1ee;
+      --accent: #1a3c5e;
+      --accent-warm: #c8773a;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --max: 740px;
+      --max-wide: 1040px;
+    }
+
+    html { font-size: 17px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 2rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav a {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink-2);
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--ink); }
+
+    .nav-left { display: flex; align-items: center; gap: 0.5rem; color: var(--ink-3); font-size: 0.75rem; }
+    .nav-left span { color: var(--ink-3); font-size: 0.75rem; letter-spacing: 0.05em; }
+    .nav-right { font-size: 0.75rem; color: var(--ink-3); }
+
+    /* ── LAYOUT ── */
+    .page { padding-top: 52px; }
+
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .container-wide {
+      max-width: var(--max-wide);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 5rem 0 3.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      border: 1px solid var(--rule);
+      padding: 0.3rem 0.7rem;
+      border-radius: 2px;
+    }
+
+    .tag.accent {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-lede {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: var(--ink-2);
+      line-height: 1.65;
+      max-width: 580px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+      margin-top: 2rem;
+    }
+
+    .stat {
+      padding: 1.25rem 1.5rem;
+      border-right: 1px solid var(--rule);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 1.9rem;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 4rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+    h3 {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-bottom: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    h3:first-child { margin-top: 0; }
+
+    p {
+      color: var(--ink-2);
+      margin-bottom: 1rem;
+      font-size: 0.97rem;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    /* ── CALLOUT ── */
+    .callout {
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.5rem;
+      background: var(--bg-2);
+      margin: 2rem 0;
+    }
+
+    .callout p {
+      font-size: 0.95rem;
+      color: var(--ink);
+      font-weight: 300;
+      margin: 0;
+    }
+
+    .callout strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── TWO COL ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .two-col-wide {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* ── PROBLEM ZONES ── */
+    .zones {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin: 2rem 0;
+    }
+
+    .zone {
+      background: var(--bg);
+      padding: 1.75rem;
+    }
+
+    .zone-num {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      color: var(--rule);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .zone h4 {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .zone p {
+      font-size: 0.88rem;
+      color: var(--ink-2);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── PERSONA CARDS ── */
+    .personas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin: 2rem 0;
+    }
+
+    .persona {
+      background: var(--bg);
+      padding: 1.75rem;
+    }
+
+    .persona-initial {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      color: white;
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .persona h4 {
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.2rem;
+    }
+
+    .persona-type {
+      font-size: 0.72rem;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.9rem;
+    }
+
+    .persona p {
+      font-size: 0.85rem;
+      color: var(--ink-2);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ── SOLUTION BLOCKS ── */
+    .solutions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .solution-block {
+      border: 1px solid var(--rule);
+      padding: 1.75rem;
+      position: relative;
+    }
+
+    .solution-block::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .solution-block h4 {
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    .solution-block p {
+      font-size: 0.87rem;
+      color: var(--ink-2);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── WIREFRAME ── */
+    .wireframe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .wireframe-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .wireframe-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    .wireframe-frame {
+      background: white;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--sans);
+      font-size: 10px;
+      color: var(--ink-2);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+
+    .wf-statusbar {
+      background: var(--bg-2);
+      height: 14px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .wf-header {
+      background: white;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .wf-body { padding: 10px; }
+
+    .wf-hero {
+      text-align: center;
+      padding: 12px 8px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 8px;
+    }
+
+    .wf-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin: 0 auto 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 10px;
+    }
+
+    .wf-title { font-size: 10px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+    .wf-sub { font-size: 8px; color: var(--ink-3); line-height: 1.4; }
+
+    .wf-strip {
+      background: var(--bg-2);
+      border: 1px solid var(--rule);
+      padding: 6px 8px;
+      margin-bottom: 6px;
+      font-size: 8px;
+      color: var(--ink-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .wf-strip-link { color: var(--accent); font-weight: 500; }
+
+    .wf-card {
+      border: 1px solid var(--rule);
+      padding: 8px;
+      margin-bottom: 6px;
+    }
+
+    .wf-card-label {
+      font-size: 7px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 3px;
+    }
+
+    .wf-card-title { font-size: 9px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .wf-card-meta { font-size: 7px; color: var(--ink-3); }
+
+    .wf-btn {
+      background: var(--accent);
+      color: white;
+      padding: 7px 10px;
+      text-align: center;
+      font-size: 9px;
+      font-weight: 500;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .wf-btn-ghost {
+      text-align: center;
+      font-size: 8px;
+      color: var(--ink-3);
+      margin-top: 5px;
+    }
+
+    .wf-label { font-size: 8px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+
+    .wf-input {
+      border: 1px solid var(--rule);
+      padding: 5px 7px;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .wf-input-hint { font-size: 7px; color: var(--ink-3); margin-bottom: 8px; }
+
+    .wf-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .wf-tab {
+      padding: 3px 7px;
+      border: 1px solid var(--rule);
+      font-size: 8px;
+      color: var(--ink-3);
+    }
+
+    .wf-tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .wf-qr {
+      background: white;
+      border: 1px solid var(--rule);
+      width: 80px;
+      margin: 0 auto 6px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .qrow {
+      display: flex;
+    }
+
+    .q1 {
+      width: calc(80px / 21);
+      height: calc(80px / 21);
+      background: #111;
+      flex-shrink: 0;
+    }
+
+    .q0 {
+      width: calc(80px / 21);
+      height: calc(80px / 21);
+      background: white;
+      flex-shrink: 0;
+    }
+
+    .wf-ref {
+      font-size: 8px;
+      background: var(--bg-2);
+      padding: 4px 6px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      color: var(--ink-2);
+    }
+
+    .wf-ref-copy { color: var(--accent); font-weight: 500; }
+
+    .wf-timer { font-size: 7px; color: var(--ink-3); text-align: center; margin-bottom: 6px; }
+
+    .wf-expand {
+      border: 1px solid var(--rule);
+      padding: 5px 8px;
+      font-size: 8px;
+      color: var(--ink-3);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .wf-amount-big {
+      font-family: var(--serif);
+      font-size: 18px;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+
+    .wf-amount-meta { font-size: 7px; color: var(--ink-3); margin-bottom: 10px; }
+
+    .wf-step {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: flex-start;
+    }
+
+    .wf-step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .wf-step-dot.done { background: var(--accent); }
+    .wf-step-dot.active {
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(26,60,94,0.15);
+    }
+    .wf-step-dot.pending { border: 1px solid var(--rule); background: white; }
+
+    .wf-step-line {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wf-step-name { font-size: 9px; font-weight: 500; color: var(--ink); }
+    .wf-step-name.pending { color: var(--ink-3); font-weight: 400; }
+    .wf-step-time { font-size: 7px; color: var(--ink-3); }
+    .wf-step-desc { font-size: 7.5px; color: var(--ink-2); margin-top: 1px; line-height: 1.4; }
+
+    .wf-connector {
+      width: 1px;
+      height: 6px;
+      background: var(--rule);
+      margin-left: 4px;
+      margin-bottom: 2px;
+    }
+
+    .wf-connector.done { background: var(--accent); }
+
+    .wf-footer-link {
+      text-align: center;
+      font-size: 7.5px;
+      color: var(--accent);
+      padding-top: 6px;
+      border-top: 1px solid var(--rule);
+      margin-top: 6px;
+    }
+
+    .wireframe-caption {
+      font-size: 0.8rem;
+      color: var(--ink-3);
+      line-height: 1.5;
+    }
+
+    .wireframe-caption strong {
+      display: block;
+      color: var(--ink-2);
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+
+    /* ── METRICS TABLE ── */
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+    }
+
+    .metrics-table th {
+      text-align: left;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .metrics-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--rule);
+      color: var(--ink-2);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .metrics-table tr:last-child td { border-bottom: none; }
+
+    .metrics-table td:first-child {
+      font-weight: 400;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .metric-role {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ── CONSTRAINTS ── */
+    .constraints {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      margin: 1.5rem 0;
+    }
+
+    .constraint {
+      background: var(--bg);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .constraint-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-warm);
+      margin-bottom: 0.4rem;
+    }
+
+    .constraint p {
+      font-size: 0.84rem;
+      color: var(--ink-2);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ── LEARNINGS ── */
+    .learning {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 1.25rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: start;
+    }
+
+    .learning:last-child { border-bottom: none; }
+
+    .learning-num {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--rule);
+      line-height: 1;
+      padding-top: 3px;
+    }
+
+    .learning h4 {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+
+    .learning p {
+      font-size: 0.87rem;
+      color: var(--ink-2);
+      margin: 0;
+    }
+
+    /* ── FOOTER ── */
+    .case-footer {
+      padding: 4rem 0;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .case-footer-left p {
+      font-size: 0.8rem;
+      color: var(--ink-3);
+      margin: 0;
+    }
+
+    .case-footer-left a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+
+    .back-link {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--ink); }
+
+    /* ── PROGRESS BAR ── */
+    .reading-progress {
+      position: fixed;
+      top: 52px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--rule);
+      z-index: 99;
+    }
+
+    .reading-progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* ── INLINE ASIDE ── */
+    .aside-row {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .aside-box {
+      border: 1px solid var(--rule);
+      padding: 1.25rem;
+      position: sticky;
+      top: 72px;
+    }
+
+    .aside-box-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 0.75rem;
+    }
+
+    .aside-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .aside-box li a {
+      font-size: 0.8rem;
+      color: var(--ink-3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .aside-box li a:hover { color: var(--ink); }
+    .aside-box li a.active { color: var(--accent); font-weight: 400; }
+
+    @media (max-width: 700px) {
+      .two-col, .two-col-wide, .aside-row { grid-template-columns: 1fr; }
+      .aside-box { display: none; }
+      .wireframe-grid { grid-template-columns: 1fr; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .stat { border-right: none; border-bottom: 1px solid var(--rule); }
+      .stat:last-child { border-bottom: none; }
+      .zones, .personas, .solutions, .constraints { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
+
+<nav>
+  <div class="nav-left">
+    <a href="../index.html">Reiko Tan</a>
+    <span>/</span>
+    <span>[Company] Cash Wallet</span>
+  </div>
+  <a href="../index.html" class="back-link">Back to Portfolio</a>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="container">
+      <div class="hero-meta">
+        <span class="tag accent">Case Study</span>
+        <span class="tag">Fintech</span>
+        <span class="tag">Product</span>
+        <span class="tag">Singapore</span>
+      </div>
+      <h1>Getting <em>verified investors</em> to their first deposit</h1>
+      <p class="hero-lede">[Company] is Southeast Asia's largest alternative assets marketplace. KYC-verified accredited investors were signing up and disappearing. This is the product work to fix that.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-value">20%</div>
+          <div class="stat-label">Estimated baseline conversion KYC to first deposit</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">5 days</div>
+          <div class="stat-label">Confirmation wait time under current flow</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">40%</div>
+          <div class="stat-label">Target conversion rate post Phase 1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <section id="overview">
+    <div class="container">
+      <p class="section-label">01 - Overview</p>
+      <div class="aside-row">
+        <div>
+          <h2>A verified investor who never deposits is a missed investment</h2>
+          <p>[Company] is a vertically integrated platform - deal sourcing, tokenisation, custody, exchange, and a secondary market. Accredited investors can access private equity, private credit, funds, luxury assets, and real estate from SGD 500.</p>
+          <p>The problem: a meaningful share of KYC-verified investors never made a first deposit. The current flow required users to manually bank transfer to a static DBS account, email a screenshot to cs@[company].com, and wait up to 5 working days for confirmation with no feedback. That flow broke at two points.</p>
+          <div class="zones">
+            <div class="zone">
+              <div class="zone-num">01</div>
+              <h4>Post-KYC Dead Zone</h4>
+              <p>After KYC approval, users received no contextual prompt, no deal recommendation, no explanation of the idle yield benefit. They re-entered a cold, undifferentiated product state with no trigger to act.</p>
+            </div>
+            <div class="zone">
+              <div class="zone-num">02</div>
+              <h4>Deposit Execution Loop</h4>
+              <p>At the moment of intent, users were pushed off-platform to internet banking, required to type static account details, then email a proof screenshot. The email step had no regulatory basis - it existed because automated reconciliation didn't.</p>
+            </div>
+          </div>
+          <p>The work here covers the full product thinking: problem framing, personas, journey analysis, solution design, requirements, and UX.</p>
+        </div>
+        <div>
+          <div class="aside-box">
+            <div class="aside-box-label">On this page</div>
+            <ul>
+              <li><a href="#overview" class="active">Overview</a></li>
+              <li><a href="#context">Context and constraints</a></li>
+              <li><a href="#users">Users</a></li>
+              <li><a href="#solution">Solution</a></li>
+              <li><a href="#ux">UX design</a></li>
+              <li><a href="#metrics">Metrics</a></li>
+              <li><a href="#learnings">Learnings</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTEXT -->
+  <section id="context">
+    <div class="container">
+      <p class="section-label">02 - Context and Constraints</p>
+      <h2>MAS regulation shapes the solution space</h2>
+      <p>[Company] is MAS-licensed for capital markets services and operates as a recognised market operator in Singapore. This isn't incidental - it defines what can and cannot be built.</p>
+
+      <div class="callout">
+        <p><strong>The key regulatory constraint:</strong> Funds must be traceable to the investor's own verified bank account. This eliminates card funding, third-party processors, and digital wallets as deposit rails. PayNow and bank transfer are the only compliant options - which means the solution had to make those rails work better, not replace them.</p>
+      </div>
+
+      <h3>Why the proof email could be eliminated</h3>
+      <p>The manual email step existed to trigger reconciliation and create an audit trail. Neither purpose required user action. With unique per-transaction payment references, PayNow captures payer identity and reference automatically. Bank transfers carry the reference code in the payment instruction. The audit trail requirement is better satisfied by automated reconciliation than by screenshots - system-generated, tamper-proof, immediately auditable.</p>
+
+      <div class="constraints">
+        <div class="constraint">
+          <div class="constraint-label">Permissible in Phase 1</div>
+          <p>Automated PayNow reconciliation via unique reference codes. Unique bank transfer references per transaction. Real-time in-app deposit status. Withdrawal legibility panel. Automated rep notifications.</p>
+        </div>
+        <div class="constraint">
+          <div class="constraint-label">Requires review before build</div>
+          <p>MMF yield rate messaging in onboarding (MAS promotional framing guidelines). Open banking API deposit rail (dedicated MAS consultation required - Phase 2 at earliest).</p>
+        </div>
+        <div class="constraint">
+          <div class="constraint-label">Critical assumption to validate</div>
+          <p>DBS PayNow integration supports unique per-transaction reference codes at [Company]'s current account tier. If not, automated PayNow reconciliation is blocked and a fallback is needed.</p>
+        </div>
+        <div class="constraint">
+          <div class="constraint-label">Out of scope</div>
+          <p>Multi-currency FX conversion, full withdrawal flow redesign, open banking APIs. Each requires a dedicated workstream before design or engineering investment is justified.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USERS -->
+  <section id="users">
+    <div class="container">
+      <p class="section-label">03 - Users</p>
+      <h2>Three types of verified investor, three different failure modes</h2>
+      <p>The product serves accredited investors across a wide range of sophistication and intent. The activation problem looks different for each of them.</p>
+
+      <div class="personas">
+        <div class="persona">
+          <div class="persona-initial">R</div>
+          <h4>Raymond</h4>
+          <div class="persona-type">Passive Wealth Allocator</div>
+          <p>56, semi-retired, referred by his Phillip Capital RM. Expects a human somewhere in the loop. Won't act without certainty. The deposit email arrives with a 3-day deadline and no guidance on what happens next - so he calls his RM.</p>
+        </div>
+        <div class="persona">
+          <div class="persona-initial">P</div>
+          <h4>Priya</h4>
+          <div class="persona-type">Curious First-Timer</div>
+          <p>34, fintech PM, newly accredited. Digital-first and exploratory. Signed up, completed KYC, then got busy. With no deal recommendation or yield signal post-approval, the momentum evaporated and she never came back.</p>
+        </div>
+        <div class="persona">
+          <div class="persona-initial">M</div>
+          <h4>Marcus</h4>
+          <div class="persona-type">Sophisticated Diversifier</div>
+          <p>47, family office. Has a specific deal in mind and a fill window closing. Treats deposit as infrastructure. The 5-day confirmation silence means he can't confirm his position is secured - so he routes capital elsewhere.</p>
+        </div>
+      </div>
+
+      <p>Designing for Raymond raises the floor for everyone. If the product earns his trust through clarity, it more than satisfies Priya and Marcus along the way.</p>
+    </div>
+  </section>
+
+  <!-- SOLUTION -->
+  <section id="solution">
+    <div class="container">
+      <p class="section-label">04 - Solution</p>
+      <h2>Fix the transaction enabler first. Build the financial home second.</h2>
+      <p>Phase 1 is deliberately scoped to what can be built within existing payment rails without regulatory changes or cross-product dependencies. It addresses every identified failure zone and is measurable against the North Star within 30 days of launch.</p>
+
+      <div class="solutions">
+        <div class="solution-block">
+          <h4>Contextual Post-KYC Activation</h4>
+          <p>KYC approval triggers a personalised activation screen - not a generic home state. Deal recommendation based on stated preferences, MMF yield explainer, withdrawal legibility panel, and a single deposit CTA. For rep-referred users, the RM's contact details appear inline.</p>
+        </div>
+        <div class="solution-block">
+          <h4>In-App Deposit Initiation</h4>
+          <p>Unique PayNow QR per transaction for SGD. Unique reference code per transaction for bank transfers, formatted for copy-paste. Amount pre-filled from deal. Deadline shown as a progress indicator, not a pressure notification.</p>
+        </div>
+        <div class="solution-block">
+          <h4>Automated Reconciliation</h4>
+          <p>Inbound transfers matched automatically via reference code. Manual proof email eliminated entirely. Exceptions trigger an ops alert - not user action. System-generated audit logs satisfy MAS AML/CFT requirements better than screenshots.</p>
+        </div>
+        <div class="solution-block">
+          <h4>Real-Time Status Tracking</h4>
+          <p>In-app status stepper: Initiated, Transfer Detected, Funds Confirmed, Wallet Credited. Push notification at each state change. Deposit tracker visible on wallet home screen without navigating to transaction history. Automated rep notification on confirmation.</p>
+        </div>
+        <div class="solution-block">
+          <h4>Withdrawal Legibility</h4>
+          <p>Expandable panel within the deposit onboarding flow, shown before the user commits. Steps, timelines, conditions. For Raymond, knowing he can get his money out is a prerequisite to putting it in.</p>
+        </div>
+        <div class="solution-block">
+          <h4>MMF Surfacing</h4>
+          <p>Current yield rate displayed on wallet home screen for any investor with idle balance. Explained inline in the activation flow. Idle capital earns while the investor decides - this is a genuine differentiator that most users never knew existed.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p><strong>Phase 2 direction:</strong> Once activated depositors are funded, the wallet needs to become a place they choose to keep money. Deal-triggered funding nudges, a wallet health dashboard (idle balance, deployed balance, MMF yield accrued), and an open banking deposit rail (pending MAS review) are the Phase 2 priorities.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- UX -->
+  <section id="ux">
+    <div class="container-wide">
+      <div class="container" style="padding:0; max-width:var(--max);">
+        <p class="section-label">05 - UX Design</p>
+        <h2>Three screens that carry the whole story</h2>
+        <p>From a 12-screen inventory, these three were selected for the case study because they directly address the two critical failure zones and trace to the North Star metric.</p>
+      </div>
+
+      <div class="wireframe-grid" style="margin-top: 2.5rem;">
+
+        <!-- S-01 Post-KYC Activation -->
+        <div class="wireframe-card">
+          <div class="wireframe-label">S-01 - Post-KYC Activation</div>
+          <div class="wireframe-frame">
+            <div class="wf-statusbar"></div>
+            <div class="wf-header">
+              <span style="color:var(--ink-3)">-</span>
+              <span>x</span>
+            </div>
+            <div class="wf-body">
+              <div class="wf-hero">
+                <div class="wf-icon">✓</div>
+                <div class="wf-title">You're approved, Reiko.</div>
+                <div class="wf-sub">You can now invest in alternative assets.<br>Your idle balance earns yield while you decide.</div>
+              </div>
+              <div class="wf-strip">
+                <span>Idle cash earns 4.2% p.a. automatically</span>
+                <span class="wf-strip-link">Learn more</span>
+              </div>
+              <div class="wf-card">
+                <div class="wf-card-label">Matched to your profile</div>
+                <div class="wf-card-title">Asia Pacific Private Credit Fund III</div>
+                <div class="wf-card-meta">Min. SGD 10,000 - 8.5% target - Closes 12 days</div>
+              </div>
+              <div class="wf-strip" style="margin-bottom:8px;">
+                <span>Wondering how to withdraw?</span>
+                <span class="wf-strip-link">See how</span>
+              </div>
+              <div class="wf-btn">Fund My Wallet</div>
+              <div class="wf-btn-ghost">Maybe later</div>
+            </div>
+          </div>
+          <div class="wireframe-caption">
+            <strong>Fixes the post-KYC dead zone</strong>
+            Replaces the generic home screen on first login post-approval. Deal recommendation, MMF yield signal, and withdrawal legibility before a single tap.
+          </div>
+        </div>
+
+        <!-- S-03 Deposit Initiation -->
+        <div class="wireframe-card">
+          <div class="wireframe-label">S-03 - Deposit Initiation</div>
+          <div class="wireframe-frame">
+            <div class="wf-statusbar"></div>
+            <div class="wf-header">
+              <span>- Back</span>
+              <span>Fund Wallet</span>
+              <span>?</span>
+            </div>
+            <div class="wf-body">
+              <div class="wf-label">Amount</div>
+              <div class="wf-input">
+                <span>SGD</span>
+                <span>10,000.00</span>
+              </div>
+              <div class="wf-input-hint">Minimum for Asia Pacific Fund III: SGD 10,000</div>
+              <div class="wf-label">Pay via</div>
+              <div class="wf-tabs">
+                <div class="wf-tab active">PayNow</div>
+                <div class="wf-tab">Bank Transfer</div>
+              </div>
+              <div class="wf-qr">
+                <div class="qrow"><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div></div>
+                <div class="qrow"><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q0"></div><div class="q1"></div><div class="q1"></div><div class="q1"></div><div class="q0"></div><div class="q0"></div></div>
+              </div>
+              <div class="wf-ref">
+                <span>REF: ALT-20260304-0042</span>
+                <span class="wf-ref-copy">Copy</span>
+              </div>
+              <div class="wf-timer">QR expires in 28:43</div>
+              <div class="wf-expand">
+                <span>Wondering how to withdraw?</span>
+                <span>v</span>
+              </div>
+              <div class="wf-btn">I've Transferred</div>
+            </div>
+          </div>
+          <div class="wireframe-caption">
+            <strong>Fixes the deposit execution loop</strong>
+            Unique QR per transaction. Reference code for copy-paste. Proof email eliminated. Users stay in-app through the entire flow except to open their banking app.
+          </div>
+        </div>
+
+        <!-- S-06 Deposit Status -->
+        <div class="wireframe-card">
+          <div class="wireframe-label">S-06 - Deposit Status</div>
+          <div class="wireframe-frame">
+            <div class="wf-statusbar"></div>
+            <div class="wf-header">
+              <span>- Back</span>
+              <span>Deposit Status</span>
+              <span></span>
+            </div>
+            <div class="wf-body">
+              <div class="wf-amount-big">SGD 10,000.00</div>
+              <div class="wf-amount-meta">Initiated 4 Mar 2026, 2:47 PM - PayNow</div>
+
+              <div class="wf-step">
+                <div class="wf-step-dot done"></div>
+                <div class="wf-step-line">
+                  <div class="wf-step-name">Initiated</div>
+                  <div class="wf-step-time">4 Mar, 2:47 PM</div>
+                </div>
+              </div>
+              <div class="wf-connector done"></div>
+              <div class="wf-step">
+                <div class="wf-step-dot done"></div>
+                <div class="wf-step-line">
+                  <div class="wf-step-name">Transfer Detected</div>
+                  <div class="wf-step-time">4 Mar, 2:51 PM</div>
+                </div>
+              </div>
+              <div class="wf-connector done"></div>
+              <div class="wf-step">
+                <div class="wf-step-dot active"></div>
+                <div class="wf-step-line">
+                  <div class="wf-step-name">Funds Confirmed</div>
+                  <div class="wf-step-time">4 Mar, 2:54 PM</div>
+                  <div class="wf-step-desc">Your funds are verified. Crediting your wallet.</div>
+                </div>
+              </div>
+              <div class="wf-connector"></div>
+              <div class="wf-step">
+                <div class="wf-step-dot pending"></div>
+                <div class="wf-step-line">
+                  <div class="wf-step-name pending">Wallet Credited</div>
+                </div>
+              </div>
+
+              <div class="wf-ref" style="margin-top:10px;">
+                <span>REF: ALT-20260304-0042 - PayNow - SGD</span>
+                <span class="wf-ref-copy">Copy</span>
+              </div>
+              <div class="wf-footer-link">Something wrong? Contact support</div>
+            </div>
+          </div>
+          <div class="wireframe-caption">
+            <strong>Fixes the confirmation black hole</strong>
+            Four-state stepper with timestamps. Push notification at each transition. Visible on wallet home screen without navigating to transaction history.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section id="metrics">
+    <div class="container">
+      <p class="section-label">06 - Metrics</p>
+      <h2>What success looks like, and why</h2>
+      <p>The North Star is intentionally scoped to deposit, not investment completion. Investment outcomes are influenced by deal quality, market timing, and member firm relationships - outside the wallet PM's control.</p>
+
+      <table class="metrics-table">
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Metric</th>
+            <th>Target</th>
+            <th>Why this metric</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="metric-role">North Star</span></td>
+            <td>% of KYC-verified investors who deposit within 30 days</td>
+            <td>40%</td>
+            <td>Directly measures the activation gap this work is designed to close. Paired with AUC growth as a lagging health check to detect low-intent activations.</td>
+          </tr>
+          <tr>
+            <td><span class="metric-role">Operational</span></td>
+            <td>90th percentile deposit confirmation time by rail</td>
+            <td>Under 2 hrs PayNow, under 2 days bank transfer</td>
+            <td>90th percentile not median - captures worst-case experience for the long-tail cohort. Median would mask the outliers that erode trust.</td>
+          </tr>
+          <tr>
+            <td><span class="metric-role">Operational</span></td>
+            <td>30-day wallet login rate among first-time depositors</td>
+            <td>50%</td>
+            <td>Leading indicator of genuine engagement. Faster signal than repeat deposit rate - relevant for a 6-month sprint cadence.</td>
+          </tr>
+          <tr>
+            <td><span class="metric-role">Business</span></td>
+            <td>CS ticket volume - deposit confirmation queries</td>
+            <td>60% reduction</td>
+            <td>Independent signal that the deposit loop genuinely improved. Also a cross-functional buy-in metric for ops.</td>
+          </tr>
+          <tr>
+            <td><span class="metric-role">Technical</span></td>
+            <td>PayNow auto-reconciliation rate</td>
+            <td>95% without manual intervention</td>
+            <td>Remaining 5% triggers ops alert - not email from user. Zero users should need to email cs@[company].com as part of the standard flow.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- LEARNINGS -->
+  <section id="learnings">
+    <div class="container">
+      <p class="section-label">07 - Learnings</p>
+      <h2>What this work surfaced</h2>
+
+      <div class="learning">
+        <div class="learning-num">01</div>
+        <div>
+          <h4>The proof email was hiding a reconciliation problem, not solving one</h4>
+          <p>The email step looked like a user flow decision. It was actually an infrastructure gap - the absence of automated reconciliation. Framing it as a UX fix would have been wrong. The right fix was eliminating the need for it entirely.</p>
+        </div>
+      </div>
+
+      <div class="learning">
+        <div class="learning-num">02</div>
+        <div>
+          <h4>Withdrawal legibility is an activation lever, not a withdrawal feature</h4>
+          <p>No investor explicitly said they were abandoning because they didn't know how to withdraw. But for the Passive Allocator, not knowing is a silent blocker. It never shows up as a drop-off event because the user simply never deposits rather than explicitly abandoning.</p>
+        </div>
+      </div>
+
+      <div class="learning">
+        <div class="learning-num">03</div>
+        <div>
+          <h4>The MMF is a differentiator that most users have never heard of</h4>
+          <p>Idle balances earn yield automatically - this is a meaningful product benefit that competitors don't offer at this scale. It wasn't in the onboarding flow, it wasn't on the wallet screen, and there was no mention of it post-KYC. Surfacing it is not a product change - it's a communication fix.</p>
+        </div>
+      </div>
+
+      <div class="learning">
+        <div class="learning-num">04</div>
+        <div>
+          <h4>Regulatory constraints shaped the solution, but they didn't block it</h4>
+          <p>MAS source-of-funds requirements eliminate most alternative payment rails. Working within those constraints - making PayNow and bank transfer work better - turned out to be sufficient for Phase 1. The constraint clarified the design rather than limiting it.</p>
+        </div>
+      </div>
+
+      <div class="learning">
+        <div class="learning-num">05</div>
+        <div>
+          <h4>The North Star needs a lagging health check</h4>
+          <p>Deposit count alone can be gamed - aggressive prompting can drive deposits from low-intent users. Pairing it with AUC growth as a lagging indicator catches that pattern. If deposit count rises but AUC is flat, the quality of activation is the problem, not the volume.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="container">
+    <div class="case-footer">
+      <div class="case-footer-left">
+        <p>Reiko Tan - <a href="mailto:reiko98@live.com.sg">reiko98@live.com.sg</a></p>
+        <p style="margin-top:0.25rem;">I'm a Product Manager drawn to complex product problems, the kind that live between technology, design, and human behavior.</p>
+      </div>
+      <a href="../index.html" class="back-link">Back to Portfolio</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Reading progress
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop;
+    const max = doc.scrollHeight - doc.clientHeight;
+    bar.style.width = (scrolled / max * 100) + '%';
+  });
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.aside-box a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
