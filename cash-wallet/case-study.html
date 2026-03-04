@@ -887,13 +887,22 @@
     }
   
   /* ── SECTION NAV ── */
+
+  /* mobile floating pill — hidden by default, shown only on small screens */
   .section-nav {
     position: fixed;
     bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 200;
-    display: none;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 500;
+    pointer-events: none;
+  }
+
+  .section-nav-inner {
+    pointer-events: all;
+    position: relative;
   }
 
   .section-nav-toggle {
@@ -911,18 +920,17 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     white-space: nowrap;
   }
 
   .section-nav-toggle .arrow {
     font-size: 0.6rem;
     transition: transform 0.2s;
+    display: inline-block;
   }
 
-  .section-nav-toggle.open .arrow {
-    transform: rotate(180deg);
-  }
+  .section-nav-toggle.open .arrow { transform: rotate(180deg); }
 
   .section-nav-menu {
     position: absolute;
@@ -934,15 +942,13 @@
     border-radius: 12px;
     padding: 8px;
     min-width: 200px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     display: none;
     flex-direction: column;
     gap: 2px;
   }
 
-  .section-nav-menu.open {
-    display: flex;
-  }
+  .section-nav-menu.open { display: flex; }
 
   .section-nav-menu a {
     font-size: 0.82rem;
@@ -961,20 +967,20 @@
     color: var(--accent);
   }
 
-  /* Desktop sidebar nav */
+  /* desktop sidebar — hidden by default, shown only on large screens */
   .sidebar-nav {
-    display: none;
     position: fixed;
     top: 50%;
-    right: 24px;
-    transform: translateY(-50%);
+    right: 20px;
+    margin-top: -120px; /* approximate vertical centering without transform */
+    display: none;
     flex-direction: column;
-    gap: 6px;
-    z-index: 200;
+    gap: 4px;
+    z-index: 500;
   }
 
   .sidebar-nav a {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -992,12 +998,12 @@
     background: var(--bg-2);
   }
 
-  @media (max-width: 900px) {
-    .section-nav { display: block; }
-    .sidebar-nav { display: none !important; }
+  @media (max-width: 960px) {
+    .section-nav { display: flex; }
+    .sidebar-nav { display: none; }
   }
 
-  @media (min-width: 901px) {
+  @media (min-width: 961px) {
     .section-nav { display: none; }
     .sidebar-nav { display: flex; }
   }
@@ -1030,17 +1036,19 @@
 
 <!-- Mobile floating nav -->
 <div class="section-nav" id="sectionNav">
-  <button class="section-nav-toggle" id="navToggle" onclick="toggleNav()">
-    Jump to section <span class="arrow">▲</span>
-  </button>
-  <div class="section-nav-menu" id="navMenu">
-    <a href="#overview" onclick="closeNav()">Overview</a>
-    <a href="#context" onclick="closeNav()">Context</a>
-    <a href="#users" onclick="closeNav()">Users</a>
-    <a href="#solution" onclick="closeNav()">Solution</a>
-    <a href="#ux" onclick="closeNav()">UX Design</a>
-    <a href="#metrics" onclick="closeNav()">Metrics</a>
-    <a href="#learnings" onclick="closeNav()">Learnings</a>
+  <div class="section-nav-inner">
+    <div class="section-nav-menu" id="navMenu">
+      <a href="#overview" onclick="closeNav()">Overview</a>
+      <a href="#context" onclick="closeNav()">Context</a>
+      <a href="#users" onclick="closeNav()">Users</a>
+      <a href="#solution" onclick="closeNav()">Solution</a>
+      <a href="#ux" onclick="closeNav()">UX Design</a>
+      <a href="#metrics" onclick="closeNav()">Metrics</a>
+      <a href="#learnings" onclick="closeNav()">Learnings</a>
+    </div>
+    <button class="section-nav-toggle" id="navToggle" onclick="toggleNav()">
+      Jump to section <span class="arrow">▲</span>
+    </button>
   </div>
 </div>
 
