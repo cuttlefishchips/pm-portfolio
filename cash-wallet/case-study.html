@@ -969,27 +969,34 @@
 
   /* desktop sidebar — hidden by default, shown only on large screens */
   .sidebar-nav {
-    position: fixed;
-    top: 50%;
-    right: 20px;
-    margin-top: -120px; /* approximate vertical centering without transform */
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 120px !important;
     display: none;
     flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
     gap: 4px;
-    z-index: 500;
+    z-index: 500 !important;
+    padding-right: 16px;
+    pointer-events: none;
   }
 
   .sidebar-nav a {
     font-size: 0.65rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
     color: var(--ink-3);
     text-decoration: none;
-    padding: 5px 10px;
+    padding: 4px 8px;
     border-radius: 4px;
     transition: color 0.15s, background 0.15s;
     text-align: right;
+    pointer-events: all;
+    white-space: nowrap;
   }
 
   .sidebar-nav a:hover,
@@ -999,13 +1006,13 @@
   }
 
   @media (max-width: 960px) {
-    .section-nav { display: flex; }
-    .sidebar-nav { display: none; }
+    .section-nav { display: flex !important; }
+    .sidebar-nav { display: none !important; }
   }
 
   @media (min-width: 961px) {
-    .section-nav { display: none; }
-    .sidebar-nav { display: flex; }
+    .section-nav { display: none !important; }
+    .sidebar-nav { display: flex !important; }
   }
 
 </style>
