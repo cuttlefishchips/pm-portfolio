@@ -885,33 +885,22 @@
       .stat:last-child { border-bottom: none; }
       .zones, .personas, .solutions, .constraints { grid-template-columns: 1fr; }
     }
-  
-  /* ── SECTION NAV ── */
 
-  /* mobile floating pill — hidden by default, shown only on small screens */
+  /* ── SECTION NAV ── */
   .section-nav {
     position: fixed;
     bottom: 24px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 500;
-    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
   }
-
-  .section-nav-inner {
-    pointer-events: all;
-    position: relative;
-  }
-
+  .section-nav-inner { position: relative; }
   .section-nav-toggle {
     background: var(--accent);
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 22px;
     border-radius: 100px;
-    font-family: var(--sans);
     font-size: 0.72rem;
     font-weight: 500;
     letter-spacing: 0.08em;
@@ -922,97 +911,38 @@
     gap: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     white-space: nowrap;
+    font-family: inherit;
   }
-
-  .section-nav-toggle .arrow {
-    font-size: 0.6rem;
-    transition: transform 0.2s;
-    display: inline-block;
-  }
-
+  .section-nav-toggle .arrow { font-size: 0.6rem; transition: transform 0.2s; display: inline-block; }
   .section-nav-toggle.open .arrow { transform: rotate(180deg); }
-
   .section-nav-menu {
     position: absolute;
     bottom: calc(100% + 10px);
     left: 50%;
     transform: translateX(-50%);
     background: white;
-    border: 1px solid var(--rule);
+    border: 1px solid rgba(0,0,0,0.1);
     border-radius: 12px;
     padding: 8px;
-    min-width: 200px;
+    min-width: 180px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     display: none;
     flex-direction: column;
     gap: 2px;
   }
-
   .section-nav-menu.open { display: flex; }
-
   .section-nav-menu a {
     font-size: 0.82rem;
-    font-weight: 400;
-    color: var(--ink-2);
+    color: #444;
     text-decoration: none;
     padding: 8px 14px;
     border-radius: 8px;
+    white-space: nowrap;
     transition: background 0.15s, color 0.15s;
-    white-space: nowrap;
   }
-
-  .section-nav-menu a:hover,
-  .section-nav-menu a.active {
+  .section-nav-menu a:hover, .section-nav-menu a.active {
     background: var(--bg-2);
     color: var(--accent);
-  }
-
-  /* desktop sidebar — hidden by default, shown only on large screens */
-  .sidebar-nav {
-    position: fixed !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 120px !important;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 4px;
-    z-index: 500 !important;
-    padding-right: 16px;
-    pointer-events: none;
-  }
-
-  .sidebar-nav a {
-    font-size: 0.65rem;
-    font-weight: 500;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    text-decoration: none;
-    padding: 4px 8px;
-    border-radius: 4px;
-    transition: color 0.15s, background 0.15s;
-    text-align: right;
-    pointer-events: all;
-    white-space: nowrap;
-  }
-
-  .sidebar-nav a:hover,
-  .sidebar-nav a.active {
-    color: var(--accent);
-    background: var(--bg-2);
-  }
-
-  @media (max-width: 960px) {
-    .section-nav { display: flex !important; }
-    .sidebar-nav { display: none !important; }
-  }
-
-  @media (min-width: 961px) {
-    .section-nav { display: none !important; }
-    .sidebar-nav { display: flex !important; }
   }
 
 </style>
@@ -1028,17 +958,6 @@
     <span>[Company] Cash Wallet</span>
   </div>
   <a href="../index.html" class="back-link">Back to Portfolio</a>
-</nav>
-
-<!-- Desktop sidebar nav -->
-<nav class="sidebar-nav" id="sidebarNav">
-  <a href="#overview">Overview</a>
-  <a href="#context">Context</a>
-  <a href="#users">Users</a>
-  <a href="#solution">Solution</a>
-  <a href="#ux">UX Design</a>
-  <a href="#metrics">Metrics</a>
-  <a href="#learnings">Learnings</a>
 </nav>
 
 <!-- Mobile floating nav -->
