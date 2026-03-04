@@ -28,6 +28,12 @@
   .nav-links { display:flex; gap:28px; list-style:none; }
   .nav-links a { font-size:0.72rem; font-weight:500; color:var(--text-3); text-decoration:none; letter-spacing:0.07em; text-transform:uppercase; transition:color 0.15s; }
   .nav-links a:hover { color:var(--green); }
+  .nav-left { display:flex; align-items:center; gap:0.5rem; }
+  .nav-left span { font-size:0.75rem; color:var(--text-3); letter-spacing:0.04em; }
+  .nav-back { font-size:0.72rem; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
+  .nav-back:hover { color:var(--green); }
+  .reading-progress { position:fixed; top:56px; left:0; right:0; height:2px; background:var(--border); z-index:99; }
+  .reading-progress-bar { height:100%; background:var(--green); width:0%; transition:width 0.1s linear; }
 
   .wrap { max-width:800px; margin:0 auto; padding:0 32px; }
   section { padding:88px 0; border-bottom:1px solid var(--border); }
@@ -135,15 +141,15 @@
 </head>
 <body>
 
+<div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
+
 <nav>
-  <span class="nav-brand">Granola — Open Items</span>
-  <ul class="nav-links">
-    <li><a href="#problem">Problem</a></li>
-    <li><a href="#decisions">Decisions</a></li>
-    <li><a href="#solution">Solution</a></li>
-    <li><a href="#metrics">Metrics</a></li>
-    <li><a href="#tradeoffs">Tradeoffs</a></li>
-  </ul>
+  <div class="nav-left">
+    <a href="../index.html" class="nav-brand">Reiko Tan</a>
+    <span>/</span>
+    <span>Granola Open Items</span>
+  </div>
+  <a href="../index.html" class="nav-back">Back to Portfolio</a>
 </nav>
 
 <section class="hero">
@@ -345,7 +351,14 @@
 </div>
 
 <footer>
-  <p>Granola Open Items &mdash; PM Case Study &nbsp;&middot;&nbsp; Hypothetical feature design, not affiliated with Granola Inc.</p>
+  <div class="wrap" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; text-align:left; padding-top:2rem; padding-bottom:2rem;">
+    <div>
+      <p style="font-size:0.85rem; font-weight:400; color:var(--text); margin-bottom:0.25rem;">Reiko Tan &nbsp;&middot;&nbsp; <a href="mailto:reiko98@live.com.sg" style="color:var(--green); text-decoration:none;">reiko98@live.com.sg</a></p>
+      <p style="font-size:0.8rem; color:var(--text-3); font-weight:300;">I'm a Product Manager drawn to complex product problems, the kind that live between technology, design, and human behavior.</p>
+      <p style="font-size:0.72rem; color:var(--text-3); font-weight:300; margin-top:0.5rem;">Hypothetical feature design, not affiliated with Granola Inc.</p>
+    </div>
+    <a href="../index.html" class="nav-back">Back to Portfolio</a>
+  </div>
 </footer>
 
 <script>
@@ -353,6 +366,12 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+  });
 </script>
 </body>
 </html>
