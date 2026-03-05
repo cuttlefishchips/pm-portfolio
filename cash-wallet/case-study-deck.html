@@ -35,8 +35,10 @@
     .top-nav-left { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--ink-3); }
     .top-nav-left a { color: var(--ink-2); text-decoration: none; font-weight: 400; }
     .top-nav-left a:hover { color: var(--navy); }
-    .top-nav-right { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
-    .top-nav-right:hover { color: var(--navy); }
+    .top-nav-right { display: flex; align-items: center; gap: 1.25rem; }
+    .top-nav-link { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
+    .top-nav-link:hover { color: var(--navy); }
+    .top-nav-link.nav-current { color: var(--navy); }
 
     .progress-bar { position: fixed; top: 52px; left: 0; right: 0; height: 2px; background: var(--rule); z-index: 999; }
     .progress-fill { height: 100%; background: var(--navy); width: 0%; transition: width 0.1s linear; }
@@ -221,7 +223,10 @@
     <span>/</span>
     <span>Cash Wallet Exercise</span>
   </div>
-  <a href="../index.html" class="top-nav-right">Back to Portfolio</a>
+  <div class="top-nav-right">
+    <a href="case-study.html" class="top-nav-link nav-current">Cash Wallet</a>
+    <a href="../granola-open-items/case-study.html" class="top-nav-link">Granola Open Items</a>
+  </div>
 </nav>
 
 <div class="page">

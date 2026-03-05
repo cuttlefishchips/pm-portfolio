@@ -30,8 +30,10 @@
   .nav-links a:hover { color:var(--green); }
   .nav-left { display:flex; align-items:center; gap:0.5rem; }
   .nav-left span { font-size:0.75rem; color:var(--text-3); letter-spacing:0.04em; }
-  .nav-back { font-size:0.72rem; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
-  .nav-back:hover { color:var(--green); }
+  .nav-back { display: flex; align-items: center; gap: 1.25rem; }
+  .nav-back-link { font-size:0.72rem; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
+  .nav-back-link:hover { color:var(--green); }
+  .nav-back-link.nav-current { color:var(--green); }
   .reading-progress { position:fixed; top:56px; left:0; right:0; height:2px; background:var(--border); z-index:99; }
   .reading-progress-bar { height:100%; background:var(--green); width:0%; transition:width 0.1s linear; }
 
@@ -226,7 +228,10 @@
     <span>/</span>
     <span>Granola Open Items</span>
   </div>
-  <a href="../index.html" class="nav-back">Back to Portfolio</a>
+  <div class="nav-back">
+    <a href="../cash-wallet/case-study.html" class="nav-back-link">Cash Wallet</a>
+    <a href="case-study.html" class="nav-back-link nav-current">Granola Open Items</a>
+  </div>
 </nav>
 
 <section class="hero">
@@ -434,7 +439,7 @@
       <p style="font-size:0.8rem; color:var(--text-3); font-weight:300;">I'm a Product Manager drawn to complex product problems, the kind that live between technology, design, and human behavior.</p>
       <p style="font-size:0.72rem; color:var(--text-3); font-weight:300; margin-top:0.5rem;">Hypothetical feature design, not affiliated with Granola Inc.</p>
     </div>
-    <a href="../index.html" class="nav-back">Back to Portfolio</a>
+    <a href="../index.html" class="nav-back-link">Back to Portfolio</a>
   </div>
 </footer>
 
