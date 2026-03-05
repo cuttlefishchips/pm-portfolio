@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cash Wallet Exercise — Reiko Tan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #1a3c5e;
+      --navy-deep: #0f2238;
+      --navy-mid: #2a5480;
+      --gold: #c8773a;
+      --gold-light: #e8a06a;
+      --ink: #111;
+      --ink-2: #3a3a3a;
+      --ink-3: #777;
+      --rule: #e0ddd8;
+      --bg: #fafaf8;
+      --bg-2: #f2f0ec;
+      --white: #ffffff;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Outfit', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--ink); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+
+    /* ── TOP NAV ── */
+    .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 52px; background: var(--bg); border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 1000; }
+    .top-nav-left { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--ink-3); }
+    .top-nav-left a { color: var(--ink-2); text-decoration: none; font-weight: 400; }
+    .top-nav-left a:hover { color: var(--navy); }
+    .top-nav-right { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
+    .top-nav-right:hover { color: var(--navy); }
+
+    .progress-bar { position: fixed; top: 52px; left: 0; right: 0; height: 2px; background: var(--rule); z-index: 999; }
+    .progress-fill { height: 100%; background: var(--navy); width: 0%; transition: width 0.1s linear; }
+
+    .page { padding-top: 52px; }
+
+    /* ── INTRO ── */
+    .intro { max-width: 860px; margin: 0 auto; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--rule); }
+    .intro-eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+    .intro-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+    .intro h1 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; line-height: 1.15; color: var(--navy-deep); margin-bottom: 1rem; }
+    .intro h1 em { font-style: italic; color: var(--navy-mid); }
+    .intro-lede { font-size: 1rem; font-weight: 300; color: var(--ink-2); max-width: 580px; line-height: 1.75; margin-bottom: 2rem; }
+    .intro-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .intro-meta-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.2rem; }
+    .intro-meta-val { font-size: 0.88rem; color: var(--ink-2); font-weight: 400; }
+
+    /* ── DECK WRAPPER ── */
+    .deck-section { max-width: 960px; margin: 0 auto; padding: 3rem 2rem; }
+    .deck-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .deck-label-hint { font-size: 0.68rem; font-weight: 400; letter-spacing: 0.04em; color: var(--ink-3); text-transform: none; }
+
+    /* 16:9 frame — container for cqi units */
+    .deck-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 4px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      container-type: inline-size;
+    }
+
+    .deck-slides {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 100%;
+    }
+
+    /* Every slide is strictly 100% width and height of the frame */
+    .slide {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      padding: 3.5% 5%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── ALL SLIDE TEXT USES cqi SO IT SCALES WITH FRAME WIDTH ── */
+
+    /* Cover */
+    .s-cover { background: var(--navy-deep); justify-content: center; }
+    .s-cover .eyebrow { font-size: 1.4cqi; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1.5cqi; }
+    .s-cover .cover-h { font-family: var(--serif); font-size: 5.5cqi; font-weight: 400; line-height: 1.1; color: white; margin-bottom: 1.5cqi; }
+    .s-cover .cover-h em { font-style: italic; color: var(--gold-light); }
+    .cover-sub { font-size: 1.6cqi; font-weight: 300; color: rgba(255,255,255,0.65) !important; max-width: 60%; line-height: 1.5; margin-bottom: 2cqi; }
+    .cover-pills { display: flex; gap: 1cqi; flex-wrap: wrap; }
+    .cover-pill { font-size: 1.2cqi; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.4cqi 1cqi; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.45); border-radius: 2px; }
+    .cover-pill.gold { border-color: var(--gold); color: var(--gold-light); }
+    .cover-num { position: absolute; right: 5%; bottom: 5%; font-family: var(--serif); font-size: 15cqi; color: rgba(255,255,255,0.04); line-height: 1; font-weight: 700; pointer-events: none; }
+
+    /* Content slides */
+    .s-light { background: var(--bg); }
+    .s-white { background: var(--white); }
+    .s-dark { background: var(--navy-deep); }
+
+    .slide-tag { font-size: 1.3cqi; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.8cqi; display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+    .slide-tag.light { color: rgba(255,255,255,0.4); }
+    .slide-tag::after { content: ''; width: 2cqi; height: 1px; background: currentColor; opacity: 0.35; }
+
+    .slide-h { font-family: var(--serif); font-size: 3.2cqi; font-weight: 400; line-height: 1.2; color: var(--navy-deep); margin-bottom: 0.8cqi; flex-shrink: 0; }
+    .slide-h em { font-style: italic; color: var(--navy-mid); }
+    .slide-h.on-dark { color: white; }
+    .slide-h.on-dark em { color: var(--gold-light); }
+
+    .slide-body { font-size: 1.5cqi; font-weight: 300; color: var(--ink-2); line-height: 1.5; margin-bottom: 1.2cqi; flex-shrink: 0; max-width: 80%; }
+    .slide-body.on-dark { color: rgba(255,255,255,0.6); }
+
+    /* Grid layouts */
+    .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1cqi; flex: 1; min-height: 0; }
+    .cols-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1cqi; flex: 1; min-height: 0; }
+
+    .card { background: var(--white); border: 1px solid var(--rule); padding: 1.5cqi; display: flex; flex-direction: column; gap: 0.6cqi; overflow: hidden; min-height: 0; }
+    .card.dark-card { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+    .card.navy-card { background: var(--navy-deep); border-color: var(--navy-deep); }
+
+    .card-tag { font-size: 1cqi; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; flex-shrink: 0; }
+    .tag-internal { color: var(--navy); }
+    .tag-external { color: var(--gold); }
+    .tag-light { color: rgba(255,255,255,0.4); }
+    .tag-muted { color: var(--ink-3); }
+
+    .card-title { font-family: var(--serif); font-size: 1.6cqi; color: var(--ink); line-height: 1.25; flex-shrink: 0; }
+    .card-title.on-dark { color: white; }
+
+    .card-body { font-size: 1.3cqi; color: var(--ink-2); font-weight: 300; line-height: 1.5; overflow: hidden; }
+    .card-body.on-dark { color: rgba(255,255,255,0.55); }
+
+    /* Funnel */
+    .funnel { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 1cqi; flex-shrink: 0; }
+    .funnel-step { background: var(--bg-2); padding: 1cqi 0.5cqi; text-align: center; }
+    .funnel-step.broken { background: var(--navy-deep); }
+    .funnel-step-label { font-size: 0.9cqi; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 0.3cqi; }
+    .funnel-step.broken .funnel-step-label { color: rgba(255,255,255,0.4); }
+    .funnel-step-name { font-size: 1.3cqi; font-weight: 500; color: var(--ink); }
+    .funnel-step.broken .funnel-step-name { color: white; }
+
+    /* NS metric block */
+    .ns-block { background: var(--navy-deep); padding: 1.5cqi 2cqi; display: grid; grid-template-columns: 1.5fr 1fr; gap: 2cqi; align-items: center; margin-bottom: 1cqi; flex-shrink: 0; }
+    .ns-label { font-size: 1cqi; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 0.5cqi; }
+    .ns-name { font-family: var(--serif); font-size: 1.6cqi; color: white; line-height: 1.3; }
+    .ns-target { font-family: var(--serif); font-size: 3.2cqi; color: var(--gold-light); line-height: 1; margin-bottom: 0.4cqi; }
+    .ns-def { font-size: 1.2cqi; color: rgba(255,255,255,0.45); font-weight: 300; line-height: 1.4; }
+
+    .stat-val { font-family: var(--serif); font-size: 2.4cqi; color: var(--navy); line-height: 1; margin-bottom: 0.4cqi; }
+
+    /* Feature table */
+    .ftable { width: 100%; border-collapse: collapse; flex: 1; min-height: 0; }
+    .ftable th { font-size: 1cqi; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); text-align: left; padding: 0.6cqi 0.8cqi; border-bottom: 2px solid var(--navy-deep); white-space: nowrap; }
+    .ftable td { padding: 0.7cqi 0.8cqi; border-bottom: 1px solid var(--rule); font-size: 1.25cqi; color: var(--ink-2); font-weight: 300; line-height: 1.4; vertical-align: top; }
+    .ftable tr:last-child td { border-bottom: none; }
+    .ftable td:nth-child(2) { font-weight: 500; color: var(--ink); }
+    .rank { display: inline-flex; align-items: center; justify-content: center; width: 2cqi; height: 2cqi; border-radius: 50%; font-size: 1cqi; font-weight: 700; }
+    .rank-1 { background: var(--navy-deep); color: white; }
+    .rank-2, .rank-3 { background: var(--bg-2); color: var(--ink-3); border: 1px solid var(--rule); }
+    .hi { color: var(--navy); font-weight: 600; }
+
+    /* Hypothesis box */
+    .hyp-box { background: var(--bg-2); border-left: 0.4cqi solid var(--navy); padding: 1cqi 1.5cqi; margin-bottom: 1cqi; flex-shrink: 0; }
+    .hyp-label { font-size: 1cqi; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); margin-bottom: 0.4cqi; }
+    .hyp-text { font-family: var(--serif); font-size: 1.5cqi; color: var(--ink); font-style: italic; line-height: 1.5; }
+
+    /* Bullet list */
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 0.5cqi; overflow: hidden; }
+    .bullet-list li { font-size: 1.2cqi; color: var(--ink-2); font-weight: 300; line-height: 1.4; display: flex; gap: 0.5cqi; }
+    .bullet-list.on-dark li { color: rgba(255,255,255,0.65); }
+    .bullet-list li::before { content: '->'; color: var(--gold); font-size: 0.9cqi; flex-shrink: 0; font-weight: 600; padding-top: 0.1em; }
+
+    /* Tradeoff tensions */
+    .tradeoff-tension { display: flex; align-items: center; gap: 0.8cqi; margin-bottom: 0.6cqi; flex-shrink: 0; flex-wrap: wrap; }
+    .t-a { font-size: 1.1cqi; padding: 0.3cqi 0.7cqi; background: #e8eff6; color: var(--navy); font-weight: 500; border-radius: 2px; }
+    .t-b { font-size: 1.1cqi; padding: 0.3cqi 0.7cqi; background: #fde8d8; color: var(--gold); font-weight: 500; border-radius: 2px; }
+    .t-vs { font-size: 1cqi; color: var(--ink-3); font-weight: 600; }
+
+    /* Watermark */
+    .slide-watermark { position: absolute; right: 4%; bottom: 4%; font-family: var(--serif); font-size: 12cqi; color: rgba(0,0,0,0.04); line-height: 1; font-weight: 700; pointer-events: none; }
+    .slide-watermark.on-dark { color: rgba(255,255,255,0.04); }
+
+    /* ── CONTROLS ── */
+    .deck-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 1rem; }
+    .deck-arrows { display: flex; gap: 0.5rem; }
+    .deck-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--rule); background: var(--white); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; color: var(--ink-2); transition: background 0.15s, border-color 0.15s, color 0.15s; }
+    .deck-btn:hover { background: var(--navy); border-color: var(--navy); color: white; }
+    .deck-btn:disabled { opacity: 0.3; cursor: default; }
+    .deck-btn:disabled:hover { background: var(--white); border-color: var(--rule); color: var(--ink-2); }
+    .deck-counter { font-size: 0.78rem; color: var(--ink-3); }
+    .deck-counter strong { color: var(--navy); font-weight: 600; }
+    .deck-dots { display: flex; gap: 6px; align-items: center; }
+    .deck-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .deck-dot.active { background: var(--navy); transform: scale(1.3); }
+
+    /* ── FOOTER ── */
+    .page-footer { max-width: 860px; margin: 0 auto; padding: 3rem 2rem; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-left p { font-size: 0.82rem; color: var(--ink-3); margin-bottom: 0.2rem; }
+    .footer-left a { color: var(--navy); text-decoration: none; font-size: 0.82rem; }
+    .footer-right { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; }
+    .footer-right:hover { color: var(--navy); }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<nav class="top-nav">
+  <div class="top-nav-left">
+    <a href="../index.html">Reiko Tan</a>
+    <span>/</span>
+    <span>Cash Wallet Exercise</span>
+  </div>
+  <a href="../index.html" class="top-nav-right">Back to Portfolio</a>
+</nav>
+
+<div class="page">
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-eyebrow">Senior PM Whiteboard Exercise</div>
+    <h1>Cash Wallet:<br><em>Activation and Growth</em></h1>
+    <p class="intro-lede">A strategy to close the gap between KYC approval and first deposit — and build a wallet investors choose to keep money in. Nine slides covering diagnosis, metrics, features, execution, and trade-offs.</p>
+    <div class="intro-meta">
+      <div class="intro-meta-item">
+        <div class="intro-meta-label">Domain</div>
+        <div class="intro-meta-val">Alternative Assets · Singapore</div>
+      </div>
+      <div class="intro-meta-item">
+        <div class="intro-meta-label">Regulatory context</div>
+        <div class="intro-meta-val">MAS-licensed · SGD / PayNow</div>
+      </div>
+      <div class="intro-meta-item">
+        <div class="intro-meta-label">Author</div>
+        <div class="intro-meta-val">Reiko Tan</div>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;">
+      <a href="case-study.html" style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.82rem;font-weight:500;color:var(--navy);text-decoration:none;border:1px solid var(--navy);padding:0.5rem 1.1rem;border-radius:2px;letter-spacing:0.04em;transition:background 0.15s,color 0.15s;" onmouseover="this.style.background='#1a3c5e';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='#1a3c5e'">View full case study →</a>
+    </div>
+  </div>
+
+  <!-- DECK -->
+  <div class="deck-section">
+    <div class="deck-label">
+      <span>Presentation Deck · 9 Slides</span>
+      <span class="deck-label-hint">← → or click arrows to navigate</span>
+    </div>
+
+    <div class="deck-frame" id="deckFrame">
+      <div class="deck-slides" id="deckSlides">
+
+        <!-- SLIDE 1: COVER -->
+        <div class="slide s-cover">
+          <div style="font-size:1.4cqi;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-light);margin-bottom:1.5cqi;">Senior PM Whiteboard Exercise</div>
+          <h1 class="cover-h">Cash Wallet:<br><em>Activation and Growth</em></h1>
+          <p style="font-size:1.6cqi;font-weight:300;color:rgba(255,255,255,0.7);max-width:60%;line-height:1.5;margin-bottom:2cqi;">A strategy to close the gap between KYC approval and first deposit — and build a wallet investors choose to keep money in.</p>
+          <div class="cover-pills">
+            <span class="cover-pill gold">Alternative Assets</span>
+            <span class="cover-pill">MAS-licensed</span>
+            <span class="cover-pill">SGD · PayNow</span>
+            <span class="cover-pill">Singapore</span>
+          </div>
+          <div class="cover-num">01</div>
+        </div>
+
+        <!-- SLIDE 2: DIAGNOSIS -->
+        <div class="slide s-light">
+          <div class="slide-tag">02 · Problem Diagnosis</div>
+          <div class="slide-h">Why do verified investors fail to <em>deposit</em>?</div>
+          <div class="slide-body">Three hypotheses — two internal, one external. Each points to a different intervention.</div>
+          <div class="cols-3">
+            <div class="card">
+              <div class="card-tag tag-internal">Internal · UX</div>
+              <div class="card-title">No trigger at the highest-intent moment</div>
+              <div class="card-body">KYC approval is peak intent. The current flow delivers no contextual prompt, no deal recommendation, no next step. Momentum evaporates before the user sees a deposit CTA. Friction here is the absence of a flow, not a flaw in one.</div>
+            </div>
+            <div class="card">
+              <div class="card-tag tag-internal">Internal · Process</div>
+              <div class="card-title">Deposit execution breaks at the moment of action</div>
+              <div class="card-body">Manual transfer to a static account + email screenshot as proof. Off-platform, signals operational immaturity, confirmation black hole up to 5 working days. For a first deposit, silence reads as failure.</div>
+            </div>
+            <div class="card">
+              <div class="card-tag tag-external">External · Trust</div>
+              <div class="card-title">Commitment anxiety on an unfamiliar platform</div>
+              <div class="card-body">Accredited investors are deliberate, not unsophisticated. Depositing requires trust in a withdrawal process they haven't tested. Without upfront withdrawal legibility, inaction is rational — not friction.</div>
+            </div>
+          </div>
+          <div class="slide-watermark">02</div>
+        </div>
+
+        <!-- SLIDE 3: FAILURE ZONES -->
+        <div class="slide s-white">
+          <div class="slide-tag">03 · The Two Failure Zones</div>
+          <div class="slide-h">The funnel breaks in <em>two specific places</em></div>
+          <div class="slide-body">Both zones are fixable with targeted product changes — no new payment rails required.</div>
+          <div class="funnel">
+            <div class="funnel-step"><div class="funnel-step-label">Step 1</div><div class="funnel-step-name">Sign Up</div></div>
+            <div class="funnel-step"><div class="funnel-step-label">Step 2</div><div class="funnel-step-name">KYC</div></div>
+            <div class="funnel-step broken"><div class="funnel-step-label">Dead Zone</div><div class="funnel-step-name">Post-KYC</div></div>
+            <div class="funnel-step broken"><div class="funnel-step-label">Broken Loop</div><div class="funnel-step-name">Deposit</div></div>
+            <div class="funnel-step"><div class="funnel-step-label">Goal</div><div class="funnel-step-name">Funded</div></div>
+          </div>
+          <div class="cols-2" style="flex:1;min-height:0">
+            <div class="card" style="border-left: 3px solid var(--navy);">
+              <div class="card-tag tag-muted">Zone 01</div>
+              <div class="card-title">Post-KYC Dead Zone</div>
+              <div class="card-body">After approval, users enter a generic product state — no deal recommendation, no yield signal, no deposit prompt. The highest-intent moment is wasted. Users who don't act within 48 hours rarely return.</div>
+            </div>
+            <div class="card" style="border-left: 3px solid var(--gold);">
+              <div class="card-tag tag-muted">Zone 02</div>
+              <div class="card-title">Deposit Execution Loop</div>
+              <div class="card-body">At the moment of intent, users are pushed off-platform to internet banking, must type static details, then email a screenshot. The email step has no regulatory basis — it exists because automated reconciliation doesn't.</div>
+            </div>
+          </div>
+          <div class="slide-watermark">03</div>
+        </div>
+
+        <!-- SLIDE 4: METRICS -->
+        <div class="slide s-light">
+          <div class="slide-tag">04 · Metrics</div>
+          <div class="slide-h">One North Star. <em>Two operational signals.</em></div>
+          <div class="ns-block">
+            <div>
+              <div class="ns-label">North Star</div>
+              <div class="ns-name">% of KYC-verified investors who deposit within 30 days of approval</div>
+            </div>
+            <div>
+              <div class="ns-target">20% → 40%</div>
+              <div class="ns-def">Paired with AUC growth as a lagging health check. If conversion rises but AUC is flat, we are activating low-intent users — not genuine investors.</div>
+            </div>
+          </div>
+          <div class="cols-2" style="flex:1;min-height:0">
+            <div class="card">
+              <div class="card-tag tag-muted">Operational Metric 1</div>
+              <div class="card-title">90th percentile deposit confirmation time by rail</div>
+              <div class="big-stat" style="font-size:clamp(1rem,2.5vw,1.6rem); color:var(--navy);">&lt;2 hrs PayNow · &lt;2 days bank</div>
+              <div class="card-body">90th percentile, not median. Median masks the long-tail cases that erode trust most — the investor who waits 5 days and calls their RM is the one who never deposits again.</div>
+            </div>
+            <div class="card">
+              <div class="card-tag tag-muted">Operational Metric 2</div>
+              <div class="card-title">30-day wallet login rate among first-time depositors</div>
+              <div class="big-stat" style="font-size:clamp(1rem,2.5vw,1.6rem); color:var(--navy);">25% → 50%</div>
+              <div class="card-body">Leading indicator of genuine engagement, faster to measure than repeat deposit rate. Detects "fund and disappear" behaviour early enough to act within the sprint.</div>
+            </div>
+          </div>
+          <div class="slide-watermark">04</div>
+        </div>
+
+        <!-- SLIDE 5: FEATURES -->
+        <div class="slide s-white">
+          <div class="slide-tag">05 · Feature Prioritisation</div>
+          <div class="slide-h">Three features. <em>One unlocks the rest.</em></div>
+          <div class="slide-body">Ranked by impact on Time to First Deposit. Automated reconciliation is the foundation — without it, the others are cosmetic.</div>
+          <table class="ftable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Feature</th>
+                <th>Impact</th>
+                <th>Effort</th>
+                <th>Rationale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="rank rank-1">1</span></td>
+                <td>Automated PayNow reconciliation + in-app deposit</td>
+                <td><span class="hi">High</span></td>
+                <td>High</td>
+                <td>Eliminates proof email, kills the 5-day wait, keeps users on-platform at peak abandonment. Non-negotiable for Phase 1 despite the effort.</td>
+              </tr>
+              <tr>
+                <td><span class="rank rank-2">2</span></td>
+                <td>Contextual post-KYC activation flow</td>
+                <td><span class="hi">High</span></td>
+                <td>Medium</td>
+                <td>Converts KYC approval momentum into deposit intent. Deal recommendation, yield signal, withdrawal legibility — primarily design and content. No new infrastructure.</td>
+              </tr>
+              <tr>
+                <td><span class="rank rank-3">3</span></td>
+                <td>Real-time deposit status tracking</td>
+                <td>Medium</td>
+                <td>Medium</td>
+                <td>Closes the confirmation black hole. Push notification at each state change. Also eliminates the CS ticket volume from users asking if their transfer arrived.</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="slide-watermark">05</div>
+        </div>
+
+        <!-- SLIDE 6: MVP -->
+        <div class="slide s-light">
+          <div class="slide-tag">06 · Top Feature MVP</div>
+          <div class="slide-h">Automated reconciliation: <em>scope and hypothesis</em></div>
+          <div class="hyp-box">
+            <div class="hyp-label">Hypothesis</div>
+            <div class="hyp-text">Replacing manual proof-of-payment with automated reconciliation via unique per-transaction reference codes will increase KYC-to-first-deposit conversion by 50% within 30 days of launch — measured against a holdback group on the existing flow.</div>
+          </div>
+          <div class="cols-2" style="flex:1;min-height:0">
+            <div class="card">
+              <div class="card-tag tag-muted">In MVP</div>
+              <ul class="bullet-list">
+                <li>Unique reference code per transaction (PayNow + bank transfer)</li>
+                <li>Automated matching of inbound transfers to accounts</li>
+                <li>In-app deposit initiation with QR code and pre-filled amount</li>
+                <li>Four-state status tracker with push notifications</li>
+                <li>Ops alert for unmatched transfers</li>
+                <li>AML/CFT monitoring before wallet crediting</li>
+              </ul>
+            </div>
+            <div class="card navy-card">
+              <div class="card-tag tag-light">Out of MVP</div>
+              <ul class="bullet-list on-dark">
+                <li>Open banking API (requires MAS consultation)</li>
+                <li>Multi-currency FX conversion</li>
+                <li>Channel personalisation in activation flow</li>
+                <li>Wallet health dashboard</li>
+                <li>Deal-triggered funding nudges</li>
+                <li>Full withdrawal flow redesign</li>
+              </ul>
+            </div>
+          </div>
+          <div class="slide-watermark">06</div>
+        </div>
+
+        <!-- SLIDE 7: EXECUTION -->
+        <div class="slide s-white">
+          <div class="slide-tag">07 · Execution Plan</div>
+          <div class="slide-h">Three phases. <em>Measurable at each gate.</em></div>
+          <div class="cols-3" style="flex:1;min-height:0">
+            <div class="card">
+              <div class="card-tag tag-muted">Phase 1 · Pre-build</div>
+              <div class="card-title">Validate and unblock</div>
+              <ul class="bullet-list" style="margin-top:0.5em">
+                <li>Confirm DBS PayNow unique reference code support</li>
+                <li>Compliance sign-off on automated reconciliation design</li>
+                <li>Legal review of MMF yield messaging</li>
+                <li>Baseline funnel data by channel and persona</li>
+              </ul>
+            </div>
+            <div class="card">
+              <div class="card-tag tag-muted">Phase 2 · Controlled Rollout</div>
+              <div class="card-title">10% of new KYC-verified investors</div>
+              <ul class="bullet-list" style="margin-top:0.5em">
+                <li>A/B against existing flow (holdback group)</li>
+                <li>Monitor reconciliation rate, confirmation time, CS tickets</li>
+                <li>Gate: 95%+ auto-reconciliation, no AML incidents</li>
+                <li>5-10 user interviews on deposit experience</li>
+              </ul>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--navy);">
+              <div class="card-tag tag-muted">Phase 3 · Full Rollout · Success Criteria</div>
+              <div class="card-title">100% of users</div>
+              <ul class="bullet-list" style="margin-top:0.5em">
+                <li>KYC-to-deposit conversion reaches 30%+ within 30 days</li>
+                <li>CS deposit query tickets down 50%+</li>
+                <li>90th pct PayNow confirmation under 2 hours</li>
+                <li>No increase in AML flag rate vs baseline</li>
+              </ul>
+            </div>
+          </div>
+          <div class="slide-watermark">07</div>
+        </div>
+
+        <!-- SLIDE 8: CROSS-FUNC -->
+        <div class="slide s-light">
+          <div class="slide-tag">08 · Cross-Functional Collaboration</div>
+          <div class="slide-h">Three teams. <em>Three concrete asks.</em></div>
+          <div class="slide-body">Cross-functional plans fail when they stay at "I would collaborate closely with." Here is what I would actually do.</div>
+          <div class="cols-3" style="flex:1;min-height:0">
+            <div class="card">
+              <div class="card-tag tag-muted">Growth and Marketing</div>
+              <div class="card-title">Co-own the re-engagement sequence</div>
+              <div class="card-body">Work with Growth to define re-engagement trigger logic — 7 days post-KYC, no deposit, deal matched to profile. Share the North Star as a joint goal. Agree on attribution definitions before launch, not after the metric ownership argument starts.</div>
+            </div>
+            <div class="card">
+              <div class="card-tag tag-muted">Compliance</div>
+              <div class="card-title">Bring them in at design, not at review</div>
+              <div class="card-body">Involve Compliance in the reconciliation design sprint as a contributor to exception handling — not a gate at the end. Pre-agree the MMF yield messaging framework before design begins. Avoids a late-stage redesign.</div>
+            </div>
+            <div class="card">
+              <div class="card-tag tag-muted">Operations and Customer Success</div>
+              <div class="card-title">Treat ops readiness as a product requirement</div>
+              <div class="card-body">The ops team owns the current manual proof email workflow — automating it removes their control point. Involve the ops lead in requirements so exception handling is designed to their workflow, not thrown over the wall. Success criterion: CS deposit tickets down 60% in 60 days.</div>
+            </div>
+          </div>
+          <div class="slide-watermark">08</div>
+        </div>
+
+        <!-- SLIDE 9: TRADEOFFS -->
+        <div class="slide s-white">
+          <div class="slide-tag">09 · Trade-offs</div>
+          <div class="slide-h">Two tensions worth <em>naming explicitly</em></div>
+          <div class="slide-body">Trade-offs are real when both sides have legitimate merit. These are the two I would want the team to consciously decide on.</div>
+          <div class="cols-2" style="flex:1;min-height:0">
+            <div class="card">
+              <div class="card-tag tag-muted">Trade-off 01</div>
+              <div class="card-title">Speed to market vs compliance certainty</div>
+              <div class="tradeoff-tension" style="margin-top:0.5em">
+                <span class="t-a">Ship fast, patch compliance later</span>
+                <span class="t-vs">vs</span>
+                <span class="t-b">Full sign-off before launch</span>
+              </div>
+              <div class="card-body">Automated reconciliation touches AML/CFT — a domain where post-launch fixes are regulatory incidents, not bugs. My position: take the extra two weeks for pre-launch compliance sign-off. The downside of being wrong is not recoverable.</div>
+            </div>
+            <div class="card">
+              <div class="card-tag tag-muted">Trade-off 02</div>
+              <div class="card-title">Activation volume vs activation quality</div>
+              <div class="tradeoff-tension" style="margin-top:0.5em">
+                <span class="t-a">Maximise first deposit rate</span>
+                <span class="t-vs">vs</span>
+                <span class="t-b">Only activate genuine investors</span>
+              </div>
+              <div class="card-body">A strong re-engagement sequence can inflate the North Star with low-intent users who deposit once and disappear. This is why conversion is paired with AUC growth — if conversion rises but AUC is flat, we are manufacturing activations, not building a financial home.</div>
+            </div>
+          </div>
+          <div class="slide-watermark">09</div>
+        </div>
+
+      </div><!-- end deck-slides -->
+    </div><!-- end deck-frame -->
+
+    <!-- CONTROLS -->
+    <div class="deck-controls">
+      <div class="deck-arrows">
+        <button class="deck-btn" id="btnPrev" onclick="changeSlide(-1)" disabled>←</button>
+        <button class="deck-btn" id="btnNext" onclick="changeSlide(1)">→</button>
+      </div>
+      <div class="deck-dots" id="deckDots"></div>
+      <div class="deck-counter"><strong id="slideNum">1</strong> / 9</div>
+    </div>
+
+  </div><!-- end deck-section -->
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="footer-left">
+      <p>Reiko Tan &nbsp;·&nbsp; <a href="mailto:reiko98@live.com.sg">reiko98@live.com.sg</a></p>
+      <p>PM drawn to complex product problems between technology, design, and human behavior.</p>
+    </div>
+    <a href="../index.html" class="footer-right">Back to Portfolio</a>
+  </div>
+
+</div><!-- end page -->
+
+<script>
+  let current = 0;
+  const total = 9;
+  const slidesEl = document.getElementById('deckSlides');
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+  const slideNum = document.getElementById('slideNum');
+  const dotsEl = document.getElementById('deckDots');
+
+  // Build dots
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'deck-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(n) {
+    current = Math.max(0, Math.min(total - 1, n));
+    slidesEl.style.transform = `translateX(-${current * 100}%)`;
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === total - 1;
+    slideNum.textContent = current + 1;
+    document.querySelectorAll('.deck-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function changeSlide(dir) { goTo(current + dir); }
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+  });
+
+  // Touch/swipe
+  let touchStart = null;
+  const frame = document.getElementById('deckFrame');
+  frame.addEventListener('touchstart', e => { touchStart = e.touches[0].clientX; });
+  frame.addEventListener('touchend', e => {
+    if (touchStart === null) return;
+    const diff = touchStart - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) changeSlide(diff > 0 ? 1 : -1);
+    touchStart = null;
+  });
+
+  // Page scroll progress
+  const fill = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    fill.style.width = (d.scrollTop / (d.scrollHeight - d.clientHeight) * 100) + '%';
+  });
+</script>
+
+</body>
+</html>
