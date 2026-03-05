@@ -913,50 +913,8 @@
       transition: width 0.1s linear;
     }
 
-    /* ── INLINE ASIDE ── */
-    .aside-row {
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .aside-box {
-      border: 1px solid var(--rule);
-      padding: 1.25rem;
-      position: sticky;
-      top: 72px;
-    }
-
-    .aside-box-label {
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      margin-bottom: 0.75rem;
-    }
-
-    .aside-box ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .aside-box li a {
-      font-size: 0.8rem;
-      color: var(--ink-3);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .aside-box li a:hover { color: var(--ink); }
-    .aside-box li a.active { color: var(--accent); font-weight: 400; }
-
     @media (max-width: 700px) {
-      .two-col, .two-col-wide, .aside-row { grid-template-columns: 1fr; }
-      .aside-box { display: none; }
+      .two-col, .two-col-wide { grid-template-columns: 1fr; }
       .wireframe-grid { grid-template-columns: 1fr; }
       .hero-stats { grid-template-columns: 1fr; }
       .stat { border-right: none; border-bottom: 1px solid var(--rule); }
@@ -964,20 +922,90 @@
       .zones, .personas, .solutions, .constraints { grid-template-columns: 1fr; }
     }
 
-  /* ── SECTION NAV ── */
-  .section-nav {
+  /* ── SECTION NAV (sidebar on desktop, sheet on mobile/tablet) ── */
+  .sect-sidebar {
+    display: none;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2rem;
+    width: 140px;
+    z-index: 50;
+  }
+  .sect-sidebar-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 0.75rem;
+  }
+  .sect-sidebar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .sect-sidebar ul li a {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    text-decoration: none;
+    transition: color 0.15s;
+    display: block;
+    padding: 2px 0;
+  }
+  .sect-sidebar ul li a:hover { color: var(--ink); }
+  .sect-sidebar ul li a.active { color: var(--accent); font-weight: 400; }
+  .sect-top-link {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.68rem;
+    color: var(--ink-3);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 0.15s;
+  }
+  .sect-top-link:hover { color: var(--accent); }
+  @media (min-width: 1100px) {
+    .sect-sidebar { display: block; }
+  }
+  .sect-fab-group {
     position: fixed;
     bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 24px;
     z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
   }
-  .section-nav-inner { position: relative; }
-  .section-nav-toggle {
+  .sect-top-fab {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    color: var(--ink-3);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    font-family: inherit;
+    transition: color 0.15s;
+  }
+  .sect-top-fab.visible { display: flex; }
+  .sect-sections-fab {
     background: var(--accent);
     color: white;
     border: none;
-    padding: 10px 22px;
+    padding: 10px 18px;
     border-radius: 100px;
     font-size: 0.72rem;
     font-weight: 500;
@@ -986,42 +1014,68 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    white-space: nowrap;
+    gap: 7px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
     font-family: inherit;
   }
-  .section-nav-toggle .arrow { font-size: 0.6rem; transition: transform 0.2s; display: inline-block; }
-  .section-nav-toggle.open .arrow { transform: rotate(180deg); }
-  .section-nav-menu {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 12px;
-    padding: 8px;
-    min-width: 180px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  @media (min-width: 1100px) {
+    .sect-fab-group { display: none; }
+  }
+  .sect-backdrop {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 9997;
+  }
+  .sect-backdrop.open { display: block; }
+  .sect-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    padding: 1.5rem 1.5rem 2.5rem;
+    z-index: 9998;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .sect-sheet.open { transform: translateY(0); }
+  .sect-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--rule);
+    border-radius: 2px;
+    margin: 0 auto 1.25rem;
+  }
+  .sect-sheet-title {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 1rem;
+  }
+  .sect-sheet ul {
+    list-style: none;
+    display: flex;
     flex-direction: column;
-    gap: 2px;
   }
-  .section-nav-menu.open { display: flex; }
-  .section-nav-menu a {
-    font-size: 0.82rem;
-    color: #444;
+  .sect-sheet ul li a {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--ink);
     text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    white-space: nowrap;
-    transition: background 0.15s, color 0.15s;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+    transition: color 0.15s;
   }
-  .section-nav-menu a:hover, .section-nav-menu a.active {
-    background: var(--bg-2);
-    color: var(--accent);
-  }
+  .sect-sheet ul li:last-child a { border-bottom: none; }
+  .sect-sheet ul li a:hover { color: var(--accent); }
+  .sect-sheet ul li a.active { color: var(--accent); font-weight: 500; }
 
 </style>
 </head>
@@ -1041,23 +1095,41 @@
   </div>
 </nav>
 
-<!-- Mobile floating nav -->
-<div class="section-nav" id="sectionNav">
-  <div class="section-nav-inner">
-    <div class="section-nav-menu" id="navMenu">
-      <a href="#overview" onclick="closeNav()">Overview</a>
-      <a href="#context" onclick="closeNav()">Context</a>
-      <a href="#users" onclick="closeNav()">Users</a>
-      <a href="#solution" onclick="closeNav()">Solution</a>
-      <a href="#ux" onclick="closeNav()">UX Design</a>
-      <a href="#metrics" onclick="closeNav()">Metrics</a>
-      <a href="#learnings" onclick="closeNav()">Learnings</a>
-      <a href="#signals" onclick="closeNav()">Signals</a>
-    </div>
-    <button class="section-nav-toggle" id="navToggle" onclick="toggleNav()">
-      Jump to section <span class="arrow">▲</span>
-    </button>
-  </div>
+<!-- Section sidebar (desktop ≥1100px) -->
+<div class="sect-sidebar" id="sectSidebar">
+  <p class="sect-sidebar-label">Sections</p>
+  <ul>
+    <li><a href="#overview">01 Overview</a></li>
+    <li><a href="#context">02 Context</a></li>
+    <li><a href="#users">03 Users</a></li>
+    <li><a href="#solution">04 Solution</a></li>
+    <li><a href="#ux">05 UX Design</a></li>
+    <li><a href="#metrics">06 Metrics</a></li>
+    <li><a href="#learnings">07 Learnings</a></li>
+    <li><a href="#signals">08 Signals</a></li>
+  </ul>
+  <button class="sect-top-link" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593; Top</button>
+</div>
+
+<!-- FAB + sheet (mobile/tablet <1100px) -->
+<div class="sect-fab-group" id="sectFabGroup">
+  <button class="sect-top-fab" id="sectTopFab" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+  <button class="sect-sections-fab" id="sectFab" onclick="toggleSheet()">&#9776; Sections</button>
+</div>
+<div class="sect-backdrop" id="sectBackdrop" onclick="closeSheet()"></div>
+<div class="sect-sheet" id="sectSheet">
+  <div class="sect-sheet-handle"></div>
+  <p class="sect-sheet-title">Sections</p>
+  <ul>
+    <li><a href="#overview" onclick="closeSheet()">01 · Overview</a></li>
+    <li><a href="#context" onclick="closeSheet()">02 · Context</a></li>
+    <li><a href="#users" onclick="closeSheet()">03 · Users</a></li>
+    <li><a href="#solution" onclick="closeSheet()">04 · Solution</a></li>
+    <li><a href="#ux" onclick="closeSheet()">05 · UX Design</a></li>
+    <li><a href="#metrics" onclick="closeSheet()">06 · Metrics</a></li>
+    <li><a href="#learnings" onclick="closeSheet()">07 · Learnings</a></li>
+    <li><a href="#signals" onclick="closeSheet()">08 · Signals</a></li>
+  </ul>
 </div>
 
 <div class="page">
@@ -1582,62 +1654,37 @@
 </div>
 
 <script>
-  // Reading progress
+  // Reading progress + back-to-top fab
   const bar = document.getElementById('progress');
+  const topFab = document.getElementById('sectTopFab');
   window.addEventListener('scroll', () => {
     const doc = document.documentElement;
-    const scrolled = doc.scrollTop;
-    const max = doc.scrollHeight - doc.clientHeight;
-    bar.style.width = (scrolled / max * 100) + '%';
+    bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+    if (topFab) topFab.classList.toggle('visible', window.scrollY > 300);
   });
 
-  // Active nav link
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.aside-box a');
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { rootMargin: '-30% 0px -60% 0px' });
-
-  sections.forEach(s => observer.observe(s));
-  function toggleNav() {
-    const menu = document.getElementById('navMenu');
-    const toggle = document.getElementById('navToggle');
-    menu.classList.toggle('open');
-    toggle.classList.toggle('open');
+  // Sheet open/close
+  function toggleSheet() {
+    document.getElementById('sectSheet').classList.toggle('open');
+    document.getElementById('sectBackdrop').classList.toggle('open');
+  }
+  function closeSheet() {
+    document.getElementById('sectSheet').classList.remove('open');
+    document.getElementById('sectBackdrop').classList.remove('open');
   }
 
-  function closeNav() {
-    document.getElementById('navMenu').classList.remove('open');
-    document.getElementById('navToggle').classList.remove('open');
-  }
-
-  document.addEventListener('click', (e) => {
-    const nav = document.getElementById('sectionNav');
-    if (nav && !nav.contains(e.target)) closeNav();
-  });
-
-  const pageSections = document.querySelectorAll('section[id]');
-  const allNavLinks = document.querySelectorAll('.sidebar-nav a, .section-nav-menu a');
-
+  // Active section highlighting (sidebar + sheet)
+  const allSectLinks = document.querySelectorAll('.sect-sidebar a[href^="#"], .sect-sheet a[href^="#"]');
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        allNavLinks.forEach(link => {
+        allSectLinks.forEach(link => {
           link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
         });
       }
     });
   }, { rootMargin: '-30% 0px -60% 0px' });
-
-  pageSections.forEach(s => sectionObserver.observe(s));
-
+  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
 </script>
 
 </body>

@@ -140,20 +140,90 @@
     .meta-item { border-right:none; }
   }
 
-  /* ── SECTION NAV ── */
-  .section-nav {
+  /* ── SECTION NAV (sidebar on desktop, sheet on mobile/tablet) ── */
+  .sect-sidebar {
+    display: none;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 2rem;
+    width: 140px;
+    z-index: 50;
+  }
+  .sect-sidebar-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 0.75rem;
+  }
+  .sect-sidebar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .sect-sidebar ul li a {
+    font-size: 0.78rem;
+    color: var(--text-3);
+    text-decoration: none;
+    transition: color 0.15s;
+    display: block;
+    padding: 2px 0;
+  }
+  .sect-sidebar ul li a:hover { color: var(--text); }
+  .sect-sidebar ul li a.active { color: var(--green); font-weight: 400; }
+  .sect-top-link {
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.68rem;
+    color: var(--text-3);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 0.15s;
+  }
+  .sect-top-link:hover { color: var(--green); }
+  @media (min-width: 1100px) {
+    .sect-sidebar { display: block; }
+  }
+  .sect-fab-group {
     position: fixed;
     bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 24px;
     z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
   }
-  .section-nav-inner { position: relative; }
-  .section-nav-toggle {
+  .sect-top-fab {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    color: var(--text-3);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    font-family: inherit;
+    transition: color 0.15s;
+  }
+  .sect-top-fab.visible { display: flex; }
+  .sect-sections-fab {
     background: var(--green);
     color: white;
     border: none;
-    padding: 10px 22px;
+    padding: 10px 18px;
     border-radius: 100px;
     font-size: 0.72rem;
     font-weight: 500;
@@ -162,62 +232,103 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    white-space: nowrap;
+    gap: 7px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
     font-family: inherit;
   }
-  .section-nav-toggle .arrow { font-size: 0.6rem; transition: transform 0.2s; display: inline-block; }
-  .section-nav-toggle.open .arrow { transform: rotate(180deg); }
-  .section-nav-menu {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 12px;
-    padding: 8px;
-    min-width: 180px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  @media (min-width: 1100px) {
+    .sect-fab-group { display: none; }
+  }
+  .sect-backdrop {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 9997;
+  }
+  .sect-backdrop.open { display: block; }
+  .sect-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    padding: 1.5rem 1.5rem 2.5rem;
+    z-index: 9998;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .sect-sheet.open { transform: translateY(0); }
+  .sect-sheet-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 1.25rem;
+  }
+  .sect-sheet-title {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 1rem;
+  }
+  .sect-sheet ul {
+    list-style: none;
+    display: flex;
     flex-direction: column;
-    gap: 2px;
   }
-  .section-nav-menu.open { display: flex; }
-  .section-nav-menu a {
-    font-size: 0.82rem;
-    color: #444;
+  .sect-sheet ul li a {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text);
     text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    white-space: nowrap;
-    transition: background 0.15s, color 0.15s;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s;
   }
-  .section-nav-menu a:hover, .section-nav-menu a.active {
-    background: var(--green-pale);
-    color: var(--green);
-  }
+  .sect-sheet ul li:last-child a { border-bottom: none; }
+  .sect-sheet ul li a:hover { color: var(--green); }
+  .sect-sheet ul li a.active { color: var(--green); font-weight: 500; }
 
 </style>
 </head>
 <body>
 
 
-<!-- Mobile floating nav -->
-<div class="section-nav" id="sectionNav">
-  <div class="section-nav-inner">
-    <div class="section-nav-menu" id="navMenu">
-      <a href="#problem" onclick="closeNav()">Problem</a>
-      <a href="#decisions" onclick="closeNav()">Decisions</a>
-      <a href="#solution" onclick="closeNav()">Solution</a>
-      <a href="#metrics" onclick="closeNav()">Metrics</a>
-      <a href="#tradeoffs" onclick="closeNav()">Tradeoffs</a>
-    </div>
-    <button class="section-nav-toggle" id="navToggle" onclick="toggleNav()">
-      Jump to section <span class="arrow">▲</span>
-    </button>
-  </div>
+<!-- Section sidebar (desktop ≥1100px) -->
+<div class="sect-sidebar" id="sectSidebar">
+  <p class="sect-sidebar-label">Sections</p>
+  <ul>
+    <li><a href="#problem">01 Problem</a></li>
+    <li><a href="#decisions">02 Decisions</a></li>
+    <li><a href="#solution">03 Solution</a></li>
+    <li><a href="#metrics">04 Metrics</a></li>
+    <li><a href="#tradeoffs">05 Tradeoffs</a></li>
+  </ul>
+  <button class="sect-top-link" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593; Top</button>
+</div>
+
+<!-- FAB + sheet (mobile/tablet <1100px) -->
+<div class="sect-fab-group" id="sectFabGroup">
+  <button class="sect-top-fab" id="sectTopFab" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+  <button class="sect-sections-fab" id="sectFab" onclick="toggleSheet()">&#9776; Sections</button>
+</div>
+<div class="sect-backdrop" id="sectBackdrop" onclick="closeSheet()"></div>
+<div class="sect-sheet" id="sectSheet">
+  <div class="sect-sheet-handle"></div>
+  <p class="sect-sheet-title">Sections</p>
+  <ul>
+    <li><a href="#problem" onclick="closeSheet()">01 · Problem</a></li>
+    <li><a href="#decisions" onclick="closeSheet()">02 · Decisions</a></li>
+    <li><a href="#solution" onclick="closeSheet()">03 · Solution</a></li>
+    <li><a href="#metrics" onclick="closeSheet()">04 · Metrics</a></li>
+    <li><a href="#tradeoffs" onclick="closeSheet()">05 · Tradeoffs</a></li>
+  </ul>
 </div>
 
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
@@ -251,9 +362,9 @@
 
 <section id="problem">
   <div class="wrap">
-    <div class="eyebrow">01 &mdash; The Problem</div>
+    <div class="eyebrow">01 · The Problem</div>
     <h2>Granola stops at recall.<br>The real value is what happens after.</h2>
-    <p class="lead">Granola has solved the hardest part of meetings: capture. But its value loop ends there. Commitments made across meetings stay buried in individual notes, organized by when the meeting happened &mdash; not by what still needs doing.</p>
+    <p class="lead">Granola has solved the hardest part of meetings: capture. But its value loop ends there. Commitments made across meetings stay buried in individual notes, organized by when the meeting happened, not by what still needs doing.</p>
 
     <div class="loop fade">
       <div class="loop-step"><div class="loop-lbl">Step 1</div><div class="loop-word">Meet</div></div>
@@ -262,14 +373,14 @@
       <div class="loop-step"><div class="loop-lbl">Missing</div><div class="loop-word">Act</div><div class="loop-note">Open Items fills this</div></div>
     </div>
 
-    <p style="margin-bottom:16px;">For users in 4&ndash;7 meetings daily, the cognitive load of tracking personal commitments across a growing note library is high enough that they maintain a <strong style="color:var(--text);font-weight:500;">parallel task system outside Granola</strong> &mdash; always slightly out of date, always one more thing to maintain.</p>
+    <p style="margin-bottom:16px;">For users in 4&ndash;7 meetings daily, the cognitive load of tracking personal commitments across a growing note library is high enough that they maintain a <strong style="color:var(--text);font-weight:500;">parallel task system outside Granola</strong>, always slightly out of date, always one more thing to maintain.</p>
     <p>Granola&rsquo;s co-founder has stated the ambition: <em>&ldquo;It is not about just capturing a meeting, but a space where you can work, even post meetings.&rdquo;</em> Open Items is the first concrete step toward that.</p>
   </div>
 </section>
 
 <section id="decisions">
   <div class="wrap">
-    <div class="eyebrow">02 &mdash; Key Decisions</div>
+    <div class="eyebrow">02 · Key Decisions</div>
     <h2>The choices that shaped the feature</h2>
     <p class="lead">Three decisions where I explicitly chose a direction and rejected an alternative. The reasoning is the work.</p>
 
@@ -277,18 +388,18 @@
       <div class="decision">
         <div class="d-num">01</div>
         <div>
-          <div class="d-title">Precision over recall in extraction &mdash; conservative by default</div>
+          <div class="d-title">Precision over recall in extraction: conservative by default</div>
           <p class="d-body">The highest-risk moment is the first impression. If the first list a user sees contains items that are not their commitments, they conclude the feature is broken and never return. Better to surface 6 high-confidence items than 12 that include noise. Recall improves iteratively. First impressions do not.</p>
-          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Broad extraction with user-side filtering &mdash; puts the burden on users and confirms the feature is untrustworthy before trust is established.</div>
+          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Broad extraction with user-side filtering: puts the burden on users and confirms the feature is untrustworthy before trust is established.</div>
         </div>
       </div>
 
       <div class="decision">
         <div class="d-num">02</div>
         <div>
-          <div class="d-title">60-day full trial, then paid only &mdash; no permanent free tier</div>
-          <p class="d-body">Two failure modes were evaluated: a permanent free tier (subsidizes non-converters, spends the pricing lever prematurely) and a capped preview (creates friction at peak engagement). A full trial avoids both. The user accumulates 60 days of evidence the feature is load-bearing before facing a conversion decision with real stakes. Trial expiry is framed around specific items and history at risk &mdash; not feature marketing.</p>
-          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Permanent free tier with caps &mdash; adversarial conversion moment, eliminates future pricing flexibility, subsidizes non-converting users at scale.</div>
+          <div class="d-title">60-day full trial, then paid only: no permanent free tier</div>
+          <p class="d-body">Two failure modes were evaluated: a permanent free tier (subsidizes non-converters, spends the pricing lever prematurely) and a capped preview (creates friction at peak engagement). A full trial avoids both. The user accumulates 60 days of evidence the feature is load-bearing before facing a conversion decision with real stakes. Trial expiry is framed around specific items and history at risk, not feature marketing.</p>
+          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Permanent free tier with caps: adversarial conversion moment, eliminates future pricing flexibility, subsidizes non-converting users at scale.</div>
         </div>
       </div>
 
@@ -296,8 +407,8 @@
         <div class="d-num">03</div>
         <div>
           <div class="d-title">The Anti-Jira Principle: Open Items must never require user input to function</div>
-          <p class="d-body">Smart grouping, priority inference, custom labels &mdash; all valuable in Phase 2. But every addition must be additive, never required. If a user never touches a configuration option, Open Items must still be fully useful. The moment users are filling in fields to make the list work, the product has become a worse version of every task manager they already use.</p>
-          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Mandatory priority fields, required labelling, AI-inferred due dates &mdash; all violate the principle and erode what makes this distinctly Granola.</div>
+          <p class="d-body">Smart grouping, priority inference, custom labels: all valuable in Phase 2. But every addition must be additive, never required. If a user never touches a configuration option, Open Items must still be fully useful. The moment users are filling in fields to make the list work, the product has become a worse version of every task manager they already use.</p>
+          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Mandatory priority fields, required labelling, AI-inferred due dates: all violate the principle and erode what makes this distinctly Granola.</div>
         </div>
       </div>
     </div>
@@ -306,20 +417,20 @@
 
 <section id="solution">
   <div class="wrap">
-    <div class="eyebrow">03 &mdash; The Solution</div>
+    <div class="eyebrow">03 · The Solution</div>
     <h2>Open Items</h2>
-    <p class="lead">A native Granola view that automatically extracts personal commitments from meeting notes and surfaces them in a single consolidated list &mdash; with source context, across all meetings, in one place. No setup. No configuration.</p>
+    <p class="lead">A native Granola view that automatically extracts personal commitments from meeting notes and surfaces them in a single consolidated list, with source context, across all meetings, in one place. No setup. No configuration.</p>
 
     <div class="callout">
       <p><strong>Vision:</strong> Transform Granola from a place where your meetings live into a system that ensures your meetings actually lead to something.</p>
     </div>
 
-    <p style="margin-bottom:32px;">Each item carries the action text, a context snippet from the transcript (enough to act without reopening the note), the source meeting and date, and a status: Open, Done, or Dismissed. Done and Dismissed are intentionally distinct &mdash; completing a task and deciding it is no longer relevant are different signals, and conflating them degrades list quality over time.</p>
+    <p style="margin-bottom:32px;">Each item carries the action text, a context snippet from the transcript (enough to act without reopening the note), the source meeting and date, and a status: Open, Done, or Dismissed. Done and Dismissed are intentionally distinct: completing a task and deciding it is no longer relevant are different signals, and conflating them degrades list quality over time.</p>
 
     <div class="phases fade">
       <div class="phase">
         <div class="phase-head">
-          <div class="phase-tag">Phase 1 &mdash; MVP</div>
+          <div class="phase-tag">Phase 1: MVP</div>
           <div class="phase-name">Personal</div>
         </div>
         <div class="phase-body">
@@ -332,7 +443,7 @@
       </div>
       <div class="phase">
         <div class="phase-head">
-          <div class="phase-tag">Phase 2 &mdash; Growth</div>
+          <div class="phase-tag">Phase 2: Growth</div>
           <div class="phase-name">Team</div>
         </div>
         <div class="phase-body">
@@ -345,7 +456,7 @@
       </div>
       <div class="phase">
         <div class="phase-head">
-          <div class="phase-tag">Phase 3 &mdash; Vision</div>
+          <div class="phase-tag">Phase 3: Vision</div>
           <div class="phase-name">Enterprise</div>
         </div>
         <div class="phase-body">
@@ -361,21 +472,21 @@
 
 <section id="metrics">
   <div class="wrap">
-    <div class="eyebrow">04 &mdash; Success Metrics</div>
+    <div class="eyebrow">04 · Success Metrics</div>
     <h2>Measuring list trust,<br>not list completion</h2>
-    <p class="lead">The north star is whether Open Items becomes part of the daily workflow. Completion rate within a fixed timeframe is explicitly not a metric &mdash; and the reasoning matters.</p>
+    <p class="lead">The north star is whether Open Items becomes part of the daily workflow. Completion rate within a fixed timeframe is explicitly not a metric, and the reasoning matters.</p>
 
     <div class="metrics-wrap fade">
       <div class="metric-ns">
         <div class="metric-ns-tag">North Star</div>
         <div class="metric-ns-name">Weekly Active Open Items Users / Weekly Active Granola Users</div>
-        <p class="metric-ns-def">The single number that tells us if the feature is becoming part of the core workflow &mdash; not just a feature that was tried once and abandoned.</p>
+        <p class="metric-ns-def">The single number that tells us if the feature is becoming part of the core workflow, not just a feature that was tried once and abandoned.</p>
       </div>
       <div class="metrics-grid">
         <div class="metric">
           <div class="metric-cat">Extraction Quality</div>
           <div class="metric-name">Immediate Dismissal Rate</div>
-          <p class="metric-def">Items dismissed within 60 seconds. The strongest passive proxy for extraction noise &mdash; no survey required.</p>
+          <p class="metric-def">Items dismissed within 60 seconds. The strongest passive proxy for extraction noise. No survey required.</p>
           <span class="metric-target">Below 15%</span>
         </div>
         <div class="metric">
@@ -393,7 +504,7 @@
       </div>
       <div class="not-measuring">
         <div class="nm-tag">Explicitly Not Measuring</div>
-        <p>Completion rate within a defined timeframe. A 2-hour action and a 2-week follow-up cannot be held to the same window &mdash; a fixed timeframe creates false precision and incentivizes optimizing extraction toward short-horizon items. List trust is the right proxy for value.</p>
+        <p>Completion rate within a defined timeframe. A 2-hour action and a 2-week follow-up cannot be held to the same window. A fixed timeframe creates false precision and incentivizes optimizing extraction toward short-horizon items. List trust is the right proxy for value.</p>
       </div>
     </div>
   </div>
@@ -401,18 +512,18 @@
 
 <section id="tradeoffs">
   <div class="wrap">
-    <div class="eyebrow">05 &mdash; Tradeoffs</div>
+    <div class="eyebrow">05 · Tradeoffs</div>
     <h2>What we gave up and why</h2>
     <p class="lead">Two tradeoffs significant enough to name explicitly. The full list is in the PRD.</p>
 
     <div class="tradeoffs fade">
       <div class="tradeoff">
         <div class="to-label">Feature gravity locks the pricing decision</div>
-        <p class="to-body">Once Open Items is included in the paid plan, it is almost impossible to move it to a higher tier later. The window to treat it as a premium differentiator is at launch &mdash; after that it becomes table stakes. This means the MVP pricing call is effectively permanent. That is an acceptable cost for the retention mechanics it enables, but it needs to be a conscious decision, not a default.</p>
+        <p class="to-body">Once Open Items is included in the paid plan, it is almost impossible to move it to a higher tier later. The window to treat it as a premium differentiator is at launch. After that it becomes table stakes. This means the MVP pricing call is effectively permanent. That is an acceptable cost for the retention mechanics it enables, but it needs to be a conscious decision, not a default.</p>
       </div>
       <div class="tradeoff">
         <div class="to-label">Extraction quality is the only dependency that can kill the feature on day one</div>
-        <p class="to-body">Every other risk is recoverable. Noisy extraction at first impression is not. If the first list a user sees does not feel accurate, the negative impression is almost impossible to reverse at scale. This means the extraction prompt must be validated with human-rated quality checks before launch &mdash; not just automated metrics. The cost is time. The cost of skipping it is a failed feature.</p>
+        <p class="to-body">Every other risk is recoverable. Noisy extraction at first impression is not. If the first list a user sees does not feel accurate, the negative impression is almost impossible to reverse at scale. This means the extraction prompt must be validated with human-rated quality checks before launch, not just automated metrics. The cost is time. The cost of skipping it is a failed feature.</p>
       </div>
     </div>
   </div>
@@ -445,51 +556,43 @@
 </footer>
 
 <script>
-  const obs = new IntersectionObserver(entries => {
+  // Fade-in animations
+  const fadeObs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.08 });
-  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+  document.querySelectorAll('.fade').forEach(el => fadeObs.observe(el));
 
+  // Reading progress + back-to-top fab
   const bar = document.getElementById('progress');
+  const topFab = document.getElementById('sectTopFab');
   window.addEventListener('scroll', () => {
     const doc = document.documentElement;
     bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+    if (topFab) topFab.classList.toggle('visible', window.scrollY > 300);
   });
 
-  function toggleNav() {
-    const menu = document.getElementById('navMenu');
-    const toggle = document.getElementById('navToggle');
-    menu.classList.toggle('open');
-    toggle.classList.toggle('open');
+  // Sheet open/close
+  function toggleSheet() {
+    document.getElementById('sectSheet').classList.toggle('open');
+    document.getElementById('sectBackdrop').classList.toggle('open');
+  }
+  function closeSheet() {
+    document.getElementById('sectSheet').classList.remove('open');
+    document.getElementById('sectBackdrop').classList.remove('open');
   }
 
-  function closeNav() {
-    document.getElementById('navMenu').classList.remove('open');
-    document.getElementById('navToggle').classList.remove('open');
-  }
-
-  // Close on outside click
-  document.addEventListener('click', (e) => {
-    const nav = document.getElementById('sectionNav');
-    if (!nav.contains(e.target)) closeNav();
-  });
-
-  // Active section highlighting
-  const sections = document.querySelectorAll('section[id]');
-  const allNavLinks = document.querySelectorAll('.sidebar-nav a, .section-nav-menu a');
-
+  // Active section highlighting (sidebar + sheet)
+  const allSectLinks = document.querySelectorAll('.sect-sidebar a[href^="#"], .sect-sheet a[href^="#"]');
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        allNavLinks.forEach(link => {
+        allSectLinks.forEach(link => {
           link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
         });
       }
     });
   }, { rootMargin: '-30% 0px -60% 0px' });
-
-  sections.forEach(s => sectionObserver.observe(s));
-
+  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
 </script>
 </body>
 </html>
