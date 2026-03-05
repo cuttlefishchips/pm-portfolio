@@ -91,6 +91,15 @@
       border-bottom: 1px solid var(--rule);
     }
 
+    .hero-byline {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 1.25rem;
+    }
+
     .hero-meta {
       display: flex;
       gap: 1.5rem;
@@ -560,6 +569,7 @@
       display: flex;
       flex-direction: column;
       gap: 0;
+      overflow: hidden;
     }
 
     .qrow {
@@ -567,15 +577,15 @@
     }
 
     .q1 {
-      width: calc(80px / 21);
-      height: calc(80px / 21);
+      width: calc(72px / 21);
+      height: calc(72px / 21);
       background: #111;
       flex-shrink: 0;
     }
 
     .q0 {
-      width: calc(80px / 21);
-      height: calc(80px / 21);
+      width: calc(72px / 21);
+      height: calc(72px / 21);
       background: white;
       flex-shrink: 0;
     }
@@ -785,6 +795,71 @@
       margin: 0;
     }
 
+    /* ── RESEARCH SIGNALS ── */
+    .research-signals {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--rule);
+      margin: 1.5rem 0 1rem;
+    }
+
+    .research-signal {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .research-signal:last-child { border-bottom: none; }
+
+    .signal-source {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .research-signal p {
+      font-size: 0.87rem;
+      color: var(--ink-2);
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    .research-signal p + p { margin-top: 0.5rem; }
+
+    /* ── SIGNAL PIVOTS ── */
+    .signal-pivot-list {
+      display: flex;
+      flex-direction: column;
+      margin: 1.5rem 0 0;
+    }
+
+    .signal-pivot {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .signal-pivot:last-child { border-bottom: none; }
+
+    .pivot-condition {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+      background: var(--bg-2);
+      display: inline-block;
+      padding: 0.3rem 0.75rem;
+      margin-bottom: 0.75rem;
+      border-left: 3px solid var(--accent-warm);
+    }
+
+    .signal-pivot p {
+      font-size: 0.87rem;
+      color: var(--ink-2);
+      margin: 0;
+      line-height: 1.65;
+    }
+
     /* ── FOOTER ── */
     .case-footer {
       padding: 4rem 0;
@@ -977,6 +1052,7 @@
       <a href="#ux" onclick="closeNav()">UX Design</a>
       <a href="#metrics" onclick="closeNav()">Metrics</a>
       <a href="#learnings" onclick="closeNav()">Learnings</a>
+      <a href="#signals" onclick="closeNav()">Signals</a>
     </div>
     <button class="section-nav-toggle" id="navToggle" onclick="toggleNav()">
       Jump to section <span class="arrow">▲</span>
@@ -989,6 +1065,7 @@
   <!-- HERO -->
   <div class="hero">
     <div class="container">
+      <p class="hero-byline">Reiko Tan &nbsp;&middot;&nbsp; Senior Product Manager &nbsp;&middot;&nbsp; Singapore</p>
       <div class="hero-meta">
         <span class="tag accent">Case Study</span>
         <span class="tag">Fintech</span>
@@ -1021,7 +1098,10 @@
       <div>
         <div>
           <h2>A verified investor who never deposits is a missed investment</h2>
-          <p>[Company] is a vertically integrated platform - deal sourcing, tokenisation, custody, exchange, and a secondary market. Accredited investors can access private equity, private credit, funds, luxury assets, and real estate from SGD 500.</p>
+          <div class="callout" style="margin-bottom:1.5rem;">
+            <p><strong>Why this problem, why now:</strong> Wallet activation was the binding constraint on AUM growth. At the time of this work, an estimated 80% of KYC-verified investors had never deposited. Every one of them was stranded capacity on a platform where revenue scales with deployed capital.</p>
+          </div>
+          <p>[Company] is a vertically integrated alternative assets platform: deal sourcing, tokenisation, custody, exchange, and a secondary market. Accredited investors can access private equity, private credit, funds, luxury assets, and real estate from SGD 500.</p>
           <p>The problem: a meaningful share of KYC-verified investors never made a first deposit. The current flow required users to manually bank transfer to a static DBS account, email a screenshot to cs@[company].com, and wait up to 5 working days for confirmation with no feedback. That flow broke at two points.</p>
           <div class="zones">
             <div class="zone">
@@ -1032,7 +1112,7 @@
             <div class="zone">
               <div class="zone-num">02</div>
               <h4>Deposit Execution Loop</h4>
-              <p>At the moment of intent, users were pushed off-platform to internet banking, required to type static account details, then email a proof screenshot. The email step had no regulatory basis - it existed because automated reconciliation didn't.</p>
+              <p>At the moment of intent, users were pushed off-platform to internet banking, required to type static account details, then email a proof screenshot. The email step had no regulatory basis. It existed because automated reconciliation didn't.</p>
             </div>
           </div>
           <p>The work here covers the full product thinking: problem framing, personas, journey analysis, solution design, requirements, and UX.</p>
@@ -1047,14 +1127,14 @@
     <div class="container">
       <p class="section-label">02 - Context and Constraints</p>
       <h2>MAS regulation shapes the solution space</h2>
-      <p>[Company] is MAS-licensed for capital markets services and operates as a recognised market operator in Singapore. This isn't incidental - it defines what can and cannot be built.</p>
+      <p>[Company] is MAS-licensed for capital markets services and operates as a recognised market operator in Singapore. This defines what can and cannot be built.</p>
 
       <div class="callout">
-        <p><strong>The key regulatory constraint:</strong> Funds must be traceable to the investor's own verified bank account. This eliminates card funding, third-party processors, and digital wallets as deposit rails. PayNow and bank transfer are the only compliant options - which means the solution had to make those rails work better, not replace them.</p>
+        <p><strong>The key regulatory constraint:</strong> Funds must be traceable to the investor's own verified bank account. This eliminates card funding, third-party processors, and digital wallets as deposit rails. PayNow and bank transfer are the only compliant options, which means the solution had to make those rails work better, not replace them.</p>
       </div>
 
       <h3>Why the proof email could be eliminated</h3>
-      <p>The manual email step existed to trigger reconciliation and create an audit trail. Neither purpose required user action. With unique per-transaction payment references, PayNow captures payer identity and reference automatically. Bank transfers carry the reference code in the payment instruction. The audit trail requirement is better satisfied by automated reconciliation than by screenshots - system-generated, tamper-proof, immediately auditable.</p>
+      <p>The email step existed to trigger reconciliation and create an audit trail. Neither purpose required user action. Unique per-transaction payment references capture payer identity automatically. The audit trail is better satisfied by automated reconciliation than by screenshots: system-generated, tamper-proof, immediately auditable.</p>
 
       <div class="constraints">
         <div class="constraint">
@@ -1063,7 +1143,7 @@
         </div>
         <div class="constraint">
           <div class="constraint-label">Requires review before build</div>
-          <p>MMF yield rate messaging in onboarding (MAS promotional framing guidelines). Open banking API deposit rail (dedicated MAS consultation required - Phase 2 at earliest).</p>
+          <p>MMF yield rate messaging in onboarding (MAS promotional framing guidelines). Open banking API deposit rail (dedicated MAS consultation required; Phase 2 at earliest).</p>
         </div>
         <div class="constraint">
           <div class="constraint-label">Critical assumption to validate</div>
@@ -1089,7 +1169,7 @@
           <div class="persona-initial">R</div>
           <h4>Raymond</h4>
           <div class="persona-type">Passive Wealth Allocator</div>
-          <p>56, semi-retired, referred by his Phillip Capital RM. Expects a human somewhere in the loop. Won't act without certainty. The deposit email arrives with a 3-day deadline and no guidance on what happens next - so he calls his RM.</p>
+          <p>56, semi-retired, referred by his Phillip Capital RM. Expects a human somewhere in the loop. The deposit email arrives with a deadline and no guidance on what happens next. He calls his RM.</p>
         </div>
         <div class="persona">
           <div class="persona-initial">P</div>
@@ -1101,10 +1181,25 @@
           <div class="persona-initial">M</div>
           <h4>Marcus</h4>
           <div class="persona-type">Sophisticated Diversifier</div>
-          <p>47, family office. Has a specific deal in mind and a fill window closing. Treats deposit as infrastructure. The 5-day confirmation silence means he can't confirm his position is secured - so he routes capital elsewhere.</p>
+          <p>47, family office. Has a specific deal in mind and a fill window closing. Treats deposit as infrastructure. The 5-day confirmation silence means he can't confirm his position is secured, so he routes capital elsewhere.</p>
         </div>
       </div>
 
+      <h3>Research I would run to validate this</h3>
+      <div class="research-signals">
+        <div class="research-signal">
+          <div class="signal-source">CS ticket analysis</div>
+          <p>Pull deposit-related support tickets and tag by type. Expecting "I sent the transfer but haven't heard back" to dominate, which would confirm the confirmation black hole as a widespread problem rather than an edge case.</p>
+        </div>
+        <div class="research-signal">
+          <div class="signal-source">Session recording review</div>
+          <p>Review post-KYC sessions for scroll depth and time-to-action. A sharp drop within the first 90 seconds would indicate a motivation problem, not a navigation one, and point to the dead zone as the primary culprit.</p>
+        </div>
+        <div class="research-signal">
+          <div class="signal-source">User interviews: 5 recently-verified investors</div>
+          <p>One interview per persona archetype, focused on the post-KYC moment and the deposit attempt. Representative questions: What did you do immediately after getting approved? What stopped you from depositing? What would you need to see before putting money in?</p>
+        </div>
+      </div>
       <p>Designing for Raymond raises the floor for everyone. If the product earns his trust through clarity, it more than satisfies Priya and Marcus along the way.</p>
     </div>
   </section>
@@ -1119,7 +1214,7 @@
       <div class="solutions">
         <div class="solution-block">
           <h4>Contextual Post-KYC Activation</h4>
-          <p>KYC approval triggers a personalised activation screen - not a generic home state. Deal recommendation based on stated preferences, MMF yield explainer, withdrawal legibility panel, and a single deposit CTA. For rep-referred users, the RM's contact details appear inline.</p>
+          <p>KYC approval triggers a personalised activation screen, not a generic home state. Deal recommendation based on stated preferences, MMF yield explainer, withdrawal legibility panel, and a single deposit CTA. For rep-referred users, the RM's contact details appear inline.</p>
         </div>
         <div class="solution-block">
           <h4>In-App Deposit Initiation</h4>
@@ -1127,7 +1222,7 @@
         </div>
         <div class="solution-block">
           <h4>Automated Reconciliation</h4>
-          <p>Inbound transfers matched automatically via reference code. Manual proof email eliminated entirely. Exceptions trigger an ops alert - not user action. System-generated audit logs satisfy MAS AML/CFT requirements better than screenshots.</p>
+          <p>Inbound transfers matched automatically via reference code. Manual proof email eliminated. Exceptions trigger an ops alert, not user action. System-generated audit logs satisfy MAS AML/CFT requirements better than screenshots.</p>
         </div>
         <div class="solution-block">
           <h4>Real-Time Status Tracking</h4>
@@ -1139,7 +1234,7 @@
         </div>
         <div class="solution-block">
           <h4>MMF Surfacing</h4>
-          <p>Current yield rate displayed on wallet home screen for any investor with idle balance. Explained inline in the activation flow. Idle capital earns while the investor decides - this is a genuine differentiator that most users never knew existed.</p>
+          <p>Current yield rate displayed on wallet home screen for any investor with idle balance. Explained inline in the activation flow. Idle capital earns while the investor decides. Most users had no idea this existed.</p>
         </div>
       </div>
 
@@ -1329,7 +1424,7 @@
     <div class="container">
       <p class="section-label">06 - Metrics</p>
       <h2>What success looks like, and why</h2>
-      <p>The North Star is intentionally scoped to deposit, not investment completion. Investment outcomes are influenced by deal quality, market timing, and member firm relationships - outside the wallet PM's control.</p>
+      <p>The North Star is scoped to deposit, not investment completion. Investment outcomes depend on deal quality, market timing, and member firm relationships. Outside the wallet PM's control.</p>
 
       <table class="metrics-table">
         <thead>
@@ -1351,17 +1446,17 @@
             <td><span class="metric-role">Operational</span></td>
             <td>90th percentile deposit confirmation time by rail</td>
             <td>Under 2 hrs PayNow, under 2 days bank transfer</td>
-            <td>90th percentile not median - captures worst-case experience for the long-tail cohort. Median would mask the outliers that erode trust.</td>
+            <td>90th percentile, not median. Median masks the long-tail cases that erode trust most.</td>
           </tr>
           <tr>
             <td><span class="metric-role">Operational</span></td>
             <td>30-day wallet login rate among first-time depositors</td>
             <td>50%</td>
-            <td>Leading indicator of genuine engagement. Faster signal than repeat deposit rate - relevant for a 6-month sprint cadence.</td>
+            <td>Leading indicator of genuine engagement. Faster signal than repeat deposit rate.</td>
           </tr>
           <tr>
             <td><span class="metric-role">Business</span></td>
-            <td>CS ticket volume - deposit confirmation queries</td>
+            <td>CS ticket volume: deposit confirmation queries</td>
             <td>60% reduction</td>
             <td>Independent signal that the deposit loop genuinely improved. Also a cross-functional buy-in metric for ops.</td>
           </tr>
@@ -1369,7 +1464,7 @@
             <td><span class="metric-role">Technical</span></td>
             <td>PayNow auto-reconciliation rate</td>
             <td>95% without manual intervention</td>
-            <td>Remaining 5% triggers ops alert - not email from user. Zero users should need to email cs@[company].com as part of the standard flow.</td>
+            <td>Remaining 5% triggers an ops alert, not user action. No user should need to email support as part of a standard deposit.</td>
           </tr>
         </tbody>
       </table>
@@ -1386,7 +1481,7 @@
         <div class="learning-num">01</div>
         <div>
           <h4>The proof email was hiding a reconciliation problem, not solving one</h4>
-          <p>The email step looked like a user flow decision. It was actually an infrastructure gap - the absence of automated reconciliation. Framing it as a UX fix would have been wrong. The right fix was eliminating the need for it entirely.</p>
+          <p>The email step looked like a UX problem. It was an infrastructure gap: no automated reconciliation. The fix was eliminating the need for it, not redesigning around it.</p>
         </div>
       </div>
 
@@ -1394,7 +1489,7 @@
         <div class="learning-num">02</div>
         <div>
           <h4>Withdrawal legibility is an activation lever, not a withdrawal feature</h4>
-          <p>No investor explicitly said they were abandoning because they didn't know how to withdraw. But for the Passive Allocator, not knowing is a silent blocker. It never shows up as a drop-off event because the user simply never deposits rather than explicitly abandoning.</p>
+          <p>No investor said they abandoned because they couldn't withdraw. But for the Passive Allocator, not knowing is a silent blocker. It never shows up in drop-off data because the user never deposits in the first place.</p>
         </div>
       </div>
 
@@ -1402,7 +1497,7 @@
         <div class="learning-num">03</div>
         <div>
           <h4>The MMF is a differentiator that most users have never heard of</h4>
-          <p>Idle balances earn yield automatically - this is a meaningful product benefit that competitors don't offer at this scale. It wasn't in the onboarding flow, it wasn't on the wallet screen, and there was no mention of it post-KYC. Surfacing it is not a product change - it's a communication fix.</p>
+          <p>Idle balances earn yield automatically. Competitors don't offer this at scale, and most users had never heard of it. It wasn't in the onboarding flow or on the wallet screen. Surfacing it is a communication fix, not a product change.</p>
         </div>
       </div>
 
@@ -1410,7 +1505,7 @@
         <div class="learning-num">04</div>
         <div>
           <h4>Regulatory constraints shaped the solution, but they didn't block it</h4>
-          <p>MAS source-of-funds requirements eliminate most alternative payment rails. Working within those constraints - making PayNow and bank transfer work better - turned out to be sufficient for Phase 1. The constraint clarified the design rather than limiting it.</p>
+          <p>MAS source-of-funds requirements eliminate most alternative payment rails. Working within them, making PayNow and bank transfer work better, was sufficient for Phase 1. The constraint clarified the design.</p>
         </div>
       </div>
 
@@ -1418,7 +1513,56 @@
         <div class="learning-num">05</div>
         <div>
           <h4>The North Star needs a lagging health check</h4>
-          <p>Deposit count alone can be gamed - aggressive prompting can drive deposits from low-intent users. Pairing it with AUC growth as a lagging indicator catches that pattern. If deposit count rises but AUC is flat, the quality of activation is the problem, not the volume.</p>
+          <p>Aggressive prompting can inflate deposit count with low-intent users. Pairing the North Star with AUC growth as a lagging indicator catches this. Conversion rising while AUC stays flat means the quality of activation is the problem, not the volume.</p>
+        </div>
+      </div>
+
+      <div class="learning">
+        <div class="learning-num">06</div>
+        <div>
+          <h4>Compliance was the hardest stakeholder, and the most important to get right early</h4>
+          <p>Compliance wanted to keep the proof email as an audit record. The reframe: automated reconciliation is a better audit trail than screenshots. System-generated, timestamped, immediately queryable. Bringing them into the design sprint as co-authors of the exception spec, not reviewers at the end, changed the dynamic. The two-week delay upfront avoided a much longer one at launch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNALS -->
+  <section id="signals">
+    <div class="container">
+      <p class="section-label">08 - Signals &amp; Iteration</p>
+      <h2>Signals and what they tell us</h2>
+      <p>This is a proposed solution. Here is what the data would need to show to confirm the approach is working, and what a course correction looks like if it doesn't.</p>
+
+      <h3>Green lights</h3>
+      <div class="solutions">
+        <div class="solution-block">
+          <h4>North Star moving within the first sprint</h4>
+          <p>KYC-to-deposit conversion climbing toward 40% within 30 days. The earlier leading indicator: PayNow's share of total deposits rising in week one. That's the friction removal showing up before the full window closes.</p>
+        </div>
+        <div class="solution-block">
+          <h4>CS ticket volume dropping</h4>
+          <p>Deposit confirmation tickets falling 60%+ in the first two weeks confirms the black hole was the problem, not something adjacent like withdrawal confusion. It also isolates causation in a way the North Star can't.</p>
+        </div>
+        <div class="solution-block">
+          <h4>Re-engagement emails becoming less necessary</h4>
+          <p>Fewer users reaching the 48-hour drop-off window means re-engagement open rates should fall. A declining open rate is normally a warning sign. Here it means the product is doing the re-engagement job.</p>
+        </div>
+      </div>
+
+      <h3>Warning signs and the response</h3>
+      <div class="signal-pivot-list">
+        <div class="signal-pivot">
+          <div class="pivot-condition">Conversion up, AUC flat</div>
+          <p>Low-intent users: depositing the minimum, not returning. The fix is adding intent signals to the activation flow: investment horizon, deal preference, minimum commitment. Also worth checking whether MMF surfacing is drawing savings-account behaviour rather than investment intent.</p>
+        </div>
+        <div class="signal-pivot">
+          <div class="pivot-condition">Auto-reconciliation rate below 90%</div>
+          <p>An edge case in the reference code mechanism, most likely users editing the reference field on bank transfer. Immediate response: manual reconciliation queue with a tight ops SLA. Medium-term: matching algorithm using amount and payer identity as fallbacks. No need to pause the launch.</p>
+        </div>
+        <div class="signal-pivot">
+          <div class="pivot-condition">30-day login rate below 30%</div>
+          <p>Fund-and-disappear persists after activation. The post-deposit experience isn't creating a reason to return, which moves the Phase 2 wallet dashboard from deferred to urgent. Diagnosis first: is the problem informational (they don't know what's in the wallet), intentional (deposited for one deal, nothing else to act on), or trust-based (waiting for a first successful withdrawal before committing more)?</p>
         </div>
       </div>
     </div>
