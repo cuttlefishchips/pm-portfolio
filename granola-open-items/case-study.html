@@ -34,6 +34,8 @@
   .nav-back-link { font-size:0.72rem; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
   .nav-back-link:hover { color:var(--green); }
   .nav-back-link.nav-current { color:var(--green); }
+  .nav-icon { display:flex; align-items:center; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
+  .nav-icon:hover { color:var(--green); }
   .reading-progress { position:fixed; top:56px; left:0; right:0; height:2px; background:var(--border); z-index:99; }
   .reading-progress-bar { height:100%; background:var(--green); width:0%; transition:width 0.1s linear; }
 
@@ -334,15 +336,14 @@
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
 <nav>
-  <div class="nav-left">
-    <a href="../index.html" class="nav-brand">Reiko Tan</a>
-    <span>/</span>
-    <span>Granola Open Items</span>
-  </div>
+  <a href="../index.html" class="nav-brand">Reiko Tan</a>
   <div class="nav-back">
-    <a href="../mighty-jaxx/vault/case-study.html" class="nav-back-link">Vault</a>
-    <a href="../cash-wallet/case-study.html" class="nav-back-link">Cash Wallet</a>
-    <a href="case-study.html" class="nav-back-link nav-current">Granola Open Items</a>
+    <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    </a>
+    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram" target="_blank" rel="noopener">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+    </a>
   </div>
 </nav>
 
