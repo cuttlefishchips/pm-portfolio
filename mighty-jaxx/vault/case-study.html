@@ -652,7 +652,6 @@
   <ul>
     <li><a href="#context" class="sect-link">Context</a></li>
     <li><a href="#discovery" class="sect-link">Discovery</a></li>
-    <li><a href="#problem" class="sect-link">Problem</a></li>
     <li><a href="#insight" class="sect-link">Insight</a></li>
     <li><a href="#decisions" class="sect-link">Decisions</a></li>
     <li><a href="#timeline" class="sect-link">Timeline</a></li>
@@ -685,7 +684,7 @@
   <div class="hero-left">
     <p class="hero-eyebrow">Mighty Jaxx &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2021&ndash;Present</p>
     <h1>From anonymous buyers<br>to <mark>identified</mark><br>collectors</h1>
-    <p class="hero-sub">Mighty Jaxx sells millions of collectibles through distributors and retailers — and had no idea who owned them. This is the product work that changed that.</p>
+    <p class="hero-sub">Mighty Jaxx sells millions of collectibles through distributors and retailers, and had no idea who owned them. This is the product work that changed that.</p>
     <div class="hero-tags">
       <span class="htag">QR Authentication</span>
       <span class="htag">Vault Platform</span>
@@ -725,9 +724,7 @@
         <h2>A company selling millions of products to people it couldn't see</h2>
       </div>
       <div class="reveal">
-        <p>Mighty Jaxx sells collectible designer toys globally, predominantly through distributors and retailers. That channel architecture creates a structural blind spot: the company sees bulk sales to intermediaries, but has no visibility into the collectors who actually own the products.</p>
-        <p>This is not a data problem. It's an identity problem. Without knowing who your collectors are, you can't reward them, re-engage them, or build community around them. The distributor model trades direct reach for scale — and at a certain point, that trade-off limits how far the business can grow.</p>
-        <p>I was the PM responsible for solving it: defining and shipping the authentication infrastructure (QR Auth) and the collector engagement platform built on top of it (Vault). The project ran across engineering, design, brand, marketing, production, and licensing.</p>
+        <p>Mighty Jaxx sells collectible designer toys globally through distributors and retailers. The channel works at scale but leaves no visibility into who actually owns the products. I defined and shipped the authentication infrastructure (QR Auth) and the collector engagement platform built on top of it (Vault), across engineering, design, brand, marketing, production, and licensing.</p>
       </div>
     </div>
   </div>
@@ -738,79 +735,41 @@
   <div class="container">
     <div class="section-label">Discovery</div>
     <div class="two-col" style="margin-bottom: 40px;">
-      <h2 class="reveal">Four signals pointing to the same gap</h2>
-      <p class="reveal">The problem didn't surface from a single research initiative. It came from four independent signals that converged on the same root cause: there was no collector identity layer.</p>
+      <h2 class="reveal">Four signals, same root cause</h2>
     </div>
     <div class="signal-stack reveal">
       <div class="signal-item">
         <div class="signal-num">01</div>
         <div>
           <div class="signal-title">Internal data gap</div>
-          <p>The company could see distributor purchase volumes and direct ecommerce orders, but had no visibility into who owned the majority of products in the market. Marketing couldn't segment or activate collectors because collectors didn't exist in any system. High volume, near-zero buyer data.</p>
+          <p>Marketing couldn't activate collectors because collectors didn't exist in any system.</p>
         </div>
       </div>
       <div class="signal-item">
         <div class="signal-num">02</div>
         <div>
           <div class="signal-title">NFC authentication was failing silently</div>
-          <p>An NFC-based authentication flow existed but showed very low completion rates. Collectors weren't finishing the scan. The friction was behavioural: knowing where the NFC reader sat on their phone, sometimes manual activation, precise positioning required. Users were abandoning before they understood what they were trying to do.</p>
+          <p>An NFC flow existed but completion rates were very low. Reader location, manual activation, and positioning requirements blocked users in ways we couldn't see.</p>
         </div>
       </div>
       <div class="signal-item">
         <div class="signal-num">03</div>
         <div>
           <div class="signal-title">Community demand for authenticity, no official solution</div>
-          <p>Collector forums and social channels were active with authenticity discussions — identifying counterfeits, comparing packaging details, asking retailers to vouch. Clear demand for a verification system. No official mechanism simple enough to use at scale.</p>
+          <p>Collector forums were active with counterfeit discussions and no official verification mechanism simple enough to use at scale.</p>
         </div>
       </div>
       <div class="signal-item">
         <div class="signal-num">04</div>
         <div>
           <div class="signal-title">Marketing and licensing flagging the same dead end</div>
-          <p>Independently, marketing and licensing teams raised the post-purchase gap: once a product sells through the channel, the relationship ends. No way to activate IP-specific fanbases, reward loyal collectors, or give licensors anything beyond sales figures. The same problem framed from a different direction.</p>
+          <p>Marketing and licensing flagged the same thing independently: once a product sells through the channel, the relationship ends.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROBLEM -->
-<section id="problem">
-  <div class="container">
-    <div class="section-label">The Problem</div>
-    <div class="two-col">
-      <div>
-        <h2 class="reveal">You can't build loyalty on anonymous transactions</h2>
-        <div class="callout reveal">
-          <p>"A distributor might buy 10,000 units. We had no idea who actually owned them."</p>
-        </div>
-        <p class="reveal" style="font-size: 15px;">This wasn't a CRM gap. It was a structural consequence of the channel model — and solving it required a product approach, not a data one.</p>
-      </div>
-      <div class="problem-stack reveal">
-        <div class="problem-item">
-          <div class="problem-dot"></div>
-          <p><strong>No collector identity.</strong> Purchases happened through retailers. Post-purchase, the brand had no record of the end buyer.</p>
-        </div>
-        <div class="problem-item">
-          <div class="problem-dot"></div>
-          <p><strong>No working authenticity system.</strong> The NFC flow existed but wasn't completing. Collectors fell back to forum comparisons and retailer reputation — neither reliable at scale.</p>
-        </div>
-        <div class="problem-item">
-          <div class="problem-dot"></div>
-          <p><strong>Broadcast-only marketing.</strong> Without knowing who owned what, every campaign was generic. IP-specific fanbase activation was structurally impossible.</p>
-        </div>
-        <div class="problem-item">
-          <div class="problem-dot"></div>
-          <p><strong>Dead post-purchase relationship.</strong> Once a toy sold, the interaction ended. For a brand where collecting behaviour is inherently ongoing, this was a material missed opportunity.</p>
-        </div>
-        <div class="problem-item">
-          <div class="problem-dot"></div>
-          <p><strong>Weak licensor data.</strong> Licensors increasingly expect fan engagement metrics. Sales numbers alone were insufficient — and competitors were starting to offer more.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- INSIGHT -->
 <section id="insight" style="background: var(--grey-50);">
@@ -819,16 +778,14 @@
     <div class="two-col">
       <div class="reveal">
         <h2>Identity before loyalty</h2>
-        <p>Loyalty programs are engagement surfaces. You can't build an engagement surface on anonymous transactions.</p>
-        <p>Before we could reward collectors, we had to know who they were. That meant the first product wasn't Vault — it was the identity layer underneath it. QR auth wasn't just anti-counterfeiting infrastructure. It was the mechanism that made everything else possible.</p>
-        <p>Once a collector scans, they exist in the system. Once they exist, you can reward them, engage them, and build a relationship. Without the scan, there is nothing to build on.</p>
+        <p>The first product wasn't Vault. It was the identity layer underneath it: scan once, exist in the system.</p>
       </div>
       <div class="flow-col reveal">
         <div class="flow-step">
           <div class="flow-step-icon">&#128241;</div>
           <div>
             <span class="flow-step-label">Collector Buys</span>
-            <span class="flow-step-sub">Through retail or distributor — brand has no record</span>
+            <span class="flow-step-sub">Through retail or distributor. Brand has no record.</span>
           </div>
         </div>
         <div class="flow-connector"></div>
@@ -866,7 +823,6 @@
     <div class="section-label">Product Decisions</div>
     <div class="two-col" style="margin-bottom: 48px;">
       <h2 class="reveal">Three decisions that shaped the system</h2>
-      <p class="reveal">Each involved real tradeoffs and internal disagreement. The reasoning behind each reflects the product principles that drove the whole initiative.</p>
     </div>
 
     <div class="decision-block reveal">
@@ -877,16 +833,13 @@
       <div class="decision-body">
         <div class="decision-col">
           <span class="decision-col-label label-before">Before: NFC</span>
-          <p>NFC was the original approach. Embedded tags, no visible code, stronger anti-tamper story. It fit a compelling demo.</p>
-          <p>In practice: users didn't know where the NFC reader was on their phone. Some devices required manual activation. Precise positioning was required. Authentication completion rates were very low — the friction was invisible to us but blocking for users.</p>
+          <p>NFC tags were embedded and invisible. Users couldn't find the reader, some devices needed manual activation, and completion rates were very low.</p>
         </div>
         <div class="decision-col">
           <span class="decision-col-label label-after">After: QR</span>
-          <p>QR codes don't require explanation. Open camera, point, scan. The behaviour is already ingrained. No app switching, no NFC toggle, no positioning.</p>
-          <p>Cost and scalability benefits were real but secondary. The primary driver was eliminating friction users couldn't intuitively resolve. A system with 10% adoption doesn't build collector identity — regardless of how clean the technology is.</p>
+          <p>QR needs no explanation. The primary driver wasn't cost — it was eliminating friction users couldn't resolve on their own.</p>
         </div>
       </div>
-      <div class="decision-insight">Optimise for behaviour users already understand, not the technology that impresses internally.</div>
     </div>
 
     <div class="decision-block reveal">
@@ -897,20 +850,17 @@
       <div class="decision-body">
         <div class="decision-col">
           <span class="decision-col-label label-before">Initial framing</span>
-          <p>Some stakeholders viewed QR scanning primarily as anti-counterfeiting. Scan, verify authenticity, done. A single-use utility with no reason to return.</p>
-          <p>The concern was scope: engagement features on top of authentication felt like adding complexity to what should be a contained infrastructure problem.</p>
+          <p>Some stakeholders saw scanning as verify-and-done. Engagement features felt like scope creep on a contained infrastructure problem.</p>
         </div>
         <div class="decision-col">
           <span class="decision-col-label label-after">My position</span>
-          <p>I pushed to make scanning the entry point into the collector ecosystem — registering ownership, creating identity, unlocking campaigns, initiating progression. Authentication and engagement become the same action.</p>
-          <p>A single-use auth system would see declining scan rates over time. Once a collector verifies their first toy, the behaviour has nowhere to go. That's not collector identity — it's a one-time receipt.</p>
+          <p>I wanted scanning to be the entry point: ownership registration, collector identity, campaign access. A verify-only system has no reason to be opened twice.</p>
         </div>
       </div>
       <div class="stakeholder-box">
         <span class="stakeholder-label">How alignment happened</span>
-        <p>The pivot came from reframing the business question. The goal wasn't to stop counterfeits (real but bounded) — it was to build direct relationships with collectors. Anti-counterfeiting alone doesn't do that. Scan-as-entry-point does. Connecting this to marketing and licensing's stated post-purchase problem made it concrete: they needed collector identity to do their jobs. The product decision became the solution to an org-wide problem, not a PM preference.</p>
+        <p>Alignment came from reframing: not stopping fakes, but building collector relationships. That connected directly to what marketing and licensing were already asking for.</p>
       </div>
-      <div class="decision-insight">The scan had to do double duty — verify authenticity and activate engagement — or neither would achieve meaningful adoption.</div>
     </div>
 
     <div class="decision-block reveal">
@@ -921,16 +871,13 @@
       <div class="decision-body">
         <div class="decision-col">
           <span class="decision-col-label label-before">What we cut</span>
-          <p>Early thinking included tiered loyalty levels tied to cumulative behaviour, social profiles, friend networks, and secondary market ownership transfer.</p>
-          <p>Each was real and valuable. All were premature.</p>
+          <p>Tiered loyalty, social profiles, and secondary market transfer were all on the table. All were premature.</p>
         </div>
         <div class="decision-col">
           <span class="decision-col-label label-after">What we shipped</span>
-          <p>Campaign-based engagement: time-bound missions, milestone unlocks, IP-specific challenges. Simpler to build, faster to validate, directly tied to product launches and licensing cycles.</p>
-          <p>Loyalty tiers require engagement history to draw on. Campaigns generate that history first. Shipping tiers before understanding how collectors actually behaved would have meant designing a progression system in the dark.</p>
+          <p>Campaign-based engagement: time-bound missions, milestone unlocks, IP-specific challenges. Loyalty tiers need engagement history. Campaigns build it.</p>
         </div>
       </div>
-      <div class="decision-insight">You have to earn the right to gate things. Campaigns build the track record that makes tiers meaningful.</div>
     </div>
   </div>
 </section>
@@ -941,7 +888,7 @@
     <div class="section-label">Timeline</div>
     <div class="two-col" style="margin-bottom: 16px;">
       <h2 class="reveal">18 months, four phases</h2>
-      <p class="reveal">Authentication first, platform second. The sequencing was deliberate — Vault could only be built once collector identity existed. Rushing the platform before the infrastructure was solid would have meant building on a foundation that didn't hold.</p>
+      <p class="reveal">QR Auth first, Vault second.</p>
     </div>
     <div class="timeline reveal">
       <div class="timeline-row">
@@ -950,7 +897,7 @@
           <span class="timeline-phase-name">Scoping and NFC signal</span>
         </div>
         <div class="timeline-content">
-          <p>Initial scope built on the existing NFC authentication infrastructure. Early usage data surfaced the behaviour problem: completion rates were very low. Community observation and internal stakeholder interviews confirmed the demand for simpler authentication and the structural gap in collector data.</p>
+          <p>Scoped against existing NFC infrastructure. Usage data and stakeholder interviews surfaced the behaviour problem and collector data gap.</p>
           <div class="timeline-chips">
             <span class="timeline-chip">NFC audit</span>
             <span class="timeline-chip">Stakeholder interviews</span>
@@ -964,7 +911,7 @@
           <span class="timeline-phase-name">QR authentication</span>
         </div>
         <div class="timeline-content">
-          <p>NFC to QR decision made. Unique QR code generation at scale, scan flow design, app integration. Manufacturing specifications written: sticker placement standards, QC guidelines, durability requirements. Factory testing across product lines.</p>
+          <p>NFC to QR decision made. QR generation, scan flow, app integration, manufacturing specs, factory testing.</p>
           <div class="timeline-chips">
             <span class="timeline-chip">QR system design</span>
             <span class="timeline-chip">Factory integration</span>
@@ -979,7 +926,7 @@
           <span class="timeline-phase-name">Vault platform</span>
         </div>
         <div class="timeline-content">
-          <p>Identity infrastructure established. Vault development: collector accounts, collection tracking, campaign mechanics, milestone systems, reward unlock logic. Cross-team alignment across marketing, licensing, and brand to design the first campaign structures.</p>
+          <p>Identity layer established. Vault: collector accounts, campaigns, milestones, reward logic. Cross-team alignment for first campaign structures.</p>
           <div class="timeline-chips">
             <span class="timeline-chip">Collector accounts</span>
             <span class="timeline-chip">Campaign engine</span>
@@ -994,7 +941,7 @@
           <span class="timeline-phase-name">Pilot campaigns</span>
         </div>
         <div class="timeline-content">
-          <p>First campaigns shipped against product launches. The One Piece Egghead series was an early pilot: collectors could scan toys to register ownership, participate in campaigns, and unlock exclusive content. Results validated that collectors would engage when scanning was tied to meaningful progression.</p>
+          <p>First campaigns against product launches. One Piece Egghead pilot: scan to register, join campaigns, unlock content.</p>
           <div class="timeline-chips">
             <span class="timeline-chip">One Piece Egghead pilot</span>
             <span class="timeline-chip">Campaign validation</span>
@@ -1012,51 +959,26 @@
     <div class="section-label">Execution</div>
     <div class="two-col">
       <div class="reveal">
-        <h2>The hardest part wasn't the product. It was the factory.</h2>
-        <p>QR authentication is straightforward until you try to integrate it into existing manufacturing workflows. Factories optimise for throughput and consistency. Adding a per-unit unique identifier — with placement constraints, visual specs, and database linkage — disrupted that flow in ways that weren't visible from a product spec.</p>
-        <p>The lesson I carry from this: factory QC requirements need to be in scope from Phase 1, not retrofitted in Phase 3. We designed placement standards early but left inspection guidelines too late. When the first production batches came back with inconsistencies, we had to redesign the QC process mid-cycle.</p>
-        <div class="callout" style="margin-top: 24px;">
-          <p>Spec QC requirements in Phase 1. Every week you wait is a production batch you can't redo.</p>
-        </div>
+        <h2>This product had to work in factories before it worked on phones.</h2>
+        <p>A QR scan takes a second. Building the infrastructure behind it meant writing manufacturing specs that production lines had to follow — with tolerances that showed up in the collector's scan experience, not on a dashboard.</p>
+        <p>Two things nearly broke it. First: factory QC. Sticker placement standards were defined early, but inspection guidelines shipped too late. First-batch inconsistencies forced a QC process redesign mid-cycle, while production was already moving. Second: database sync. Every production batch had to link to the authentication database before leaving the factory. A silent sync failure meant QR codes that scanned as invalid at retail — with no way to fix it post-production. There was no fallback. Building monitoring for that dependency was non-negotiable.</p>
       </div>
       <div class="reveal">
         <div class="exec-card">
           <h3>Sticker placement standards</h3>
-          <p>Defined visual and physical placement specs per product line. Balanced aesthetic integration with scan reliability — particularly for display-only collectors who never open packaging. Required close collaboration with brand and industrial design teams.</p>
+          <p>Placement specs per product line, balancing aesthetic integration with scan reliability.</p>
         </div>
         <div class="exec-card">
           <h3>Factory QC integration</h3>
-          <p>Designed inspection guidelines for factories with no prior experience with digital product identity. Involved production leads earlier than planned after first-batch issues surfaced. The result was a repeatable QC process that scaled across product lines.</p>
+          <p>Inspection guidelines for factories new to digital product identity. Involved production leads earlier after first-batch issues; ended up with a repeatable process across product lines.</p>
         </div>
         <div class="exec-card">
           <h3>Authentication database sync</h3>
-          <p>Every production batch had to link to the authentication database before reaching retail. Designed the batch ingestion flow and worked with engineering to build monitoring for sync failures — a critical dependency that had no fallback if it broke at launch.</p>
+          <p>Every batch had to link to the authentication database before retail. Designed batch ingestion and sync failure monitoring.</p>
         </div>
         <div class="exec-card">
           <h3>Operations monitoring dashboard</h3>
-          <p>Internal tool for tracking scan activity, authentication errors, and production batch status. Gave ops and support real-time visibility into system health — and gave us early signal on collector behaviour patterns before Vault campaigns launched.</p>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top: 64px;">
-      <div class="section-label" style="margin-bottom: 24px;">What I owned</div>
-      <div class="role-grid reveal">
-        <div class="role-item">
-          <span class="role-item-label">Product vision and strategy</span>
-          <p>Defined the positioning of authentication as an identity layer rather than a utility tool, and sequenced QR Auth before Vault as a deliberate infrastructure-first approach.</p>
-        </div>
-        <div class="role-item">
-          <span class="role-item-label">Product requirements</span>
-          <p>Authentication flows, campaign mechanics, collection tracking logic, reward systems. Documented as user stories and requirements for engineering.</p>
-        </div>
-        <div class="role-item">
-          <span class="role-item-label">Manufacturing integration</span>
-          <p>Sticker placement specs, QC guidelines, factory inspection design, and database sync requirements. Coordinated directly with production teams across product lines.</p>
-        </div>
-        <div class="role-item">
-          <span class="role-item-label">Cross-team alignment</span>
-          <p>Coordinated engineering, design, marketing, production, and licensing. Aligned campaign development with product launches and IP cycles.</p>
+          <p>Tracked scan activity, auth errors, and batch status. Gave ops real-time visibility and surfaced early collector behaviour signals.</p>
         </div>
       </div>
     </div>
@@ -1068,38 +990,38 @@
   <div class="container">
     <div class="section-label">Outcomes</div>
     <div class="two-col" style="margin-bottom: 16px;">
-      <h2 class="reveal">Foundation for loyalty — not the finished system</h2>
-      <p class="reveal">The primary outcome is structural: Mighty Jaxx can now identify who its collectors are. That didn't exist before. What follows — tiers, personalisation, secondary market transfer — is built on this foundation. It is worth being precise about what this project delivered and what comes next.</p>
+      <h2 class="reveal">Foundation for loyalty, not the finished system</h2>
+      <p class="reveal">The core outcome: Mighty Jaxx can now identify who its collectors are.</p>
     </div>
     <div class="outcome-strip reveal">
       <div class="outcome-cell">
         <span class="outcome-label">Collector identity</span>
         <span class="outcome-value">0 to 1</span>
-        <p>For the first time, the company can link physical collectibles to identifiable collectors. Thousands of verified registrations within the first authenticated product waves.</p>
+        <p>Thousands of verified registrations within the first authenticated product waves.</p>
       </div>
       <div class="outcome-cell">
         <span class="outcome-label">Auth completion</span>
         <span class="outcome-value">Significant lift</span>
-        <p>Switching from NFC to QR drove a meaningful increase in authentication completion. The interaction became something collectors could do without instruction. [Replace with actual rate when shareable.]</p>
+        <p>NFC to QR drove a meaningful lift in completion. [Replace with actual rate when shareable.]</p>
       </div>
       <div class="outcome-cell">
         <span class="outcome-label">Campaign validation</span>
         <span class="outcome-value">Proven</span>
-        <p>Pilot campaigns including the One Piece Egghead series demonstrated collectors will scan and engage when tied to real progression. Meaningful completion rates among registered collectors.</p>
+        <p>One Piece Egghead pilot: meaningful completion rates when scanning tied to real progression.</p>
       </div>
     </div>
     <div class="three-col reveal">
       <div class="card">
         <h3>Channel model unchanged</h3>
-        <p>Distributor and retail relationships are intact. The identity layer intercepts post-purchase without disrupting the existing business — the key constraint the system had to satisfy.</p>
+        <p>Distributor and retail relationships unchanged. Identity layer intercepts post-purchase without disrupting the channel.</p>
       </div>
       <div class="card">
         <h3>Marketing and licensing unblocked</h3>
-        <p>Both teams can now segment and activate collector audiences for the first time. IP-specific campaign targeting became possible where it previously wasn't.</p>
+        <p>Both teams can now segment and activate collectors. IP-specific targeting became possible.</p>
       </div>
       <div class="card">
         <h3>Infrastructure for what comes next</h3>
-        <p>Loyalty tiers, personalised campaigns, community features — all require collector identity to exist first. Vault is the prerequisite, not the endpoint.</p>
+        <p>Vault is the prerequisite for what comes next, not the endpoint.</p>
       </div>
     </div>
   </div>
@@ -1113,23 +1035,23 @@
     <div class="reflection-grid reveal">
       <div class="reflection-card">
         <span class="ref-tag tag-learning">Learning</span>
-        <h3>Spec QC requirements in Phase 1, not Phase 3</h3>
-        <p>We defined sticker placement standards early but left factory inspection guidelines too late. When the first production batches came back with placement inconsistencies, we had to redesign the QC process while production was already moving. Earlier factory workshops — before any spec was written — would have surfaced the throughput constraints that caused the problems.</p>
+        <h3>Factory spec decisions are product decisions</h3>
+        <p>Where the sticker sits, what surface it adheres to, whether it survives shelf conditions — these are UX decisions. We treated manufacturing integration as logistics. That framing was the root cause of the QC issue.</p>
       </div>
       <div class="reflection-card">
         <span class="ref-tag tag-learning">Learning</span>
         <h3>First-scan onboarding is a product problem, not a marketing one</h3>
-        <p>Scan adoption didn't happen automatically. Many collectors weren't aware Vault existed after unboxing. We treated first-scan awareness as a marketing channel problem when it's actually a product moment: the 30 seconds after unboxing. I'd design the first-scan experience into the product spec from day one — what happens immediately after the first scan is the most important UX decision in the entire system.</p>
+        <p>Many collectors weren't aware Vault existed after unboxing. We treated it as a marketing problem. It's a product moment — the 30 seconds after opening the box.</p>
       </div>
       <div class="reflection-card">
         <span class="ref-tag tag-next">Next</span>
         <h3>Always-on engagement between campaigns</h3>
-        <p>Campaigns drive spikes. Between launches, active collector sessions drop. The platform needs passive engagement mechanics — collection display, collector identity features, social proof — that sustain interest without a campaign being live. The current model is too event-dependent to build a habit.</p>
+        <p>Between launches, active sessions drop. The platform needs passive mechanics (collection display, social proof) to sustain engagement without a live campaign.</p>
       </div>
       <div class="reflection-card">
         <span class="ref-tag tag-next">Next</span>
         <h3>Secondary market ownership transfer</h3>
-        <p>Collectors trade heavily. Vault currently reflects first scan only, not current ownership. Solving transfer would unlock platform utility for secondary market collectors and create a stronger trust signal for the authentication system. It's also the feature most likely to make Vault genuinely useful across the full collector lifecycle.</p>
+        <p>Vault reflects first scan only. Collectors trade; current ownership isn't tracked. Solving transfer would unlock the platform for the secondary market.</p>
       </div>
     </div>
   </div>

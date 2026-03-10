@@ -255,7 +255,7 @@
     <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:1rem;">Reiko Tan &nbsp;&middot;&nbsp; Senior Product Manager &nbsp;&middot;&nbsp; Singapore</p>
     <div class="hero-tag"><span class="dot"></span> PM Case Study &nbsp;&middot;&nbsp; Feature Design</div>
     <h1>Granola<br><em>Open Items</em></h1>
-    <p>Proposing a native cross-meeting action tracker for Granola: turning the best meeting notetaker into a system that ensures meetings actually lead to something.</p>
+    <p>Proposing a native cross-meeting action tracker for Granola, so meetings lead to something after the notes are taken.</p>
     <div class="meta-row">
       <div class="meta-item"><div class="meta-label">Product</div><div class="meta-val">Granola AI</div></div>
       <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Feature Addition</div></div>
@@ -269,7 +269,7 @@
   <div class="wrap">
     <div class="eyebrow">01 · The Problem</div>
     <h2>Granola stops at recall.<br>The real value is what happens after.</h2>
-    <p class="lead">Granola has solved the hardest part of meetings: capture. But its value loop ends there. Commitments made across meetings stay buried in individual notes, organized by when the meeting happened, not by what still needs doing.</p>
+    <p class="lead">Granola has solved capture. Commitments stay buried in individual notes, organized by when the meeting happened, not by what still needs doing.</p>
 
     <div class="loop fade">
       <div class="loop-step"><div class="loop-lbl">Step 1</div><div class="loop-word">Meet</div></div>
@@ -278,8 +278,7 @@
       <div class="loop-step"><div class="loop-lbl">Missing</div><div class="loop-word">Act</div><div class="loop-note">Open Items fills this</div></div>
     </div>
 
-    <p style="margin-bottom:16px;">For users in 4&ndash;7 meetings daily, the cognitive load of tracking personal commitments across a growing note library is high enough that they maintain a <strong style="color:var(--text);font-weight:500;">parallel task system outside Granola</strong>, always slightly out of date, always one more thing to maintain.</p>
-    <p>Granola&rsquo;s co-founder has stated the ambition: <em>&ldquo;It is not about just capturing a meeting, but a space where you can work, even post meetings.&rdquo;</em> Open Items is the first concrete step toward that.</p>
+    <p style="margin-bottom:16px;">For users in 4&ndash;7 meetings daily, this means maintaining a <strong style="color:var(--text);font-weight:500;">parallel task system outside Granola</strong>, always slightly out of date. Granola&rsquo;s co-founder has stated the ambition: <em>&ldquo;It is not about just capturing a meeting, but a space where you can work, even post meetings.&rdquo;</em></p>
   </div>
 </section>
 
@@ -287,14 +286,14 @@
   <div class="wrap">
     <div class="eyebrow">02 · Key Decisions</div>
     <h2>The choices that shaped the feature</h2>
-    <p class="lead">Three decisions where I explicitly chose a direction and rejected an alternative. The reasoning is the work.</p>
+    <p class="lead">Three decisions where I chose a direction and rejected an alternative.</p>
 
     <div class="decisions fade">
       <div class="decision">
         <div class="d-num">01</div>
         <div>
           <div class="d-title">Precision over recall in extraction: conservative by default</div>
-          <p class="d-body">The highest-risk moment is the first impression. If the first list a user sees contains items that are not their commitments, they conclude the feature is broken and never return. Better to surface 6 high-confidence items than 12 that include noise. Recall improves iteratively. First impressions do not.</p>
+          <p class="d-body">If the first list contains noise, users conclude the feature is broken and don't return. Better to surface 6 high-confidence items than 12 that include noise.</p>
           <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Broad extraction with user-side filtering: puts the burden on users and confirms the feature is untrustworthy before trust is established.</div>
         </div>
       </div>
@@ -303,7 +302,7 @@
         <div class="d-num">02</div>
         <div>
           <div class="d-title">60-day full trial, then paid only: no permanent free tier</div>
-          <p class="d-body">Two failure modes were evaluated: a permanent free tier (subsidizes non-converters, spends the pricing lever prematurely) and a capped preview (creates friction at peak engagement). A full trial avoids both. The user accumulates 60 days of evidence the feature is load-bearing before facing a conversion decision with real stakes. Trial expiry is framed around specific items and history at risk, not feature marketing.</p>
+          <p class="d-body">A permanent free tier subsidizes non-converters and spends the pricing lever early. A capped preview creates friction at peak engagement. A full trial avoids both: the user accumulates 60 days of evidence before a conversion decision. Expiry is framed around items and history at risk, not feature marketing.</p>
           <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Permanent free tier with caps: adversarial conversion moment, eliminates future pricing flexibility, subsidizes non-converting users at scale.</div>
         </div>
       </div>
@@ -312,7 +311,7 @@
         <div class="d-num">03</div>
         <div>
           <div class="d-title">The Anti-Jira Principle: Open Items must never require user input to function</div>
-          <p class="d-body">Smart grouping, priority inference, custom labels: all valuable in Phase 2. But every addition must be additive, never required. If a user never touches a configuration option, Open Items must still be fully useful. The moment users are filling in fields to make the list work, the product has become a worse version of every task manager they already use.</p>
+          <p class="d-body">Every addition must be additive, never required. If a user never touches a configuration option, Open Items must still be fully useful. Once users fill in fields to make the list work, it becomes a worse version of every task manager they already use.</p>
           <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Mandatory priority fields, required labelling, AI-inferred due dates: all violate the principle and erode what makes this distinctly Granola.</div>
         </div>
       </div>
@@ -324,13 +323,13 @@
   <div class="wrap">
     <div class="eyebrow">03 · The Solution</div>
     <h2>Open Items</h2>
-    <p class="lead">A native Granola view that automatically extracts personal commitments from meeting notes and surfaces them in a single consolidated list, with source context, across all meetings, in one place. No setup. No configuration.</p>
+    <p class="lead">A native Granola view that extracts personal commitments from meeting notes and surfaces them in one consolidated list, with source context. No setup. No configuration.</p>
 
     <div class="callout">
       <p><strong>Vision:</strong> Transform Granola from a place where your meetings live into a system that ensures your meetings actually lead to something.</p>
     </div>
 
-    <p style="margin-bottom:32px;">Each item carries the action text, a context snippet from the transcript (enough to act without reopening the note), the source meeting and date, and a status: Open, Done, or Dismissed. Done and Dismissed are intentionally distinct: completing a task and deciding it is no longer relevant are different signals, and conflating them degrades list quality over time.</p>
+    <p style="margin-bottom:32px;">Each item carries the action text, a context snippet from the transcript, the source meeting and date, and a status: Open, Done, or Dismissed. Done and Dismissed are intentionally distinct: completing a task and deciding it's no longer relevant are different signals.</p>
 
     <div class="phases fade">
       <div class="phase">
@@ -379,37 +378,37 @@
   <div class="wrap">
     <div class="eyebrow">04 · Success Metrics</div>
     <h2>Measuring list trust,<br>not list completion</h2>
-    <p class="lead">The north star is whether Open Items becomes part of the daily workflow. Completion rate within a fixed timeframe is explicitly not a metric, and the reasoning matters.</p>
+    <p class="lead">The north star is whether Open Items becomes part of the daily workflow. Completion rate within a fixed timeframe is explicitly not a metric.</p>
 
     <div class="metrics-wrap fade">
       <div class="metric-ns">
         <div class="metric-ns-tag">North Star</div>
         <div class="metric-ns-name">Weekly Active Open Items Users / Weekly Active Granola Users</div>
-        <p class="metric-ns-def">The single number that tells us if the feature is becoming part of the core workflow, not just a feature that was tried once and abandoned.</p>
+        <p class="metric-ns-def">Whether the feature is part of the core workflow, not just tried once and abandoned.</p>
       </div>
       <div class="metrics-grid">
         <div class="metric">
           <div class="metric-cat">Extraction Quality</div>
           <div class="metric-name">Immediate Dismissal Rate</div>
-          <p class="metric-def">Items dismissed within 60 seconds. The strongest passive proxy for extraction noise. No survey required.</p>
+          <p class="metric-def">Items dismissed within 60 seconds. The strongest passive proxy for extraction noise.</p>
           <span class="metric-target">Below 15%</span>
         </div>
         <div class="metric">
           <div class="metric-cat">Habit Formation</div>
           <div class="metric-name">Session Entry via Open Items</div>
-          <p class="metric-def">% of daily active users opening Granola via Open Items. Strongest signal the feature has become load-bearing.</p>
+          <p class="metric-def">% of daily active users opening Granola via Open Items first. Signals the feature has become load-bearing.</p>
           <span class="metric-target">20% within 90 days</span>
         </div>
         <div class="metric">
           <div class="metric-cat">Monetization</div>
           <div class="metric-name">Trial-to-Paid Conversion</div>
-          <p class="metric-def">% upgrading at or before trial expiry. Benchmarked against Granola&rsquo;s existing conversion rates for other paid features.</p>
+          <p class="metric-def">% upgrading at or before trial expiry, benchmarked against Granola&rsquo;s existing conversion rates.</p>
           <span class="metric-target">Exceed existing benchmark</span>
         </div>
       </div>
       <div class="not-measuring">
         <div class="nm-tag">Explicitly Not Measuring</div>
-        <p>Completion rate within a defined timeframe. A 2-hour action and a 2-week follow-up cannot be held to the same window. A fixed timeframe creates false precision and incentivizes optimizing extraction toward short-horizon items. List trust is the right proxy for value.</p>
+        <p>Completion rate within a defined timeframe. A 2-hour action and a 2-week follow-up can't be held to the same window. A fixed timeframe creates false precision and incentivizes extracting short-horizon items over genuinely useful ones.</p>
       </div>
     </div>
   </div>
@@ -419,16 +418,16 @@
   <div class="wrap">
     <div class="eyebrow">05 · Tradeoffs</div>
     <h2>What we gave up and why</h2>
-    <p class="lead">Two tradeoffs significant enough to name explicitly. The full list is in the PRD.</p>
+    <p class="lead">Two tradeoffs named explicitly. The full list is in the PRD.</p>
 
     <div class="tradeoffs fade">
       <div class="tradeoff">
         <div class="to-label">Feature gravity locks the pricing decision</div>
-        <p class="to-body">Once Open Items is included in the paid plan, it is almost impossible to move it to a higher tier later. The window to treat it as a premium differentiator is at launch. After that it becomes table stakes. This means the MVP pricing call is effectively permanent. That is an acceptable cost for the retention mechanics it enables, but it needs to be a conscious decision, not a default.</p>
+        <p class="to-body">Once Open Items is in the paid plan, moving it to a higher tier later is nearly impossible. The window to treat it as a differentiator is at launch. After that it becomes table stakes.</p>
       </div>
       <div class="tradeoff">
         <div class="to-label">Extraction quality is the only dependency that can kill the feature on day one</div>
-        <p class="to-body">Every other risk is recoverable. Noisy extraction at first impression is not. If the first list a user sees does not feel accurate, the negative impression is almost impossible to reverse at scale. This means the extraction prompt must be validated with human-rated quality checks before launch, not just automated metrics. The cost is time. The cost of skipping it is a failed feature.</p>
+        <p class="to-body">Noisy extraction at first impression doesn't recover at scale. The extraction prompt needs human-rated quality checks before launch, not just automated metrics.</p>
       </div>
     </div>
   </div>
