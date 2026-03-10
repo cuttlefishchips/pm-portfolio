@@ -924,160 +924,73 @@
       .zones, .personas, .solutions, .constraints { grid-template-columns: 1fr; }
     }
 
-  /* ── SECTION NAV (sidebar on desktop, sheet on mobile/tablet) ── */
-  .sect-sidebar {
-    display: none;
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 2rem;
-    width: 140px;
-    z-index: 50;
+  /* ── SECTIONS DROPDOWN NAV ── */
+  .sect-btn {
+    background: none; border: 1px solid var(--rule);
+    color: var(--ink-2); font-family: var(--sans);
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 3px;
+    cursor: pointer; display: flex; align-items: center; gap: 5px;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
   }
-  .sect-sidebar-label {
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin-bottom: 0.75rem;
-  }
-  .sect-sidebar ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-  .sect-sidebar ul li a {
-    font-size: 0.78rem;
-    color: var(--ink-3);
-    text-decoration: none;
-    transition: color 0.15s;
-    display: block;
-    padding: 2px 0;
-  }
-  .sect-sidebar ul li a:hover { color: var(--ink); }
-  .sect-sidebar ul li a.active { color: var(--accent); font-weight: 400; }
-  .sect-top-link {
-    display: block;
-    margin-top: 1rem;
-    font-size: 0.68rem;
-    color: var(--ink-3);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: color 0.15s;
-  }
-  .sect-top-link:hover { color: var(--accent); }
-  @media (min-width: 1100px) {
-    .sect-sidebar { display: block; }
-  }
-  .sect-fab-group {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-  }
-  .sect-top-fab {
+  .sect-btn:hover { background: var(--bg-2); border-color: var(--ink-3); }
+  .sect-btn.open { background: var(--accent); color: white; border-color: var(--accent); }
+  .sect-btn-arrow { transition: transform 0.2s; display: inline-block; }
+  .sect-btn.open .sect-btn-arrow { transform: rotate(180deg); }
+  .sect-dropdown {
+    position: fixed; top: 54px; right: 2rem;
     background: var(--bg);
     border: 1px solid var(--rule);
-    color: var(--ink-3);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 1rem;
-    cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
+    border-radius: 6px; min-width: 210px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    z-index: 200;
+    visibility: hidden; opacity: 0; pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+  }
+  .sect-dropdown.open {
+    visibility: visible; opacity: 1; pointer-events: all;
+    transform: translateY(0);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
+  }
+  .sect-dropdown-top { padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+  .sect-dropdown-top a {
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-3); text-decoration: none;
+    display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+  }
+  .sect-dropdown-top a:hover { color: var(--ink); }
+  .sect-dropdown ul { list-style: none; max-height: 65vh; overflow-y: auto; padding: 6px 0; }
+  .sect-dropdown ul li a {
+    display: block; font-size: 13px; font-weight: 300;
+    color: var(--ink-2); text-decoration: none;
+    padding: 8px 14px; transition: background 0.1s, color 0.1s;
+    font-family: var(--sans); line-height: 1.3;
+  }
+  .sect-dropdown ul li a:hover { background: var(--bg-2); color: var(--ink); }
+  .sect-dropdown ul li a.active {
+    color: var(--accent); font-weight: 400;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border-left: 3px solid var(--accent); padding-left: 11px;
+  }
+  /* ── BACK TO TOP ── */
+  .back-to-top {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 38px; height: 38px;
+    background: var(--bg); border: 1px solid var(--rule);
+    color: var(--ink-3); border-radius: 50%;
+    font-size: 15px; cursor: pointer;
+    display: none; align-items: center; justify-content: center;
     box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-    font-family: inherit;
-    transition: color 0.15s;
+    z-index: 9999; transition: background 0.15s, color 0.15s;
+    font-family: var(--sans);
   }
-  .sect-top-fab.visible { display: flex; }
-  .sect-sections-fab {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 100px;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
-    font-family: inherit;
-  }
-  @media (min-width: 1100px) {
-    .sect-fab-group { display: none; }
-  }
-  .sect-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 9997;
-  }
-  .sect-backdrop.open { display: block; }
-  .sect-sheet {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: white;
-    border-radius: 20px 20px 0 0;
-    padding: 1.5rem 1.5rem 2.5rem;
-    z-index: 9998;
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-  .sect-sheet.open { transform: translateY(0); }
-  .sect-sheet-handle {
-    width: 36px;
-    height: 4px;
-    background: var(--rule);
-    border-radius: 2px;
-    margin: 0 auto 1.25rem;
-  }
-  .sect-sheet-title {
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin-bottom: 1rem;
-  }
-  .sect-sheet ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-  }
-  .sect-sheet ul li a {
-    display: block;
-    font-size: 0.9rem;
-    color: var(--ink);
-    text-decoration: none;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--rule);
-    transition: color 0.15s;
-  }
-  .sect-sheet ul li:last-child a { border-bottom: none; }
-  .sect-sheet ul li a:hover { color: var(--accent); }
-  .sect-sheet ul li a.active { color: var(--accent); font-weight: 500; }
+  .back-to-top:hover { background: var(--bg-2); color: var(--accent); }
+  .back-to-top.visible { display: flex; }
+  @media (max-width: 600px) { .sect-dropdown { right: 1rem; left: 1rem; min-width: unset; } }
 
 </style>
 </head>
@@ -1085,9 +998,30 @@
 
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
+<!-- Sections dropdown -->
+<div role="navigation" aria-label="Page sections" class="sect-dropdown" id="sectDropdown" inert>
+  <div class="sect-dropdown-top">
+    <a href="#" id="dropTopLink">&#8593; Back to top</a>
+  </div>
+  <ul>
+    <li><a href="#overview" class="sect-link">01 Overview</a></li>
+    <li><a href="#context" class="sect-link">02 Context</a></li>
+    <li><a href="#users" class="sect-link">03 Users</a></li>
+    <li><a href="#solution" class="sect-link">04 Solution</a></li>
+    <li><a href="#ux" class="sect-link">05 UX Design</a></li>
+    <li><a href="#metrics" class="sect-link">06 Metrics</a></li>
+    <li><a href="#learnings" class="sect-link">07 Learnings</a></li>
+    <li><a href="#signals" class="sect-link">08 Signals</a></li>
+  </ul>
+</div>
+
 <nav>
   <a href="../index.html" class="nav-brand">Reiko Tan</a>
   <div class="nav-right">
+    <button class="sect-btn" id="sectBtn"
+      aria-haspopup="true" aria-expanded="false" aria-controls="sectDropdown">
+      Sections <span class="sect-btn-arrow" aria-hidden="true">&#8964;</span>
+    </button>
     <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     </a>
@@ -1097,42 +1031,8 @@
   </div>
 </nav>
 
-<!-- Section sidebar (desktop ≥1100px) -->
-<div class="sect-sidebar" id="sectSidebar">
-  <p class="sect-sidebar-label">Sections</p>
-  <ul>
-    <li><a href="#overview">01 Overview</a></li>
-    <li><a href="#context">02 Context</a></li>
-    <li><a href="#users">03 Users</a></li>
-    <li><a href="#solution">04 Solution</a></li>
-    <li><a href="#ux">05 UX Design</a></li>
-    <li><a href="#metrics">06 Metrics</a></li>
-    <li><a href="#learnings">07 Learnings</a></li>
-    <li><a href="#signals">08 Signals</a></li>
-  </ul>
-  <button class="sect-top-link" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593; Top</button>
-</div>
-
-<!-- FAB + sheet (mobile/tablet <1100px) -->
-<div class="sect-fab-group" id="sectFabGroup">
-  <button class="sect-top-fab" id="sectTopFab" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
-  <button class="sect-sections-fab" id="sectFab" onclick="toggleSheet()">&#9776; Sections</button>
-</div>
-<div class="sect-backdrop" id="sectBackdrop" onclick="closeSheet()"></div>
-<div class="sect-sheet" id="sectSheet">
-  <div class="sect-sheet-handle"></div>
-  <p class="sect-sheet-title">Sections</p>
-  <ul>
-    <li><a href="#overview" onclick="closeSheet()">01 · Overview</a></li>
-    <li><a href="#context" onclick="closeSheet()">02 · Context</a></li>
-    <li><a href="#users" onclick="closeSheet()">03 · Users</a></li>
-    <li><a href="#solution" onclick="closeSheet()">04 · Solution</a></li>
-    <li><a href="#ux" onclick="closeSheet()">05 · UX Design</a></li>
-    <li><a href="#metrics" onclick="closeSheet()">06 · Metrics</a></li>
-    <li><a href="#learnings" onclick="closeSheet()">07 · Learnings</a></li>
-    <li><a href="#signals" onclick="closeSheet()">08 · Signals</a></li>
-  </ul>
-</div>
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
 
 <div class="page">
 
@@ -1656,36 +1556,77 @@
 </div>
 
 <script>
-  // Reading progress + back-to-top fab
+  // Reading progress + back-to-top
   const bar = document.getElementById('progress');
-  const topFab = document.getElementById('sectTopFab');
+  const backToTop = document.getElementById('backToTop');
   window.addEventListener('scroll', () => {
     const doc = document.documentElement;
     bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-    if (topFab) topFab.classList.toggle('visible', window.scrollY > 300);
+    backToTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Sections dropdown
+  const sectBtn = document.getElementById('sectBtn');
+  const sectDropdown = document.getElementById('sectDropdown');
+
+  function openDropdown() {
+    sectDropdown.classList.add('open');
+    sectDropdown.removeAttribute('inert');
+    sectBtn.classList.add('open');
+    sectBtn.setAttribute('aria-expanded', 'true');
+    const first = sectDropdown.querySelector('a');
+    if (first) first.focus();
+  }
+  function closeDropdown() {
+    sectDropdown.classList.remove('open');
+    sectDropdown.setAttribute('inert', '');
+    sectBtn.classList.remove('open');
+    sectBtn.setAttribute('aria-expanded', 'false');
+  }
+  function toggleDropdown() {
+    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+  }
+
+  sectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (!sectDropdown.classList.contains('open')) return;
+    const links = [...sectDropdown.querySelectorAll('a')];
+    const idx = links.indexOf(document.activeElement);
+    if (e.key === 'Escape') { e.preventDefault(); closeDropdown(); sectBtn.focus(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); links[(idx + 1) % links.length].focus(); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); links[(idx - 1 + links.length) % links.length].focus(); }
+    if (e.key === 'Tab' && !e.shiftKey && idx === links.length - 1) { closeDropdown(); }
+    if (e.key === 'Tab' && e.shiftKey && idx === 0) { closeDropdown(); }
   });
 
-  // Sheet open/close
-  function toggleSheet() {
-    document.getElementById('sectSheet').classList.toggle('open');
-    document.getElementById('sectBackdrop').classList.toggle('open');
-  }
-  function closeSheet() {
-    document.getElementById('sectSheet').classList.remove('open');
-    document.getElementById('sectBackdrop').classList.remove('open');
-  }
+  document.addEventListener('click', (e) => {
+    if (!sectDropdown.contains(e.target) && e.target !== sectBtn) closeDropdown();
+  });
 
-  // Active section highlighting (sidebar + sheet)
-  const allSectLinks = document.querySelectorAll('.sect-sidebar a[href^="#"], .sect-sheet a[href^="#"]');
+  document.getElementById('dropTopLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeDropdown();
+    sectBtn.focus();
+  });
+
+  document.querySelectorAll('.sect-link').forEach(a => {
+    a.addEventListener('click', () => closeDropdown());
+  });
+
+  // Active section highlighting
+  const sectLinks = [...sectDropdown.querySelectorAll('a[href^="#"]')];
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        allSectLinks.forEach(link => {
+        sectLinks.forEach(link => {
           link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
         });
       }
     });
-  }, { rootMargin: '-30% 0px -60% 0px' });
+  }, { rootMargin: '-20% 0px -70% 0px' });
   document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
 </script>
 
