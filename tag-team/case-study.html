@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tag Team — Build for Good Hackathon | Reiko Tan</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber: #B85C2A;
+    --amber-light: #D97C45;
+    --amber-pale: #FDF0E6;
+    --amber-border: #E8A882;
+    --black: #0D0D0D;
+    --off-white: #F9F6F2;
+    --warm-white: #FDFBF8;
+    --text: #1A1A1A;
+    --text-2: #55554E;
+    --text-3: #88887F;
+    --border: #E5E0D8;
+    --card: #FFFFFF;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:var(--warm-white); color:var(--text); line-height:1.65; font-size:16px; -webkit-font-smoothing:antialiased; }
+
+  /* ── NAV ── */
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(253,251,248,0.92); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; justify-content:space-between; }
+  .nav-brand { font-family:'DM Serif Display',serif; font-size:0.95rem; color:var(--amber); text-decoration:none; }
+  .nav-back { display:flex; align-items:center; gap:1.25rem; }
+  .nav-icon { display:flex; align-items:center; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
+  .nav-icon:hover { color:var(--amber); }
+  .reading-progress { position:fixed; top:56px; left:0; right:0; height:2px; background:var(--border); z-index:99; }
+  .reading-progress-bar { height:100%; background:var(--amber); width:0%; transition:width 0.1s linear; }
+
+  /* ── SECTIONS DROPDOWN NAV ── */
+  .sect-btn {
+    background: none; border: 1.5px solid rgba(184,92,42,0.35);
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 3px;
+    cursor: pointer; display: flex; align-items: center; gap: 5px;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .sect-btn:hover { background: rgba(184,92,42,0.07); border-color: var(--amber); }
+  .sect-btn.open { background: var(--amber); color: white; border-color: var(--amber); }
+  .sect-btn-arrow { transition: transform 0.2s; display: inline-block; }
+  .sect-btn.open .sect-btn-arrow { transform: rotate(180deg); }
+  .sect-dropdown {
+    position: fixed; top: 58px; right: 40px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px; min-width: 210px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    z-index: 200;
+    visibility: hidden; opacity: 0; pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+  }
+  .sect-dropdown.open {
+    visibility: visible; opacity: 1; pointer-events: all;
+    transform: translateY(0);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
+  }
+  .sect-dropdown-top { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .sect-dropdown-top a {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-3); text-decoration: none;
+    display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+  }
+  .sect-dropdown-top a:hover { color: var(--amber); }
+  .sect-dropdown ul { list-style: none; max-height: 65vh; overflow-y: auto; padding: 6px 0; }
+  .sect-dropdown ul li a {
+    display: block; font-size: 13px; font-weight: 400;
+    color: var(--text-2); text-decoration: none;
+    padding: 8px 14px; transition: background 0.1s, color 0.1s;
+    font-family: 'DM Sans', sans-serif; line-height: 1.3;
+  }
+  .sect-dropdown ul li a:hover { background: var(--off-white); color: var(--text); }
+  .sect-dropdown ul li a.active {
+    color: var(--amber); font-weight: 500;
+    background: var(--amber-pale);
+    border-left: 3px solid var(--amber-border); padding-left: 11px;
+  }
+  .back-to-top {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 38px; height: 38px;
+    background: var(--warm-white); border: 1.5px solid var(--border);
+    color: var(--text-3); border-radius: 50%;
+    font-size: 15px; cursor: pointer;
+    display: none; align-items: center; justify-content: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    z-index: 9999; transition: background 0.15s, color 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .back-to-top:hover { background: var(--amber-pale); color: var(--amber); }
+  .back-to-top.visible { display: flex; }
+  @media (max-width: 600px) { .sect-dropdown { right: 16px; left: 16px; min-width: unset; } }
+
+  /* ── LAYOUT ── */
+  .wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 88px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  h1 { font-family:'DM Serif Display',serif; font-size:clamp(2.4rem,5vw,3.8rem); line-height:1.08; letter-spacing:-0.02em; color:var(--black); font-weight:400; }
+  h1 em { font-style:italic; color:var(--amber); }
+  h2 { font-family:'DM Serif Display',serif; font-size:clamp(1.5rem,3vw,1.9rem); line-height:1.2; letter-spacing:-0.01em; color:var(--black); font-weight:400; margin-bottom:16px; }
+  p { color:var(--text-2); font-weight:300; font-size:0.975rem; line-height:1.75; }
+  p + p { margin-top:16px; }
+
+  .eyebrow { font-size:0.7rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber); display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+  .eyebrow::before { content:''; display:block; width:20px; height:1px; background:var(--amber); }
+
+  /* ── HERO ── */
+  .hero { padding:144px 0 88px; border-bottom:1px solid var(--border); }
+  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:var(--amber-pale); color:var(--amber); font-size:0.72rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border-radius:100px; margin-bottom:28px; }
+  .hero > .wrap > p { font-size:1.05rem; max-width:560px; margin:20px 0 48px; line-height:1.75; color:var(--text-2); font-weight:300; }
+  .meta-row { display:flex; flex-wrap:wrap; border-top:1px solid var(--border); padding-top:32px; gap:0; }
+  .meta-item { padding-right:32px; margin-right:32px; border-right:1px solid var(--border); padding-bottom:4px; }
+  .meta-item:last-child { border-right:none; }
+  .meta-label { font-size:0.65rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
+  .meta-val { font-size:0.9rem; font-weight:500; color:var(--text); }
+
+  /* ── CALLOUT ── */
+  .callout { border-left:3px solid var(--amber); background:var(--amber-pale); padding:20px 24px; border-radius:0 8px 8px 0; margin:32px 0; }
+  .callout p { color:var(--amber); font-size:1rem; font-weight:400; line-height:1.65; }
+
+  /* ── SOLUTION GRID ── */
+  .solution-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:40px; }
+  .sol-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:28px; transition:border-color 0.15s; }
+  .sol-card:hover { border-color:var(--amber-border); }
+  .sol-num { font-family:'DM Serif Display',serif; font-size:1.6rem; color:var(--border); line-height:1; margin-bottom:12px; }
+  .sol-title { font-size:0.875rem; font-weight:600; color:var(--text); margin-bottom:8px; line-height:1.4; }
+  .sol-body { font-size:0.845rem; color:var(--text-3); font-weight:300; line-height:1.65; }
+
+  /* ── COMPETITOR TABLE ── */
+  .comp-table { width:100%; border-collapse:collapse; margin-top:36px; }
+  .comp-table th { font-size:0.65rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); text-align:left; padding:10px 16px; border-bottom:2px solid var(--border); }
+  .comp-table td { font-size:0.875rem; color:var(--text-2); font-weight:300; padding:14px 16px; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.55; }
+  .comp-table tr:last-child td { border-bottom:none; }
+  .comp-table tr:hover td { background:var(--off-white); }
+  .comp-type { font-size:0.7rem; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; padding:3px 8px; border-radius:100px; white-space:nowrap; }
+  .type-marketplace { background:var(--off-white); color:var(--text-3); border:1px solid var(--border); }
+  .type-info { background:#EEF3FB; color:#3A6EA8; border:1px solid #C5D8F0; }
+  .type-coord { background:var(--amber-pale); color:var(--amber); border:1px solid var(--amber-border); }
+  .comp-gap { display:inline-block; font-size:0.72rem; font-weight:400; color:#B04A40; }
+
+  /* ── INSIGHT BLOCK ── */
+  .insight-split { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:40px; border-radius:10px; overflow:hidden; border:1px solid var(--border); }
+  .insight-col { padding:32px; }
+  .insight-col.left { background:var(--off-white); }
+  .insight-col.right { background:var(--amber); }
+  .insight-label { font-size:0.65rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:12px; }
+  .insight-col.left .insight-label { color:var(--text-3); }
+  .insight-col.right .insight-label { color:rgba(255,255,255,0.6); }
+  .insight-head { font-family:'DM Serif Display',serif; font-size:1.15rem; line-height:1.3; margin-bottom:10px; }
+  .insight-col.left .insight-head { color:var(--black); }
+  .insight-col.right .insight-head { color:#fff; }
+  .insight-body { font-size:0.845rem; font-weight:300; line-height:1.65; }
+  .insight-col.left .insight-body { color:var(--text-2); }
+  .insight-col.right .insight-body { color:rgba(255,255,255,0.75); }
+
+  /* ── SIGNAL ITEMS ── */
+  .signal-list { display:flex; flex-direction:column; gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-top:40px; }
+  .signal-item { padding:24px 28px; border-bottom:1px solid var(--border); display:grid; grid-template-columns:28px 1fr; gap:16px; background:var(--card); }
+  .signal-item:last-child { border-bottom:none; }
+  .signal-dot { width:8px; height:8px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+  .signal-dot.green { background:#2D9E5F; }
+  .signal-dot.amber { background:var(--amber); }
+  .signal-dot.grey { background:var(--border); }
+  .signal-title { font-size:0.875rem; font-weight:600; color:var(--text); margin-bottom:4px; }
+  .signal-body { font-size:0.845rem; color:var(--text-3); font-weight:300; line-height:1.6; }
+
+  /* ── FOOTER ── */
+  footer { padding:28px 32px; text-align:center; background:var(--off-white); border-top:1px solid var(--border); }
+  footer p { font-size:0.75rem; color:var(--text-3); font-weight:300; }
+  .footer-nav-row { display:flex; justify-content:center; gap:24px; margin-top:10px; }
+  .footer-nav-row a { font-size:0.75rem; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
+  .footer-nav-row a:hover { color:var(--amber); }
+
+  /* ── ANIMATIONS ── */
+  .fade { opacity:0; transform:translateY(16px); transition:opacity 0.5s ease, transform 0.5s ease; }
+  .fade.in { opacity:1; transform:none; }
+
+  @media(max-width:680px) {
+    nav { padding:0 20px; }
+    .wrap { padding:0 20px; }
+    section { padding:64px 0; }
+    .solution-grid { grid-template-columns:1fr; }
+    .insight-split { grid-template-columns:1fr; }
+    .meta-item { border-right:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sections dropdown -->
+<div role="navigation" aria-label="Page sections" class="sect-dropdown" id="sectDropdown" inert>
+  <div class="sect-dropdown-top">
+    <a href="#" id="dropTopLink">&#8593; Back to top</a>
+  </div>
+  <ul>
+    <li><a href="#context" class="sect-link">01 Context</a></li>
+    <li><a href="#research" class="sect-link">02 Ecosystem Research</a></li>
+    <li><a href="#insight" class="sect-link">03 The Insight</a></li>
+    <li><a href="#concept" class="sect-link">04 Tag Team</a></li>
+    <li><a href="#reflection" class="sect-link">05 Reflection</a></li>
+  </ul>
+</div>
+
+<div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
+
+<nav>
+  <a href="../index.html" class="nav-brand">Reiko Tan</a>
+  <div class="nav-back">
+    <button class="sect-btn" id="sectBtn"
+      aria-haspopup="true" aria-expanded="false" aria-controls="sectDropdown">
+      Sections <span class="sect-btn-arrow" aria-hidden="true">&#8964;</span>
+    </button>
+    <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+    </a>
+    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram" target="_blank" rel="noopener">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-tag">Hackathon &nbsp;&middot;&nbsp; Social Impact &nbsp;&middot;&nbsp; Eldercare &nbsp;&middot;&nbsp; Singapore</div>
+    <h1>Everyone built<br>a care <em>marketplace</em>.<br>We built coordination<br>infrastructure.</h1>
+    <p>A 48-hour deep-dive into Singapore's eldercare coordination crisis — and the positioning insight that shaped a product agencies are still asking about.</p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">Product</div><div class="meta-val">Tag Team</div></div>
+      <div class="meta-item"><div class="meta-label">Context</div><div class="meta-val">Build for Good Hackathon</div></div>
+      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Concept &rarr; Prototype</div></div>
+      <div class="meta-item"><div class="meta-label">Status</div><div class="meta-val">In Discussion</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 CONTEXT -->
+<section id="context">
+  <div class="wrap">
+    <div class="eyebrow fade">01 &nbsp;&middot;&nbsp; Context</div>
+    <h2 class="fade">Singapore is aging. Families are the ones absorbing the load.</h2>
+    <p class="fade">Build for Good is a Singapore hackathon focused on technology for social good. Our team chose eldercare — not because it was the obvious choice, but because we kept hearing the same thing from people around us: coordinating care for an aging parent is exhausting, and not because of a lack of love or resources.</p>
+    <p class="fade">Singapore is projected to be a super-aged society by 2026, with one in five residents over 65. Many families are already in it: juggling careers, young children, and the daily coordination of care for an elderly parent — across family members, foreign domestic workers, healthcare providers, and government support programmes.</p>
+    <p class="fade">The system isn't broken. It's fragmented. And fragmentation, at human scale, means things fall through the cracks.</p>
+    <div class="callout fade">
+      <p>"Dad had a physio appointment Tuesday. None of us knew who was taking him. We found out when the clinic called to say he didn't show."</p>
+    </div>
+    <p class="fade">That story — or versions of it — came up repeatedly in our early conversations. It wasn't a resource problem. It was a coordination problem.</p>
+  </div>
+</section>
+
+<!-- 02 ECOSYSTEM RESEARCH -->
+<section id="research" style="background:var(--off-white);">
+  <div class="wrap">
+    <div class="eyebrow fade">02 &nbsp;&middot;&nbsp; Ecosystem Research</div>
+    <h2 class="fade">We mapped every existing solution. They all solved the wrong problem.</h2>
+    <p class="fade">Before touching anything product-shaped, I led the team through a structured analysis of the existing landscape in Singapore and globally. Eight solutions across two categories.</p>
+
+    <table class="comp-table fade">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Market</th>
+          <th>Type</th>
+          <th>Gap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Homage</strong></td>
+          <td>Singapore</td>
+          <td><span class="comp-type type-marketplace">Marketplace</span></td>
+          <td><span class="comp-gap">Matches families with care professionals. Doesn't help families already doing the care.</span></td>
+        </tr>
+        <tr>
+          <td><strong>AIC eCare</strong></td>
+          <td>Singapore</td>
+          <td><span class="comp-type type-info">Info / Navigation</span></td>
+          <td><span class="comp-gap">Helps navigate government services. No workflow support.</span></td>
+        </tr>
+        <tr>
+          <td><strong>CareCompass.sg</strong></td>
+          <td>Singapore</td>
+          <td><span class="comp-type type-info">Info / Navigation</span></td>
+          <td><span class="comp-gap">Resource directory. Passive. Doesn't help with daily coordination.</span></td>
+        </tr>
+        <tr>
+          <td><strong>SG Assist</strong></td>
+          <td>Singapore</td>
+          <td><span class="comp-type type-info">Info / Navigation</span></td>
+          <td><span class="comp-gap">Community forum. Unstructured. No accountability layer.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Lotsa Helping Hands</strong></td>
+          <td>Global</td>
+          <td><span class="comp-type type-coord">Coordination</span></td>
+          <td><span class="comp-gap">Closest model to what we needed. US-centric. Weak on professional integration.</span></td>
+        </tr>
+        <tr>
+          <td><strong>Cura Systems</strong></td>
+          <td>Global</td>
+          <td><span class="comp-type type-marketplace">Marketplace</span></td>
+          <td><span class="comp-gap">Professional care management. Not designed for family-led care.</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="fade" style="margin-top:32px;">The pattern was clear. Existing solutions assume the problem is <em>finding</em> care — a service to hire, a programme to enrol in, a professional to book. Marketplaces and information tools dominate the space.</p>
+    <p class="fade">But most families already have care in place. Mum is at home. There is a live-in helper. Siblings take shifts. Doctors are involved. The problem is not finding more resources. The problem is that nobody knows what everyone else is doing.</p>
+  </div>
+</section>
+
+<!-- 03 THE INSIGHT -->
+<section id="insight">
+  <div class="wrap">
+    <div class="eyebrow fade">03 &nbsp;&middot;&nbsp; The Insight</div>
+    <h2 class="fade">The problem isn't finding care. It's coordinating it.</h2>
+    <p class="fade">This distinction shaped every product decision that followed. It determined who the primary user was, what the core workflows needed to be, and how we would measure whether the product actually worked.</p>
+    <p class="fade">A care marketplace serves families who don't yet have a plan. We weren't building for them. We were building for families already in the middle of it — doing the care, but doing it in fragments.</p>
+
+    <div class="insight-split fade">
+      <div class="insight-col left">
+        <div class="insight-label">What everyone else built</div>
+        <div class="insight-head">A care marketplace</div>
+        <div class="insight-body">Primary user: families searching for services. Core loop: discover &rarr; book &rarr; pay. Success metric: transactions. Problem: most families already have care in place.</div>
+      </div>
+      <div class="insight-col right">
+        <div class="insight-label">What we built</div>
+        <div class="insight-head">Coordination infrastructure</div>
+        <div class="insight-body">Primary user: families already providing care. Core loop: assign &rarr; track &rarr; update. Success metric: coordination clarity. Problem: the relay is broken, not the roster.</div>
+      </div>
+    </div>
+
+    <p class="fade" style="margin-top:40px;">The name came from this insight. Caregiving is a relay, not a solo effort. Tag Team — you hand off, you check in, you don't drop the baton. The product needed to make that handoff feel like a system, not a prayer.</p>
+  </div>
+</section>
+
+<!-- 04 THE CONCEPT -->
+<section id="concept" style="background:var(--off-white);">
+  <div class="wrap">
+    <div class="eyebrow fade">04 &nbsp;&middot;&nbsp; Tag Team</div>
+    <h2 class="fade">Four workflows. One shared view of care.</h2>
+    <p class="fade">The concept wasn't a feature list. It was a set of interlocking workflows designed around the coordination gap — each one solving a specific breakdown point in how families currently manage care across multiple parties.</p>
+
+    <div class="solution-grid">
+      <div class="sol-card fade">
+        <div class="sol-num">01</div>
+        <div class="sol-title">Shared Responsibility</div>
+        <div class="sol-body">A central task board visible to everyone on the care team — family members, the live-in helper, and relevant professionals. Who does what, when, and whether it's done. Replaces the mental load of tracking across WhatsApp threads and memory.</div>
+      </div>
+      <div class="sol-card fade">
+        <div class="sol-num">02</div>
+        <div class="sol-title">Care Timeline</div>
+        <div class="sol-body">A structured, shared calendar for the elderly person's care journey — medical appointments, medication schedules, therapy sessions, daily care needs. One view instead of five separate ones.</div>
+      </div>
+      <div class="sol-card fade">
+        <div class="sol-num">03</div>
+        <div class="sol-title">Structured Updates</div>
+        <div class="sol-body">A log that replaces chaotic group chats. The helper notes medication given. Doctor visit notes are recorded. Family members are automatically notified about what matters. Structured, searchable, not buried in conversation.</div>
+      </div>
+      <div class="sol-card fade">
+        <div class="sol-num">04</div>
+        <div class="sol-title">Service Navigation</div>
+        <div class="sol-body">Singapore has extensive support programmes — but most families don't know what they qualify for. Tag Team surfaces relevant schemes based on the care situation, removing the research burden from already-stretched caregivers.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 REFLECTION -->
+<section id="reflection">
+  <div class="wrap">
+    <div class="eyebrow fade">05 &nbsp;&middot;&nbsp; Reflection</div>
+    <h2 class="fade">We didn't win. The idea didn't stop there.</h2>
+    <p class="fade">The team didn't place at Build for Good. The judges evaluated a lot of strong submissions in a compressed timeframe, and a coordination platform for families is harder to demo in 48 hours than a tool with an immediate, visible output.</p>
+    <p class="fade">But the conversations that followed were more interesting than the hackathon itself. Several agencies reached out after the event. We are in active discussions about potential collaboration. The problem framing resonated with people who work in this space every day.</p>
+    <p class="fade">I think that's the clearest signal of whether a problem statement is real.</p>
+
+    <div class="signal-list fade" style="margin-top:40px;">
+      <div class="signal-item">
+        <div class="signal-dot green" style="margin-top:7px;"></div>
+        <div>
+          <div class="signal-title">Post-hackathon agency interest</div>
+          <div class="signal-body">Multiple agencies reached out after the event. Currently in active discussions about collaboration. Not a guarantee — but a meaningful signal that the problem framing landed with domain experts, not just judges.</div>
+        </div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-dot amber" style="margin-top:7px;"></div>
+        <div>
+          <div class="signal-title">What I'd do differently</div>
+          <div class="signal-body">Four workflows is the right long-term shape, but the wrong starting point. The shared responsibility board should have been the entire product at launch — one workflow, done exceptionally. The rest follows once families are anchored into a coordination habit.</div>
+        </div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-dot grey" style="margin-top:7px;"></div>
+        <div>
+          <div class="signal-title">The open question</div>
+          <div class="signal-body">Singapore's eldercare support ecosystem is genuinely complex. The service navigation component is valuable but risky — it requires maintaining accurate, up-to-date programme data across multiple agencies. That's an operational challenge as much as a product one.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Reiko Tan &nbsp;&middot;&nbsp; PM Portfolio &nbsp;&middot;&nbsp; Build for Good Hackathon</p>
+  <div class="footer-nav-row">
+    <a href="../index.html">&#8592; All Work</a>
+    <a href="mailto:reiko98@live.com.sg">reiko98@live.com.sg</a>
+    <a href="https://t.me/rracko" target="_blank" rel="noopener">@rracko</a>
+  </div>
+</footer>
+
+<script>
+  // Reading progress + back-to-top
+  const bar = document.getElementById('progress');
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
+    backToTop.classList.toggle('visible', window.scrollY > 400);
+  }, { passive: true });
+  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Sections dropdown
+  const sectBtn = document.getElementById('sectBtn');
+  const sectDropdown = document.getElementById('sectDropdown');
+
+  function openDropdown() {
+    sectDropdown.classList.add('open');
+    sectDropdown.removeAttribute('inert');
+    sectBtn.classList.add('open');
+    sectBtn.setAttribute('aria-expanded', 'true');
+    const first = sectDropdown.querySelector('a');
+    if (first) first.focus();
+  }
+  function closeDropdown() {
+    sectDropdown.classList.remove('open');
+    sectDropdown.setAttribute('inert', '');
+    sectBtn.classList.remove('open');
+    sectBtn.setAttribute('aria-expanded', 'false');
+  }
+  function toggleDropdown() {
+    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+  }
+
+  sectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (!sectDropdown.classList.contains('open')) return;
+    const links = [...sectDropdown.querySelectorAll('a')];
+    const idx = links.indexOf(document.activeElement);
+    if (e.key === 'Escape') { e.preventDefault(); closeDropdown(); sectBtn.focus(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); links[(idx + 1) % links.length].focus(); }
+    if (e.key === 'ArrowUp')   { e.preventDefault(); links[(idx - 1 + links.length) % links.length].focus(); }
+    if (e.key === 'Tab' && !e.shiftKey && idx === links.length - 1) { closeDropdown(); }
+    if (e.key === 'Tab' && e.shiftKey && idx === 0) { closeDropdown(); }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!sectDropdown.contains(e.target) && e.target !== sectBtn) closeDropdown();
+  });
+
+  document.getElementById('dropTopLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    closeDropdown();
+    sectBtn.focus();
+  });
+
+  document.querySelectorAll('.sect-link').forEach(a => {
+    a.addEventListener('click', () => closeDropdown());
+  });
+
+  // Scroll animations
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.fade').forEach(el => fadeObs.observe(el));
+
+  // Active section highlighting
+  const sectLinks = [...sectDropdown.querySelectorAll('a[href^="#"]')];
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        sectLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+</script>
+</body>
+</html>
