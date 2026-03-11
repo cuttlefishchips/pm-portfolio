@@ -182,37 +182,38 @@
 
     /* ── SECTIONS ── */
     section {
-      padding: 4rem 0;
+      padding: 88px 0;
       border-bottom: 1px solid var(--rule);
     }
 
     section:last-child { border-bottom: none; }
 
     .section-label {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--ink-3);
-      margin-bottom: 2rem;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 8px;
+      margin-bottom: 20px;
     }
 
-    .section-label::after {
+    .section-label::before {
       content: '';
-      flex: 1;
+      display: block;
+      width: 20px;
       height: 1px;
-      background: var(--rule);
+      background: currentColor;
     }
 
     h2 {
       font-family: var(--serif);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
       font-weight: 400;
       line-height: 1.2;
-      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
       color: var(--ink);
     }
 
@@ -992,6 +993,16 @@
   .back-to-top.visible { display: flex; }
   @media (max-width: 600px) { .sect-dropdown { right: 1rem; left: 1rem; min-width: unset; } }
 
+  /* ── HERO FOCUS ── */
+  .hero-focus {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 1rem;
+  }
+
 </style>
 </head>
 <body>
@@ -1040,6 +1051,7 @@
   <div class="hero">
     <div class="container">
       <p class="hero-byline">Reiko Tan &nbsp;&middot;&nbsp; Senior Product Manager &nbsp;&middot;&nbsp; Singapore</p>
+      <div class="hero-focus">Deep dive — infrastructure misdiagnosis</div>
       <div class="hero-meta">
         <span class="tag accent">Case Study</span>
         <span class="tag">Fintech</span>
@@ -1047,7 +1059,7 @@
         <span class="tag">Singapore</span>
       </div>
       <h1>Getting <em>verified investors</em> to their first deposit</h1>
-      <p class="hero-lede">The deposit flow looked like a UX problem. The email step had no regulatory basis; it existed because reconciliation was broken.</p>
+      <p class="hero-lede">The deposit flow looked like a UX problem. It wasn't. The proof email existed because there was no automated reconciliation — removing it meant fixing the infrastructure, not redesigning the screen.</p>
       <div class="hero-stats">
         <div class="stat">
           <div class="stat-value">20%</div>
@@ -1073,7 +1085,7 @@
         <div>
           <h2>A verified investor who never deposits is a missed investment</h2>
           <div class="callout" style="margin-bottom:1.5rem;">
-            <p><strong>Why this problem, why now:</strong> An estimated 80% of KYC-verified investors had never deposited. Wallet activation was the binding constraint on AUM growth.</p>
+            <p>An estimated 80% of KYC-verified investors had never deposited. The deposit flow's email step had no regulatory basis — it was a manual workaround for broken reconciliation. Fixing activation meant fixing that infrastructure, not the screens.</p>
           </div>
           <p>[Company] is a vertically integrated alternative assets platform: deal sourcing, tokenisation, custody, exchange, and secondary market. The deposit flow required users to bank transfer to a static DBS account, email a screenshot to cs@[company].com, and wait up to 5 working days with no feedback. That flow broke at two points.</p>
           <div class="zones">
@@ -1134,43 +1146,7 @@
     <div class="container">
       <p class="section-label">03 - Users</p>
       <h2>Three types of verified investor, three different failure modes</h2>
-      <div class="personas">
-        <div class="persona">
-          <div class="persona-initial">R</div>
-          <h4>Raymond</h4>
-          <div class="persona-type">Passive Wealth Allocator</div>
-          <p>56, semi-retired, referred by his Phillip Capital RM. The deposit email arrives with a deadline and no guidance on what happens next. He calls his RM.</p>
-        </div>
-        <div class="persona">
-          <div class="persona-initial">P</div>
-          <h4>Priya</h4>
-          <div class="persona-type">Curious First-Timer</div>
-          <p>34, fintech PM, newly accredited. Completed KYC, then got busy. No deal recommendation or yield signal post-approval. The momentum evaporated.</p>
-        </div>
-        <div class="persona">
-          <div class="persona-initial">M</div>
-          <h4>Marcus</h4>
-          <div class="persona-type">Sophisticated Diversifier</div>
-          <p>47, family office. Has a specific deal and a fill window closing. The 5-day confirmation silence means he can't confirm his position is secured, so he routes capital elsewhere.</p>
-        </div>
-      </div>
-
-      <h3>Research I would run to validate this</h3>
-      <div class="research-signals">
-        <div class="research-signal">
-          <div class="signal-source">CS ticket analysis</div>
-          <p>Tag deposit-related support tickets by type. Expecting "I sent the transfer but haven't heard back" to dominate, confirming the confirmation black hole as widespread.</p>
-        </div>
-        <div class="research-signal">
-          <div class="signal-source">Session recording review</div>
-          <p>Review post-KYC sessions for scroll depth and time-to-action. A drop within the first 90 seconds points to the dead zone as the primary culprit, not navigation.</p>
-        </div>
-        <div class="research-signal">
-          <div class="signal-source">User interviews: 5 recently-verified investors</div>
-          <p>One per persona archetype, focused on the post-KYC moment and deposit attempt. Key questions: What did you do immediately after approval? What stopped you from depositing?</p>
-        </div>
-      </div>
-      <p>Designing for Raymond raises the floor for everyone. Earning his trust through clarity more than satisfies Priya and Marcus.</p>
+      <p>Three investor archetypes failed at different points: the passive wealth allocator stalled because he couldn't confirm what happened after he transferred; the curious first-timer lost momentum when KYC approval led to a cold, undifferentiated home screen; the sophisticated diversifier routed capital elsewhere when 5-day confirmation silence made deal deadlines unconfirmable. Designing for the most trust-sensitive user raises the floor for all three.</p>
     </div>
   </section>
 
@@ -1447,53 +1423,8 @@
       <p class="section-label">07 - Learnings</p>
       <h2>What this work surfaced</h2>
 
-      <div class="learning">
-        <div class="learning-num">01</div>
-        <div>
-          <h4>The proof email was hiding a reconciliation problem, not solving one</h4>
-          <p>It looked like a UX problem. It was an infrastructure gap: no automated reconciliation. The fix was eliminating the need for it, not redesigning around it.</p>
-        </div>
-      </div>
-
-      <div class="learning">
-        <div class="learning-num">02</div>
-        <div>
-          <h4>Withdrawal legibility is an activation lever, not a withdrawal feature</h4>
-          <p>No investor cited withdrawal as a blocker. But for the Passive Allocator, not knowing the exit path is a silent blocker that never appears in drop-off data because the user never deposits in the first place.</p>
-        </div>
-      </div>
-
-      <div class="learning">
-        <div class="learning-num">03</div>
-        <div>
-          <h4>The MMF is a differentiator that most users have never heard of</h4>
-          <p>Idle balances earn yield automatically. Most users didn't know. It wasn't in onboarding or on the wallet screen. Surfacing it is a communication fix, not a product change.</p>
-        </div>
-      </div>
-
-      <div class="learning">
-        <div class="learning-num">04</div>
-        <div>
-          <h4>Regulatory constraints shaped the solution, but they didn't block it</h4>
-          <p>MAS source-of-funds rules eliminate most alternative rails. Making PayNow and bank transfer work better was sufficient for Phase 1.</p>
-        </div>
-      </div>
-
-      <div class="learning">
-        <div class="learning-num">05</div>
-        <div>
-          <h4>The North Star needs a lagging health check</h4>
-          <p>Aggressive prompting can inflate deposit count with low-intent users. Pairing the North Star with AUC growth catches this: conversion rising while AUC stays flat means activation quality is the problem.</p>
-        </div>
-      </div>
-
-      <div class="learning">
-        <div class="learning-num">06</div>
-        <div>
-          <h4>Compliance was the hardest stakeholder, and the most important to get right early</h4>
-          <p>Compliance wanted to keep the proof email as an audit record. The reframe: automated reconciliation is a better audit trail. Bringing them in as co-authors of the exception spec rather than reviewers at the end turned a potential launch blocker into a two-week design sprint.</p>
-        </div>
-      </div>
+      <p>The proof email was a symptom of a reconciliation gap, not a compliance requirement — removing it required building what was missing, not negotiating what existed.</p>
+      <p>Compliance was brought in as a co-author of the exception spec rather than a late reviewer, which converted a potential launch blocker into a two-week design sprint.</p>
     </div>
   </section>
 
@@ -1502,37 +1433,15 @@
     <div class="container">
       <p class="section-label">08 - Signals &amp; Iteration</p>
       <h2>Signals and what they tell us</h2>
-      <h3>Green lights</h3>
-      <div class="solutions">
-        <div class="solution-block">
-          <h4>North Star moving within the first sprint</h4>
-          <p>KYC-to-deposit conversion climbing toward 40% within 30 days. Leading indicator: PayNow's share of total deposits rising in week one.</p>
-        </div>
-        <div class="solution-block">
-          <h4>CS ticket volume dropping</h4>
-          <p>Deposit confirmation tickets falling 60%+ in the first two weeks confirms the black hole was the problem. It isolates causation in a way the North Star can't.</p>
-        </div>
-        <div class="solution-block">
-          <h4>Re-engagement emails becoming less necessary</h4>
-          <p>Fewer users hitting the 48-hour drop-off window means re-engagement open rates should fall. A declining open rate is normally a warning sign. Here it means the product is doing the job.</p>
-        </div>
-      </div>
+      <p>Success is KYC-to-deposit conversion reaching 40% within 30 days, paired with a 60% drop in CS deposit confirmation tickets — the latter isolates causation in a way the North Star can't. The lagging health check is AUC growth: conversion rising while AUC stays flat signals low-intent activations, not genuine wallet adoption.</p>
+    </div>
+  </section>
 
-      <h3>Warning signs and the response</h3>
-      <div class="signal-pivot-list">
-        <div class="signal-pivot">
-          <div class="pivot-condition">Conversion up, AUC flat</div>
-          <p>Low-intent users depositing the minimum and not returning. Add intent signals to the activation flow: investment horizon, deal preference, minimum commitment. Check whether MMF surfacing is drawing savings-account behaviour rather than investment intent.</p>
-        </div>
-        <div class="signal-pivot">
-          <div class="pivot-condition">Auto-reconciliation rate below 90%</div>
-          <p>Most likely users editing the reference field on bank transfer. Immediate response: manual reconciliation queue with a tight ops SLA. Medium-term: matching algorithm using amount and payer identity as fallbacks.</p>
-        </div>
-        <div class="signal-pivot">
-          <div class="pivot-condition">30-day login rate below 30%</div>
-          <p>Fund-and-disappear persists after activation, moving the Phase 2 wallet dashboard from deferred to urgent. Diagnose first: is the problem informational, intentional (one deal, nothing else to act on), or trust-based (waiting for a first successful withdrawal)?</p>
-        </div>
-      </div>
+  <!-- WHAT HAPPENED AFTER -->
+  <section id="what-happened-after">
+    <div class="container">
+      <p class="section-label">What it clarified</p>
+      <p>The work established that the proof email was an operational patch, not a product feature — and that removing it required building automated reconciliation, not designing a better confirmation screen. Phase 1 was scoped entirely to what existing payment rails could support without regulatory change. Whether the activation problem is primarily an infrastructure failure or a post-KYC dead zone problem is the question Phase 1 data would answer.</p>
     </div>
   </section>
 

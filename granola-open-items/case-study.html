@@ -142,6 +142,16 @@
     .meta-item { border-right:none; }
   }
 
+  /* ── HERO FOCUS ── */
+  .hero-focus {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 1rem;
+  }
+
   /* ── SECTIONS DROPDOWN NAV ── */
   .sect-btn {
     background: none; border: 1.5px solid rgba(45,106,79,0.35);
@@ -254,8 +264,9 @@
   <div class="wrap">
     <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:1rem;">Reiko Tan &nbsp;&middot;&nbsp; Senior Product Manager &nbsp;&middot;&nbsp; Singapore</p>
     <div class="hero-tag"><span class="dot"></span> PM Case Study &nbsp;&middot;&nbsp; Feature Design</div>
+    <div class="hero-focus">Deep dive — product scope</div>
     <h1>Granola<br><em>Open Items</em></h1>
-    <p>Granola solved capture. The question is whether that's where the product's responsibility ends.</p>
+    <p>Granola solved capture. The question is whether the product's job ends at the meeting — or extends into what you were supposed to do because of it.</p>
     <div class="meta-row">
       <div class="meta-item"><div class="meta-label">Product</div><div class="meta-val">Granola AI</div></div>
       <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Feature Addition</div></div>
@@ -293,7 +304,7 @@
         <div class="d-num">01</div>
         <div>
           <div class="d-title">Precision over recall in extraction: conservative by default</div>
-          <p class="d-body">If the first list contains noise, users conclude the feature is broken and don't return. Better to surface 6 high-confidence items than 12 that include noise.</p>
+          <p class="d-body">If the first list contains noise, users conclude the feature is broken and don't return. Better to surface 6 high-confidence items than 12 that include noise. Completion rate within a fixed timeframe is also excluded — a 2-hour action and a 2-week follow-up are different kinds of items, and a fixed window incentivises the wrong extractions.</p>
           <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Broad extraction with user-side filtering: puts the burden on users and confirms the feature is untrustworthy before trust is established.</div>
         </div>
       </div>
@@ -406,10 +417,6 @@
           <span class="metric-target">Exceed existing benchmark</span>
         </div>
       </div>
-      <div class="not-measuring">
-        <div class="nm-tag">Explicitly Not Measuring</div>
-        <p>Completion rate within a defined timeframe. A 2-hour action and a 2-week follow-up can't be held to the same window. A fixed timeframe creates false precision and incentivizes extracting short-horizon items over genuinely useful ones.</p>
-      </div>
     </div>
   </div>
 </section>
@@ -423,13 +430,21 @@
     <div class="tradeoffs fade">
       <div class="tradeoff">
         <div class="to-label">Feature gravity locks the pricing decision</div>
-        <p class="to-body">Once Open Items is in the paid plan, moving it to a higher tier later is nearly impossible. The window to treat it as a differentiator is at launch. After that it becomes table stakes.</p>
+        <p class="to-body">Once placed in the paid plan, the feature can't migrate to a higher tier — the launch decision is also the pricing ceiling decision.</p>
       </div>
       <div class="tradeoff">
         <div class="to-label">Extraction quality is the only dependency that can kill the feature on day one</div>
-        <p class="to-body">Noisy extraction at first impression doesn't recover at scale. The extraction prompt needs human-rated quality checks before launch, not just automated metrics.</p>
+        <p class="to-body">Extraction quality is the only dependency that can kill the feature on first impression; human-rated checks are required before launch, not after.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="what-happened-after">
+  <div class="wrap">
+    <div class="eyebrow">The constraint that matters</div>
+    <h2>Open questions and success signals</h2>
+    <p>Open Items is a hypothetical extension, not a shipped feature. What the exercise clarified is that the Anti-Jira Principle — the feature must be fully useful without any user input — is harder to hold in practice than it is to state. Every phase 2 addition (team sharing, assignment, labels) puts pressure on that constraint. The design question for any future build is not what to add, but what to refuse.</p>
   </div>
 </section>
 

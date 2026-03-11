@@ -180,28 +180,34 @@
 
     /* ── LAYOUT ── */
     .container { max-width: 1120px; margin: 0 auto; padding: 0 48px; }
-    section { padding: 96px 0; }
-    section + section { border-top: 1px solid var(--grey-200); }
+    section { padding: 88px 0; border-bottom: 1px solid var(--grey-200); }
+    section:last-of-type { border-bottom: none; }
 
     .section-label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--grey-500);
-      margin-bottom: 40px;
-      display: flex; align-items: center; gap: 12px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
     }
     .section-label::before {
-      content: ''; width: 20px; height: 2px;
-      background: var(--yellow);
-      border: none;
-      display: block; flex-shrink: 0;
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: currentColor;
     }
 
     h2 {
       font-family: var(--serif);
-      font-size: clamp(24px, 2.8vw, 36px);
-      font-weight: 400; line-height: 1.15;
-      letter-spacing: -0.01em; margin-bottom: 20px;
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
     }
 
     p { color: var(--grey-700); font-weight: 300; margin-bottom: 16px; }
@@ -611,6 +617,16 @@
     }
     .footer-nav a:hover { background: var(--black); border-color: var(--black); }
 
+    /* ── HERO FOCUS ── */
+    .hero-focus {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey-500);
+      margin-bottom: 1rem;
+    }
+
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
@@ -656,14 +672,12 @@
     <a href="#" id="dropTopLink">&#8593; Back to top</a>
   </div>
   <ul>
-    <li><a href="#context" class="sect-link">Context</a></li>
-    <li><a href="#discovery" class="sect-link">Discovery</a></li>
-    <li><a href="#insight" class="sect-link">Insight</a></li>
-    <li><a href="#decisions" class="sect-link">Decisions</a></li>
-    <li><a href="#timeline" class="sect-link">Timeline</a></li>
-    <li><a href="#execution" class="sect-link">Execution</a></li>
-    <li><a href="#outcomes" class="sect-link">Outcomes</a></li>
-    <li><a href="#reflection" class="sect-link">Reflection</a></li>
+    <li><a href="#context" class="sect-link">01 &nbsp;&middot;&nbsp; Context</a></li>
+    <li><a href="#discovery" class="sect-link">02 &nbsp;&middot;&nbsp; Discovery</a></li>
+    <li><a href="#insight" class="sect-link">03 &nbsp;&middot;&nbsp; The Insight</a></li>
+    <li><a href="#decisions" class="sect-link">04 &nbsp;&middot;&nbsp; Product Decisions</a></li>
+    <li><a href="#outcomes" class="sect-link">05 &nbsp;&middot;&nbsp; Outcomes</a></li>
+    <li><a href="#reflection" class="sect-link">06 &nbsp;&middot;&nbsp; Since launch</a></li>
   </ul>
 </div>
 
@@ -689,6 +703,7 @@
 <div class="hero">
   <div class="hero-left">
     <p class="hero-eyebrow">Mighty Jaxx &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2021&ndash;Present</p>
+    <div class="hero-focus">Deep dive — channel model visibility</div>
     <h1>From anonymous buyers<br>to <mark>identified</mark><br>collectors</h1>
     <p class="hero-sub">The distributor model works at scale. It also means the brand can't see who owns its products.</p>
     <div class="hero-tags">
@@ -724,7 +739,7 @@
 <!-- CONTEXT -->
 <section id="context">
   <div class="container">
-    <div class="section-label">Context</div>
+    <div class="section-label">01 &nbsp;&middot;&nbsp; Context</div>
     <div class="two-col">
       <div class="reveal">
         <h2>A company selling millions of products to people it couldn't see</h2>
@@ -739,7 +754,7 @@
 <!-- DISCOVERY -->
 <section id="discovery" style="background: var(--grey-50);">
   <div class="container">
-    <div class="section-label">Discovery</div>
+    <div class="section-label">02 &nbsp;&middot;&nbsp; Discovery</div>
     <div class="two-col" style="margin-bottom: 40px;">
       <h2 class="reveal">Four signals, same root cause</h2>
     </div>
@@ -780,7 +795,7 @@
 <!-- INSIGHT -->
 <section id="insight" style="background: var(--grey-50);">
   <div class="container">
-    <div class="section-label">The Insight</div>
+    <div class="section-label">03 &nbsp;&middot;&nbsp; The Insight</div>
     <div class="two-col">
       <div class="reveal">
         <h2>Identity before loyalty</h2>
@@ -826,7 +841,7 @@
 <!-- DECISIONS -->
 <section id="decisions">
   <div class="container">
-    <div class="section-label">Product Decisions</div>
+    <div class="section-label">04 &nbsp;&middot;&nbsp; Product Decisions</div>
     <div class="two-col" style="margin-bottom: 48px;">
       <h2 class="reveal">Three decisions that shaped the system</h2>
     </div>
@@ -888,113 +903,10 @@
   </div>
 </section>
 
-<!-- TIMELINE -->
-<section id="timeline" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">Timeline</div>
-    <div class="two-col" style="margin-bottom: 16px;">
-      <h2 class="reveal">18 months, four phases</h2>
-      <p class="reveal">QR Auth first, Vault second.</p>
-    </div>
-    <div class="timeline reveal">
-      <div class="timeline-row">
-        <div class="timeline-phase">
-          <span class="timeline-phase-label">Months 1 to 3</span>
-          <span class="timeline-phase-name">Scoping and NFC signal</span>
-        </div>
-        <div class="timeline-content">
-          <p>Scoped against existing NFC infrastructure. Usage data and stakeholder interviews surfaced the behaviour problem and collector data gap.</p>
-          <div class="timeline-chips">
-            <span class="timeline-chip">NFC audit</span>
-            <span class="timeline-chip">Stakeholder interviews</span>
-            <span class="timeline-chip">Community research</span>
-          </div>
-        </div>
-      </div>
-      <div class="timeline-row">
-        <div class="timeline-phase">
-          <span class="timeline-phase-label">Months 4 to 9</span>
-          <span class="timeline-phase-name">QR authentication</span>
-        </div>
-        <div class="timeline-content">
-          <p>NFC to QR decision made. QR generation, scan flow, app integration, manufacturing specs, factory testing.</p>
-          <div class="timeline-chips">
-            <span class="timeline-chip">QR system design</span>
-            <span class="timeline-chip">Factory integration</span>
-            <span class="timeline-chip">Scan flow UX</span>
-            <span class="timeline-chip">Ops dashboard</span>
-          </div>
-        </div>
-      </div>
-      <div class="timeline-row">
-        <div class="timeline-phase">
-          <span class="timeline-phase-label">Months 9 to 15</span>
-          <span class="timeline-phase-name">Vault platform</span>
-        </div>
-        <div class="timeline-content">
-          <p>Identity layer established. Vault: collector accounts, campaigns, milestones, reward logic. Cross-team alignment for first campaign structures.</p>
-          <div class="timeline-chips">
-            <span class="timeline-chip">Collector accounts</span>
-            <span class="timeline-chip">Campaign engine</span>
-            <span class="timeline-chip">Milestone mechanics</span>
-            <span class="timeline-chip">Reward logic</span>
-          </div>
-        </div>
-      </div>
-      <div class="timeline-row">
-        <div class="timeline-phase">
-          <span class="timeline-phase-label">Months 15 to 18</span>
-          <span class="timeline-phase-name">Pilot campaigns</span>
-        </div>
-        <div class="timeline-content">
-          <p>First campaigns against product launches. One Piece Egghead pilot: scan to register, join campaigns, unlock content.</p>
-          <div class="timeline-chips">
-            <span class="timeline-chip">One Piece Egghead pilot</span>
-            <span class="timeline-chip">Campaign validation</span>
-            <span class="timeline-chip">Engagement analysis</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EXECUTION -->
-<section id="execution">
-  <div class="container">
-    <div class="section-label">Execution</div>
-    <div class="two-col">
-      <div class="reveal">
-        <h2>This product had to work in factories before it worked on phones.</h2>
-        <p>A QR scan takes a second. Building the infrastructure behind it meant writing manufacturing specs that production lines had to follow, with tolerances that showed up in the collector's scan experience, not on a dashboard.</p>
-        <p>Two things nearly broke it. First: factory QC. Sticker placement standards were defined early, but inspection guidelines shipped too late. First-batch inconsistencies forced a QC process redesign mid-cycle, while production was already moving. Second: database sync. Every production batch had to link to the authentication database before leaving the factory. A silent sync failure meant QR codes that scanned as invalid at retail. There was no way to fix it post-production and no fallback. Building monitoring for that dependency was non-negotiable.</p>
-      </div>
-      <div class="reveal">
-        <div class="exec-card">
-          <h3>Sticker placement standards</h3>
-          <p>Placement specs per product line, balancing aesthetic integration with scan reliability.</p>
-        </div>
-        <div class="exec-card">
-          <h3>Factory QC integration</h3>
-          <p>Inspection guidelines for factories new to digital product identity. Involved production leads earlier after first-batch issues; ended up with a repeatable process across product lines.</p>
-        </div>
-        <div class="exec-card">
-          <h3>Authentication database sync</h3>
-          <p>Every batch had to link to the authentication database before retail. Designed batch ingestion and sync failure monitoring.</p>
-        </div>
-        <div class="exec-card">
-          <h3>Operations monitoring dashboard</h3>
-          <p>Tracked scan activity, auth errors, and batch status. Gave ops real-time visibility and surfaced early collector behaviour signals.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- OUTCOMES -->
 <section id="outcomes" style="background: var(--grey-50);">
   <div class="container">
-    <div class="section-label">Outcomes</div>
+    <div class="section-label">05 &nbsp;&middot;&nbsp; Outcomes</div>
     <div class="two-col" style="margin-bottom: 16px;">
       <h2 class="reveal">Foundation for loyalty, not the finished system</h2>
       <p class="reveal">The core outcome: Mighty Jaxx can now identify who its collectors are.</p>
@@ -1036,28 +948,11 @@
 <!-- REFLECTION -->
 <section id="reflection">
   <div class="container">
-    <div class="section-label">Reflection</div>
-    <h2 class="reveal" style="max-width: 460px; margin-bottom: 36px;">What I know now</h2>
+    <div class="section-label">06 &nbsp;&middot;&nbsp; Since launch</div>
+    <h2 class="reveal" style="max-width: 460px; margin-bottom: 36px;">Since launch</h2>
     <div class="reflection-grid reveal">
       <div class="reflection-card">
-        <span class="ref-tag tag-learning">Learning</span>
-        <h3>Factory spec decisions are product decisions</h3>
-        <p>Where the sticker sits, what surface it adheres to, whether it survives shelf conditions: these are UX decisions. We treated manufacturing integration as logistics. That framing was the root cause of the QC issue.</p>
-      </div>
-      <div class="reflection-card">
-        <span class="ref-tag tag-learning">Learning</span>
-        <h3>First-scan onboarding is a product problem, not a marketing one</h3>
-        <p>Many collectors weren't aware Vault existed after unboxing. We treated it as a marketing problem. It's a product moment: the 30 seconds after opening the box.</p>
-      </div>
-      <div class="reflection-card">
-        <span class="ref-tag tag-next">Next</span>
-        <h3>Always-on engagement between campaigns</h3>
-        <p>Between launches, active sessions drop. The platform needs passive mechanics (collection display, social proof) to sustain engagement without a live campaign.</p>
-      </div>
-      <div class="reflection-card">
-        <span class="ref-tag tag-next">Next</span>
-        <h3>Secondary market ownership transfer</h3>
-        <p>Vault reflects first scan only. Collectors trade; current ownership isn't tracked. Solving transfer would unlock the platform for the secondary market.</p>
+        <p>QR Auth created a collector identity layer that didn't previously exist — thousands of verified registrations for a brand that previously knew only bulk distributor volumes. The One Piece Egghead campaign pilot confirmed the core loop works: scan, register, unlock. What it revealed is a second problem the infrastructure alone can't solve: the platform needs a reason to open between launches, not just during them.</p>
       </div>
     </div>
   </div>
