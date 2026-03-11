@@ -724,7 +724,7 @@
         <h2>A company selling millions of products to people it couldn't see</h2>
       </div>
       <div class="reveal">
-        <p>Mighty Jaxx sells collectible designer toys globally through distributors and retailers. The channel works at scale but leaves no visibility into who actually owns the products. I defined and shipped the authentication infrastructure (QR Auth) and the collector engagement platform built on top of it (Vault), across engineering, design, brand, marketing, production, and licensing.</p>
+        <p>Mighty Jaxx sells collectible designer toys globally through distributors and retailers. The channel works at scale but leaves no visibility into who actually owns the products. I defined and shipped the authentication infrastructure (QR Auth) and the collector engagement platform built on top of it (Vault). This spanned engineering, design, brand, marketing, production, and licensing.</p>
       </div>
     </div>
   </div>
@@ -837,7 +837,7 @@
         </div>
         <div class="decision-col">
           <span class="decision-col-label label-after">After: QR</span>
-          <p>QR needs no explanation. The primary driver wasn't cost — it was eliminating friction users couldn't resolve on their own.</p>
+          <p>QR needs no explanation. The primary driver wasn't cost. It was eliminating friction users couldn't resolve on their own.</p>
         </div>
       </div>
     </div>
@@ -854,7 +854,7 @@
         </div>
         <div class="decision-col">
           <span class="decision-col-label label-after">My position</span>
-          <p>I wanted scanning to be the entry point: ownership registration, collector identity, campaign access. A verify-only system has no reason to be opened twice.</p>
+          <p>Scanning had to be the entry point: ownership registration, collector identity, campaign access. A verify-only system has no reason to be opened twice.</p>
         </div>
       </div>
       <div class="stakeholder-box">
@@ -960,8 +960,8 @@
     <div class="two-col">
       <div class="reveal">
         <h2>This product had to work in factories before it worked on phones.</h2>
-        <p>A QR scan takes a second. Building the infrastructure behind it meant writing manufacturing specs that production lines had to follow — with tolerances that showed up in the collector's scan experience, not on a dashboard.</p>
-        <p>Two things nearly broke it. First: factory QC. Sticker placement standards were defined early, but inspection guidelines shipped too late. First-batch inconsistencies forced a QC process redesign mid-cycle, while production was already moving. Second: database sync. Every production batch had to link to the authentication database before leaving the factory. A silent sync failure meant QR codes that scanned as invalid at retail — with no way to fix it post-production. There was no fallback. Building monitoring for that dependency was non-negotiable.</p>
+        <p>A QR scan takes a second. Building the infrastructure behind it meant writing manufacturing specs that production lines had to follow, with tolerances that showed up in the collector's scan experience, not on a dashboard.</p>
+        <p>Two things nearly broke it. First: factory QC. Sticker placement standards were defined early, but inspection guidelines shipped too late. First-batch inconsistencies forced a QC process redesign mid-cycle, while production was already moving. Second: database sync. Every production batch had to link to the authentication database before leaving the factory. A silent sync failure meant QR codes that scanned as invalid at retail. There was no way to fix it post-production and no fallback. Building monitoring for that dependency was non-negotiable.</p>
       </div>
       <div class="reveal">
         <div class="exec-card">
@@ -1036,12 +1036,12 @@
       <div class="reflection-card">
         <span class="ref-tag tag-learning">Learning</span>
         <h3>Factory spec decisions are product decisions</h3>
-        <p>Where the sticker sits, what surface it adheres to, whether it survives shelf conditions — these are UX decisions. We treated manufacturing integration as logistics. That framing was the root cause of the QC issue.</p>
+        <p>Where the sticker sits, what surface it adheres to, whether it survives shelf conditions: these are UX decisions. We treated manufacturing integration as logistics. That framing was the root cause of the QC issue.</p>
       </div>
       <div class="reflection-card">
         <span class="ref-tag tag-learning">Learning</span>
         <h3>First-scan onboarding is a product problem, not a marketing one</h3>
-        <p>Many collectors weren't aware Vault existed after unboxing. We treated it as a marketing problem. It's a product moment — the 30 seconds after opening the box.</p>
+        <p>Many collectors weren't aware Vault existed after unboxing. We treated it as a marketing problem. It's a product moment: the 30 seconds after opening the box.</p>
       </div>
       <div class="reflection-card">
         <span class="ref-tag tag-next">Next</span>
