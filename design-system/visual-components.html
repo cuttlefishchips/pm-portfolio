@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reikotan Portfolio — Visual Components</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --base:        #FAF7F2;
+      --surface:     #F2EDE4;
+      --surface-2:   #EAE3D8;
+      --border:      #E0D8CE;
+      --text:        #1A1614;
+      --text-muted:  #7A6F68;
+      --text-faint:  #B8AFA8;
+      --mj:          #FEED1E;
+      --think:       #5B4FE9;
+      --pulse:       #2EC4B6;
+      --coral:       #F4743B;
+      --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--base);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    @keyframes pulse-ring {
+      0%   { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; opacity: 1 !important; }
+    }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 48px 120px; }
+
+    /* ─── SECTION HEADER ──────────────────────────────────── */
+    .section-header {
+      padding: 80px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+
+    .section-header + * { /* reset for first child */ }
+
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow::after {
+      content: '';
+      height: 1px;
+      width: 40px;
+      background: var(--border);
+    }
+
+    .section-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-header h2 em {
+      font-style: italic;
+      font-weight: 200;
+      color: var(--coral);
+    }
+
+    .section-header p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ─── PATTERN LABEL ───────────────────────────────────── */
+    .pattern-block { margin-bottom: 80px; }
+
+    .pattern-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .pattern-label h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    .pattern-label .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      color: var(--text-faint);
+    }
+
+    .pattern-label .tag.mj    { background: var(--mj); color: var(--text); border-color: var(--mj); }
+    .pattern-label .tag.think { background: #EAE8FC; color: var(--think); border-color: var(--think); }
+    .pattern-label .tag.pulse { background: #DDF5F3; color: #1A9990; border-color: var(--pulse); }
+    .pattern-label .tag.all   { background: var(--surface); color: var(--text-muted); }
+
+    /* ═══════════════════════════════════════════════════════
+       PATTERN 1 — HERO BLEED
+    ═══════════════════════════════════════════════════════ */
+    .hero-bleed {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      aspect-ratio: 16 / 7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-bleed .placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #EAE3D8 0%, #F2EDE4 40%, #E8E0D4 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* simulated UI skeleton inside placeholder */
+    .ui-skeleton {
+      width: 80%;
+      max-width: 680px;
+      background: var(--base);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(26,22,20,0.12);
+      border: 1px solid var(--border);
+    }
+
+    .sk-bar {
+      height: 10px;
+      border-radius: 5px;
+      background: var(--border);
+      margin-bottom: 10px;
+    }
+
+    .sk-bar.short { width: 40%; }
+    .sk-bar.med   { width: 65%; }
+    .sk-bar.long  { width: 90%; }
+    .sk-bar.accent { background: var(--mj); width: 30%; }
+
+    .sk-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .sk-block {
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .hero-bleed-label {
+      position: absolute;
+      bottom: 20px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-bleed-label span {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      background: rgba(250,247,242,0.9);
+      padding: 6px 12px;
+      border-radius: 100px;
+      backdrop-filter: blur(8px);
+    }
+
+    .figma-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      background: rgba(250,247,242,0.9);
+      padding: 6px 12px;
+      border-radius: 100px;
+      text-decoration: none;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: color 0.2s ease;
+      border: none;
+      min-height: 44px;
+      align-items: center;
+    }
+
+    .figma-link:hover { color: var(--coral); }
+    .figma-link:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+
+    /* ═══════════════════════════════════════════════════════
+       PATTERN 2 — DEVICE FRAME
+    ═══════════════════════════════════════════════════════ */
+    .device-frame-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 48px;
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      gap: 32px;
+      align-items: flex-start;
+    }
+
+    .browser-frame {
+      background: var(--base);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 64px rgba(26,22,20,0.10);
+      overflow: hidden;
+      flex: 1;
+      max-width: 560px;
+    }
+
+    .browser-chrome {
+      background: var(--surface);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      display: block;
+    }
+
+    .browser-url {
+      flex: 1;
+      background: var(--base);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+    }
+
+    .browser-content {
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(160deg, #EAE3D8 0%, #F5F0E8 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 12px;
+    }
+
+    .bc-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bc-nav-logo {
+      height: 8px;
+      width: 60px;
+      background: var(--text);
+      border-radius: 4px;
+      opacity: 0.5;
+    }
+
+    .bc-nav-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .bc-nav-links span {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border);
+    }
+
+    .bc-hero-text { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .bc-hero-text .line { height: 12px; border-radius: 6px; background: var(--text); opacity: 0.12; }
+    .bc-hero-text .line.big { height: 20px; opacity: 0.18; width: 70%; }
+    .bc-hero-text .line.accent { background: var(--mj); width: 25%; opacity: 1; height: 8px; }
+
+    .bc-card-row { display: flex; gap: 10px; margin-top: 8px; }
+    .bc-card {
+      flex: 1;
+      background: rgba(255,255,255,0.6);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      gap: 6px;
+    }
+
+    .bc-card .dot { width: 24px; height: 24px; border-radius: 50%; background: var(--border); }
+    .bc-card .line { height: 6px; border-radius: 3px; background: var(--border); }
+    .bc-card .line.s { width: 60%; }
+
+    /* annotation callouts */
+    .annotation {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .ann-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--coral);
+      color: white;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(244,116,59,0.4);
+    }
+
+    .ann-label {
+      background: var(--text);
+      color: var(--base);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      padding: 5px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(26,22,20,0.15);
+    }
+
+    /* annotation key below frame */
+    .annotation-key {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ann-key-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .ann-key-row p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .ann-key-row strong {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PATTERN 3 — WIREFRAME SIDE BY SIDE
+    ═══════════════════════════════════════════════════════ */
+    .side-by-side {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0;
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .sbs-panel {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sbs-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .sbs-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      color: var(--text-faint);
+    }
+
+    .sbs-badge.early { background: var(--surface-2); }
+    .sbs-badge.insight { background: var(--think); color: white; border-color: var(--think); }
+
+    .sbs-panel h4 {
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    /* wireframe mock */
+    .wireframe-mock {
+      background: #FFFFFF;
+      border: 1px solid #D8D0C8;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      opacity: 0.85;
+    }
+
+    .wf-row { display: flex; gap: 8px; align-items: center; }
+
+    .wf-box {
+      background: #E8E0D4;
+      border-radius: 4px;
+      border: 1px solid #D0C8C0;
+    }
+
+    .wf-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: #A09890;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* insight panel */
+    .insight-panel {
+      background: #EAE8FC;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .insight-panel blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--text);
+      margin-bottom: 16px;
+      border-left: 3px solid var(--think);
+      padding-left: 20px;
+    }
+
+    .insight-panel p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding-left: 23px;
+    }
+
+    .sbs-divider {
+      width: 1px;
+      background: var(--border);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sbs-divider-label {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+      writing-mode: vertical-rl;
+      white-space: nowrap;
+    }
+
+    .sbs-panel p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PATTERN 4 — TELEGRAM MOCKUP
+    ═══════════════════════════════════════════════════════ */
+    .telegram-wrap {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 48px;
+    }
+
+    .phone-frame {
+      flex-shrink: 0;
+      width: 240px;
+      background: var(--text);
+      border-radius: 32px;
+      padding: 10px;
+      box-shadow: 0 32px 80px rgba(26,22,20,0.2);
+    }
+
+    .phone-screen {
+      background: #EFEFF4;
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 440px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tg-header {
+      background: #FFFFFF;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #E8E8E8;
+    }
+
+    .tg-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--pulse);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: white;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .tg-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #1A1614;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .tg-status {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      color: var(--pulse);
+      display: block;
+    }
+
+    .tg-messages {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .tg-bubble {
+      max-width: 85%;
+      border-radius: 14px;
+      padding: 8px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    .tg-bubble.user {
+      background: #FFFFFF;
+      color: #1A1614;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .tg-bubble.pulse-reply {
+      background: var(--pulse);
+      color: #FFFFFF;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .tg-bubble.pulse-insight {
+      background: #1A9990;
+      color: #FFFFFF;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .tg-time {
+      font-size: 9px;
+      opacity: 0.6;
+      margin-top: 3px;
+      display: block;
+      text-align: right;
+    }
+
+    .telegram-context {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .telegram-context h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    .telegram-context h3 em {
+      font-style: italic;
+      color: var(--pulse);
+    }
+
+    .telegram-context p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .tg-design-notes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tg-note {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .tg-note-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pulse);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .tg-note p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PATTERN 5 — PROCESS MOSAIC
+    ═══════════════════════════════════════════════════════ */
+    .mosaic-grid {
+      display: grid;
+      grid-template-columns: 5fr 3fr;
+      grid-template-rows: auto auto;
+      gap: 12px;
+    }
+
+    .mosaic-item {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mosaic-item.tall { grid-row: 1 / 3; }
+
+    .mosaic-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 24px;
+    }
+
+    /* journey map mock */
+    .jm-mock {
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .jm-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .jm-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-faint);
+      width: 52px;
+      flex-shrink: 0;
+    }
+
+    .jm-stages {
+      display: flex;
+      flex: 1;
+      gap: 3px;
+    }
+
+    .jm-stage {
+      flex: 1;
+      height: 16px;
+      border-radius: 3px;
+      background: var(--border);
+    }
+
+    .jm-stage.high { background: var(--think); opacity: 0.7; }
+    .jm-stage.med  { background: var(--think); opacity: 0.35; }
+    .jm-stage.pain { background: var(--coral); opacity: 0.5; }
+
+    .mosaic-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: rgba(250,247,242,0.9);
+      color: var(--text-faint);
+      backdrop-filter: blur(4px);
+    }
+
+    /* ─── IMAGE GRID SPEC ───────────────────────────────── */
+    .grid-spec {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 40px;
+      margin-top: 12px;
+    }
+
+    .grid-spec h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .spec-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      text-align: left;
+      padding: 0 0 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .spec-table td {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .spec-table tr:last-child td { border-bottom: none; }
+
+    .spec-table td:first-child {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text);
+      padding-right: 24px;
+      white-space: nowrap;
+    }
+
+    .col-bar {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 4px;
+    }
+
+    .col-unit {
+      height: 8px;
+      background: var(--border);
+      border-radius: 2px;
+      flex: 1;
+    }
+
+    .col-unit.filled { background: var(--think); }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    .page-footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .live-dot {
+      position: relative;
+      display: inline-flex;
+      width: 8px; height: 8px;
+    }
+
+    .live-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--coral);
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
+    .live-dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--coral);
+      opacity: 0.4;
+      animation: pulse-ring 1.8s ease-out infinite;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="section-header">
+    <p class="eyebrow">Visual Components · Design System v0.2</p>
+    <h2>Five ways to show<br>the <em>work.</em></h2>
+    <p>Every visual in the portfolio answers one of three questions: what did it look like, how did you decide, did it work. These components serve all three — mapped to Mighty Jaxx, Self-initiated, and Pulse.</p>
+  </div>
+
+
+  <!-- ═══ PATTERN 1 — HERO BLEED ═════════════════════════════ -->
+  <div class="pattern-block">
+    <div class="pattern-label">
+      <h3>Pattern 01 — Hero bleed</h3>
+      <span class="tag mj">Mighty Jaxx · High-fi</span>
+    </div>
+
+    <div class="hero-bleed">
+      <div class="placeholder">
+        <div class="ui-skeleton">
+          <div class="sk-bar accent"></div>
+          <div class="sk-bar big" style="height:18px;border-radius:9px;width:55%;margin-bottom:16px;background:rgba(26,22,20,0.12);"></div>
+          <div class="sk-bar long"></div>
+          <div class="sk-bar med"></div>
+          <div class="sk-row" style="margin-top:16px;">
+            <div class="sk-block" style="width:120px;height:80px;"></div>
+            <div class="sk-block" style="width:120px;height:80px;"></div>
+            <div class="sk-block" style="width:120px;height:80px;"></div>
+            <div class="sk-block" style="flex:1;height:80px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-bleed-label">
+        <span>Vault — shipped UI · Figma export</span>
+        <button class="figma-link" aria-label="View in Figma">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          View in Figma
+        </button>
+      </div>
+    </div>
+
+    <p style="font-size:13px;font-weight:300;color:var(--text-muted);margin-top:14px;line-height:1.6;">Full-width, edge-to-edge. Used as the opening image of a case study — the confident "here's what shipped" moment. Static PNG export from Figma with a View in Figma link for depth.</p>
+  </div>
+
+
+  <!-- ═══ PATTERN 2 — ANNOTATED SCREENSHOT ══════════════════ -->
+  <div class="pattern-block">
+    <div class="pattern-label">
+      <h3>Pattern 02 — Annotated screenshot</h3>
+      <span class="tag mj">Mighty Jaxx · PM decision layer</span>
+    </div>
+
+    <div style="background:var(--surface);border-radius:20px;border:1px solid var(--border);padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+
+      <!-- frame + annotations -->
+      <div>
+        <div class="browser-frame" style="position:relative;">
+          <div class="browser-chrome">
+            <div class="browser-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="browser-url">vault.mightyjaxx.com/collection</div>
+          </div>
+          <div class="browser-content" style="position:relative;">
+            <div class="bc-nav">
+              <div class="bc-nav-logo"></div>
+              <div class="bc-nav-links">
+                <span style="width:28px;"></span>
+                <span style="width:36px;"></span>
+                <span style="width:24px;"></span>
+              </div>
+            </div>
+            <div class="bc-hero-text">
+              <div class="line big"></div>
+              <div class="line" style="width:45%;"></div>
+              <div class="line accent"></div>
+            </div>
+            <div class="bc-card-row">
+              <div class="bc-card">
+                <div class="dot"></div>
+                <div class="line"></div>
+                <div class="line s"></div>
+              </div>
+              <div class="bc-card">
+                <div class="dot"></div>
+                <div class="line"></div>
+                <div class="line s"></div>
+              </div>
+              <div class="bc-card">
+                <div class="dot"></div>
+                <div class="line"></div>
+                <div class="line s"></div>
+              </div>
+            </div>
+
+            <!-- coral annotation markers -->
+            <div style="position:absolute;top:52px;left:18px;display:flex;align-items:center;gap:6px;">
+              <div class="ann-num">1</div>
+            </div>
+            <div style="position:absolute;top:88px;left:18px;display:flex;align-items:center;gap:6px;">
+              <div class="ann-num">2</div>
+            </div>
+            <div style="position:absolute;bottom:24px;right:12px;display:flex;align-items:center;gap:6px;">
+              <div class="ann-num">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- annotation key -->
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:20px;">
+        <h3 style="font-family:'Fraunces',serif;font-size:20px;font-weight:400;line-height:1.3;">Every marker is a decision, not a label.</h3>
+        <div class="annotation-key">
+          <div class="ann-key-row">
+            <div class="ann-num" style="flex-shrink:0;">1</div>
+            <p><strong>Navigation deprioritised</strong> — user testing showed collectors navigated by browsing, not searching. Removed global search from primary nav; surfaced filter chips instead.</p>
+          </div>
+          <div class="ann-key-row">
+            <div class="ann-num" style="flex-shrink:0;">2</div>
+            <p><strong>CTA above the fold</strong> — conversion data showed 62% of add-to-vault actions happened before scrolling. Repositioned from card footer to hero row.</p>
+          </div>
+          <div class="ann-key-row">
+            <div class="ann-num" style="flex-shrink:0;">3</div>
+            <p><strong>Card grid density</strong> — 3-col on desktop vs original 4-col. Increased image size improved perceived collectible quality; +18% wishlist additions in A/B test.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ PATTERN 3 — WIREFRAME SIDE BY SIDE ═══════════════ -->
+  <div class="pattern-block">
+    <div class="pattern-label">
+      <h3>Pattern 03 — Problem framing vs insight</h3>
+      <span class="tag think">Self-initiated · Mid-fi</span>
+    </div>
+
+    <div class="side-by-side">
+      <div class="sbs-panel">
+        <div class="sbs-header">
+          <span class="sbs-badge early">Early exploration</span>
+        </div>
+        <h4>What the journey map revealed</h4>
+
+        <div class="wireframe-mock">
+          <div class="jm-mock">
+            <div class="jm-row">
+              <span class="jm-label">Discover</span>
+              <div class="jm-stages">
+                <div class="jm-stage med"></div>
+                <div class="jm-stage high"></div>
+                <div class="jm-stage med"></div>
+                <div class="jm-stage med"></div>
+                <div class="jm-stage med"></div>
+              </div>
+            </div>
+            <div class="jm-row">
+              <span class="jm-label">Onboard</span>
+              <div class="jm-stages">
+                <div class="jm-stage high"></div>
+                <div class="jm-stage pain"></div>
+                <div class="jm-stage pain"></div>
+                <div class="jm-stage med"></div>
+                <div class="jm-stage med"></div>
+              </div>
+            </div>
+            <div class="jm-row">
+              <span class="jm-label">Transact</span>
+              <div class="jm-stages">
+                <div class="jm-stage med"></div>
+                <div class="jm-stage med"></div>
+                <div class="jm-stage pain"></div>
+                <div class="jm-stage pain"></div>
+                <div class="jm-stage high"></div>
+              </div>
+            </div>
+            <div class="jm-row">
+              <span class="jm-label">Retain</span>
+              <div class="jm-stages">
+                <div class="jm-stage med"></div>
+                <div class="jm-stage med"></div>
+                <div class="jm-stage med"></div>
+                <div class="jm-stage pain"></div>
+                <div class="jm-stage pain"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:13px;font-weight:300;color:var(--text-muted);line-height:1.6;">Mid-fi journey map — greyscale, real content, honest process artifact. Shows the methodology without overselling it.</p>
+      </div>
+
+      <div class="sbs-divider">
+        <span class="sbs-divider-label">So what →</span>
+      </div>
+
+      <div class="insight-panel">
+        <div class="sbs-header">
+          <span class="sbs-badge insight">The insight</span>
+        </div>
+        <blockquote>"Users weren't dropping off during onboarding — they were dropping off the moment they realised the app couldn't do the one thing they downloaded it for."</blockquote>
+        <p>The pain points weren't UX problems. They were feature gap problems. Reframed the entire brief from "improve the flow" to "close the expectation gap."</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ PATTERN 4 — TELEGRAM MOCKUP ══════════════════════ -->
+  <div class="pattern-block">
+    <div class="pattern-label">
+      <h3>Pattern 04 — Telegram conversation</h3>
+      <span class="tag pulse">Pulse · Builder artifact</span>
+    </div>
+
+    <div class="telegram-wrap">
+      <div class="phone-frame" aria-label="Pulse Telegram interface mockup">
+        <div class="phone-screen">
+          <div class="tg-header">
+            <div class="tg-avatar" aria-hidden="true">P</div>
+            <div>
+              <span class="tg-name">Pulse</span>
+              <span class="tg-status">● online</span>
+            </div>
+          </div>
+          <div class="tg-messages">
+            <div class="tg-bubble user">
+              ran 5.2km this morning, felt sluggish
+              <span class="tg-time">7:43am</span>
+            </div>
+            <div class="tg-bubble pulse-reply">
+              Logged ✓ 5.2km, 38min, avg HR 164bpm
+              <br><br>
+              Your HR was 12bpm higher than your last 3 runs at this distance — flagging that.
+              <span class="tg-time">7:43am</span>
+            </div>
+            <div class="tg-bubble pulse-insight">
+              💡 You slept 5h40m last night vs your 7h+ average. That HR gap tracks — low sleep consistently lifts your run HR by 8–15bpm in your data.
+              <span class="tg-time">7:43am</span>
+            </div>
+            <div class="tg-bubble user">
+              oh wow didn't connect those
+              <span class="tg-time">7:44am</span>
+            </div>
+            <div class="tg-bubble pulse-reply">
+              That's what I'm here for 🏃
+              <span class="tg-time">7:44am</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="telegram-context">
+        <div>
+          <span style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-faint);">Pulse · The Chase Figure</span>
+          <h3 style="margin-top:10px;">It finds you.<br><em>You don't find it.</em></h3>
+        </div>
+
+        <p>Pulse lives in Telegram. No app to open, no dashboard to check. The conversation interface is the product — so screenshots of the actual chat are the most honest artifact we have.</p>
+
+        <div class="tg-design-notes">
+          <div class="tg-note">
+            <div class="tg-note-dot"></div>
+            <p>Pulse replies use <strong>teal `--pulse` bubbles</strong> — the chase figure accent colour, immediately distinguishable from Telegram's native green.</p>
+          </div>
+          <div class="tg-note">
+            <div class="tg-note-dot"></div>
+            <p>Insight messages use a <strong>darker teal</strong> to signal "this is the analysis layer, not just a response."</p>
+          </div>
+          <div class="tg-note">
+            <div class="tg-note-dot"></div>
+            <p>The phone frame is <strong>minimal and dark</strong> — draws the eye to the conversation, not the device.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ PATTERN 5 — PROCESS MOSAIC ═══════════════════════ -->
+  <div class="pattern-block">
+    <div class="pattern-label">
+      <h3>Pattern 05 — Process mosaic</h3>
+      <span class="tag all">All sections · Process depth</span>
+    </div>
+
+    <div class="mosaic-grid">
+      <div class="mosaic-item tall" style="min-height:360px;">
+        <span class="mosaic-tag">Journey map</span>
+        <div style="width:100%;height:100%;background:linear-gradient(160deg,#EAE3D8,#F2EDE4);padding:40px;display:flex;flex-direction:column;gap:16px;">
+          <div class="jm-mock" style="background:white;border-radius:8px;padding:20px;border:1px solid var(--border);flex:1;">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-faint);margin-bottom:16px;">User emotion · 5 stages</div>
+            <div class="jm-row"><span class="jm-label">Discover</span><div class="jm-stages"><div class="jm-stage med"></div><div class="jm-stage high"></div><div class="jm-stage high"></div><div class="jm-stage med"></div><div class="jm-stage med"></div></div></div>
+            <div style="margin-top:8px;" class="jm-row"><span class="jm-label">Onboard</span><div class="jm-stages"><div class="jm-stage high"></div><div class="jm-stage pain"></div><div class="jm-stage pain"></div><div class="jm-stage med"></div><div class="jm-stage med"></div></div></div>
+            <div style="margin-top:8px;" class="jm-row"><span class="jm-label">Use</span><div class="jm-stages"><div class="jm-stage med"></div><div class="jm-stage med"></div><div class="jm-stage high"></div><div class="jm-stage high"></div><div class="jm-stage med"></div></div></div>
+            <div style="margin-top:8px;" class="jm-row"><span class="jm-label">Churn</span><div class="jm-stages"><div class="jm-stage med"></div><div class="jm-stage med"></div><div class="jm-stage pain"></div><div class="jm-stage pain"></div><div class="jm-stage pain"></div></div></div>
+          </div>
+          <p style="font-size:12px;font-weight:300;color:var(--text-muted);line-height:1.5;">Research artifact — mid-fi, greyscale. Used to frame the problem before showing any solution.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="mosaic-item">
+          <span class="mosaic-tag">Framework</span>
+          <div style="padding:24px;background:linear-gradient(135deg,#EAE8FC,#F2EDE4);min-height:160px;display:flex;flex-direction:column;gap:10px;justify-content:center;">
+            <div style="font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--think);margin-bottom:8px;">How I framed it</div>
+            <div style="display:flex;gap:6px;">
+              <div style="flex:1;background:white;border-radius:6px;padding:10px;border:1px solid rgba(91,79,233,0.2);">
+                <div style="height:6px;border-radius:3px;background:var(--think);opacity:0.4;width:70%;margin-bottom:6px;"></div>
+                <div style="height:5px;border-radius:3px;background:var(--border);width:50%;"></div>
+              </div>
+              <div style="flex:1;background:white;border-radius:6px;padding:10px;border:1px solid rgba(91,79,233,0.2);">
+                <div style="height:6px;border-radius:3px;background:var(--think);opacity:0.6;width:80%;margin-bottom:6px;"></div>
+                <div style="height:5px;border-radius:3px;background:var(--border);width:40%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mosaic-item">
+          <span class="mosaic-tag">Metric</span>
+          <div style="padding:24px;background:var(--surface);min-height:160px;display:flex;flex-direction:column;justify-content:center;gap:6px;">
+            <span style="font-family:'Fraunces',serif;font-size:48px;font-weight:200;color:var(--text);line-height:1;">+62<span style="font-size:22px;color:var(--pulse);vertical-align:super;">%</span></span>
+            <span style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-faint);">Wishlist additions after redesign</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- grid spec table -->
+    <div class="grid-spec">
+      <h3>12-column image grid</h3>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th style="width:120px;">Size</th>
+            <th style="width:160px;">Columns</th>
+            <th>Use case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Full</td>
+            <td>
+              <div class="col-bar">
+                <div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div>
+              </div>
+              12 / 12
+            </td>
+            <td>Hero bleed, shipped UI, strongest visual moment</td>
+          </tr>
+          <tr>
+            <td>Wide</td>
+            <td>
+              <div class="col-bar">
+                <div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div>
+              </div>
+              8 / 12
+            </td>
+            <td>Annotated screenshot, key decision moment</td>
+          </tr>
+          <tr>
+            <td>Half</td>
+            <td>
+              <div class="col-bar">
+                <div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div>
+              </div>
+              6 / 12
+            </td>
+            <td>Side-by-side comparisons, wireframe pairs</td>
+          </tr>
+          <tr>
+            <td>Third</td>
+            <td>
+              <div class="col-bar">
+                <div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit filled"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div><div class="col-unit"></div>
+              </div>
+              4 / 12
+            </td>
+            <td>Process mosaics, Telegram screenshots, metric cards</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <p>Visual Components · Design System v0.2 · Party Mode · March 2026</p>
+    <div style="display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.08em;">
+      <span class="live-dot" aria-hidden="true"></span>
+      Active session
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

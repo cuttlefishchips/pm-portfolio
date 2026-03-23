@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reikotan Portfolio — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,200;1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --base:         #FAF7F2;
+      --surface:      #F2EDE4;
+      --surface-2:    #EAE3D8;
+      --border:       #E0D8CE;
+      --text:         #1A1614;
+      --text-muted:   #7A6F68;
+      --text-faint:   #B8AFA8;
+
+      --mj:           #FEED1E;
+      --mj-dim:       #FEF4A0;
+      --think:        #5B4FE9;
+      --think-dim:    #EAE8FC;
+      --pulse:        #2EC4B6;
+      --pulse-dim:    #DDF5F3;
+      --coral:        #F4743B;
+      --coral-dim:    #FDEEE6;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ─── BASE ───────────────────────────────────────────────── */
+    body {
+      background-color: var(--base);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── ENTRANCE ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideLine {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    @keyframes pulse-ring {
+      0%   { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .reveal {
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease-out) forwards;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, [style*="animation"] { animation: none !important; opacity: 1 !important; }
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────────────── */
+    .page { max-width: 1160px; margin: 0 auto; padding: 0 48px; }
+
+    section { padding: 88px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    /* ─── LABELS ─────────────────────────────────────────────── */
+    .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .label::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 48px;
+      background: var(--border);
+      transform-origin: left;
+      animation: slideLine 0.6s var(--ease-out) 0.3s both;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════════ */
+    .hero {
+      padding: 120px 0 96px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 28px;
+      animation: fadeIn 0.5s var(--ease-out) 0.1s both;
+    }
+
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(56px, 8vw, 104px);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s var(--ease-out) 0.15s both;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      font-weight: 200;
+      color: var(--coral);
+    }
+
+    .hero-title .highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-title .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--mj);
+      transform-origin: left;
+      animation: slideLine 0.7s var(--ease-out) 0.9s both;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      animation: fadeIn 0.6s var(--ease-out) 0.5s both;
+    }
+
+    .hero-meta p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 400px;
+      line-height: 1.65;
+    }
+
+    .hero-divider {
+      width: 1px;
+      height: 48px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat .num {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--text);
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .hero-stat .lbl {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+    }
+
+    /* decorative float */
+    .hero-float {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      pointer-events: none;
+      animation: fadeIn 1.2s var(--ease-out) 0.6s both;
+    }
+
+    .hero-float::before {
+      content: '';
+      position: absolute;
+      inset: 24px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+    }
+
+    .hero-float::after {
+      content: '';
+      position: absolute;
+      inset: 64px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOUNDATION
+    ═══════════════════════════════════════════════════════════ */
+    .foundation-grid {
+      display: grid;
+      grid-template-columns: 2fr 1px repeat(4, 1fr);
+      gap: 0;
+      background: var(--surface);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .foundation-main {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 220px;
+    }
+
+    .foundation-main h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .foundation-main h3 em {
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .foundation-main p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .foundation-divider {
+      background: var(--border);
+      width: 1px;
+    }
+
+    .swatch-col {
+      display: flex;
+      flex-direction: column;
+      cursor: default;
+      transition: flex 0.3s var(--ease-out);
+    }
+
+    .swatch-col:hover { flex: 1.4; }
+
+    .swatch-color {
+      flex: 1;
+      min-height: 120px;
+      position: relative;
+      transition: min-height 0.3s var(--ease-out);
+    }
+
+    .swatch-col:hover .swatch-color { min-height: 160px; }
+
+    .swatch-info {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      background: var(--base);
+    }
+
+    .swatch-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .swatch-hex {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .swatch-role {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ACCENT SYSTEM — asymmetric layout
+    ═══════════════════════════════════════════════════════════ */
+    .accent-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 12px;
+    }
+
+    .accent-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 36px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition:
+        transform 0.25s var(--ease-out),
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      min-height: 44px; /* touch target base */
+    }
+
+    .accent-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .accent-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(26,22,20,0.08); }
+    .accent-card:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+    .accent-card:active { transform: scale(0.98); transition-duration: 0.1s; }
+
+    .accent-card.mj:hover   { border-color: var(--mj); background: #FFFDE8; }
+    .accent-card.think:hover { border-color: var(--think); background: var(--think-dim); }
+    .accent-card.pulse:hover { border-color: var(--pulse); background: var(--pulse-dim); }
+    .accent-card.coral:hover { border-color: var(--coral); background: var(--coral-dim); }
+
+    /* wide card spans full width */
+    .accent-card.wide { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; }
+
+    .accent-swatch {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .accent-card:hover .accent-swatch { transform: scale(1.1) rotate(-6deg); }
+
+    .accent-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .mj  .accent-pill { background: var(--mj); color: var(--text); }
+    .think .accent-pill { background: var(--think); color: #fff; }
+    .pulse .accent-pill { background: var(--pulse); color: #fff; }
+    .coral .accent-pill { background: var(--coral); color: #fff; }
+
+    .accent-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .accent-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .accent-hex {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       TYPOGRAPHY
+    ═══════════════════════════════════════════════════════════ */
+    .type-stage {
+      background: var(--surface);
+      border-radius: 24px;
+      padding: 64px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .type-bg-char {
+      position: absolute;
+      right: -20px;
+      bottom: -60px;
+      font-family: 'Fraunces', serif;
+      font-size: 320px;
+      font-weight: 200;
+      font-style: italic;
+      color: var(--border);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .type-rows { position: relative; z-index: 1; }
+
+    .type-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 32px;
+      align-items: start;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .type-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .type-row:first-child { padding-top: 0; }
+
+    .type-meta { padding-top: 6px; }
+
+    .type-meta .role {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .type-meta .spec {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: #D0C8BF;
+      line-height: 1.5;
+    }
+
+    .t-display {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .t-display em {
+      font-style: italic;
+      font-weight: 200;
+      color: var(--coral);
+    }
+
+    .t-heading {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .t-heading .u {
+      text-decoration: underline;
+      text-decoration-color: var(--mj);
+      text-underline-offset: 4px;
+      text-decoration-thickness: 3px;
+    }
+
+    .t-body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text);
+      max-width: 580px;
+    }
+
+    .t-mono {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       COMPONENTS — the "pull"
+    ═══════════════════════════════════════════════════════════ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .work-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 32px;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      position: relative;
+      overflow: hidden;
+      min-height: 44px;
+      transition:
+        transform 0.25s var(--ease-out),
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+    /* left accent rule */
+    .work-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 3px;
+      transform-origin: top;
+      transform: scaleY(0);
+      transition: transform 0.3s var(--ease-out);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .work-card.mj::before   { background: var(--mj); }
+    .work-card.think::before { background: var(--think); }
+    .work-card.pulse::before { background: var(--pulse); }
+
+    .work-card:hover::before { transform: scaleY(1); }
+    .work-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,22,20,0.07); }
+    .work-card:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+    .work-card:active { transform: scale(0.98); }
+
+    .work-card.mj:hover   { border-color: var(--mj); background: #FFFCE6; }
+    .work-card.think:hover { border-color: var(--think); background: var(--think-dim); }
+    .work-card.pulse:hover { border-color: var(--pulse); background: var(--pulse-dim); }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 20px;
+    }
+
+    .mj .card-tag    { background: var(--mj); color: var(--text); }
+    .think .card-tag  { background: var(--think-dim); color: var(--think); }
+    .pulse .card-tag  { background: var(--pulse-dim); color: #1A9990; }
+
+    /* live pulse dot */
+    .live-dot {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 8px;
+      height: 8px;
+    }
+
+    .live-dot::before {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--coral);
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
+    .live-dot::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--coral);
+      opacity: 0.4;
+      animation: pulse-ring 1.8s ease-out infinite;
+    }
+
+    .work-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .work-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       INSIGHT CALLOUT
+    ═══════════════════════════════════════════════════════════ */
+    .insight-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .callout {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 40px;
+      border-left: 4px solid var(--think);
+      position: relative;
+    }
+
+    .callout blockquote {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .callout cite {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+    }
+
+    .data-chip {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 40px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .data-chip .big-num {
+      font-family: 'Fraunces', serif;
+      font-size: 64px;
+      font-weight: 200;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .data-chip .big-num span {
+      font-size: 28px;
+      vertical-align: top;
+      margin-top: 10px;
+      display: inline-block;
+      color: var(--pulse);
+    }
+
+    .data-chip .chip-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+    }
+
+    .data-chip .chip-sub {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       NAV PREVIEW
+    ═══════════════════════════════════════════════════════════ */
+    .nav-preview {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .nav-wordmark {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    .nav-wordmark em { font-style: italic; color: var(--coral); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links li a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      cursor: pointer;
+      padding: 8px 4px; /* touch target */
+    }
+
+    .nav-links li a:hover { color: var(--text); }
+    .nav-links li a:focus-visible { outline: 2px solid var(--coral); border-radius: 3px; }
+
+    .nav-links li a.active {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--text);
+      color: var(--base);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s ease, transform 0.15s ease;
+      min-height: 44px;
+    }
+
+    .nav-cta:hover { background: var(--coral); transform: translateY(-1px); }
+    .nav-cta:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+    .nav-cta:active { transform: scale(0.97); }
+
+    /* ═══════════════════════════════════════════════════════════
+       MOTION GUIDE
+    ═══════════════════════════════════════════════════════════ */
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .motion-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 28px 24px;
+      border: 1px solid var(--border);
+    }
+
+    .motion-card .timing {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .motion-card .timing small {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .motion-card h4 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .motion-card p {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .motion-bar {
+      height: 3px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    .ds-footer {
+      padding: 48px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ds-footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--surface);
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    .version-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--coral);
+      animation: blink 2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ═══ HERO ════════════════════════════════════════════════ -->
+  <section class="hero">
+    <p class="hero-eyebrow">Design System · v0.2 · Party Mode Session</p>
+    <h1 class="hero-title">
+      Every pull<br>
+      is a <span class="highlight">pleasant</span><br>
+      <em>surprise.</em>
+    </h1>
+    <div class="hero-meta">
+      <p>A portfolio design library built on the blindbox metaphor — curated delight at every turn, three acts of thinking, one unforgettable impression.</p>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <span class="num">5</span>
+        <span class="lbl">Colour tokens</span>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <span class="num">3</span>
+        <span class="lbl">Type faces</span>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <span class="num">3</span>
+        <span class="lbl">Content acts</span>
+      </div>
+    </div>
+
+    <div class="hero-float" aria-hidden="true"></div>
+  </section>
+
+  <!-- ═══ FOUNDATION ══════════════════════════════════════════ -->
+  <section>
+    <div class="label reveal" style="animation-delay:0.05s">01 — Foundation tokens</div>
+    <div class="foundation-grid reveal" style="animation-delay:0.1s">
+      <div class="foundation-main">
+        <div>
+          <h3>Warm parchment.<br><em>Not white.</em></h3>
+          <p style="margin-top:12px;">A base that feels held and considered — gallery-wall warmth with surface depth that cards and panels can emerge from.</p>
+        </div>
+        <div style="margin-top:24px;">
+          <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-faint);">Fraunces · DM Sans · DM Mono</span>
+        </div>
+      </div>
+
+      <div class="foundation-divider"></div>
+
+      <div class="swatch-col">
+        <div class="swatch-color" style="background:#FAF7F2;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Base</span>
+          <span class="swatch-hex">#FAF7F2</span>
+          <span class="swatch-role">Page background</span>
+        </div>
+      </div>
+
+      <div class="swatch-col">
+        <div class="swatch-color" style="background:#F2EDE4;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Surface</span>
+          <span class="swatch-hex">#F2EDE4</span>
+          <span class="swatch-role">Cards & panels</span>
+        </div>
+      </div>
+
+      <div class="swatch-col">
+        <div class="swatch-color" style="background:#1A1614;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Text</span>
+          <span class="swatch-hex">#1A1614</span>
+          <span class="swatch-role">All body copy</span>
+        </div>
+      </div>
+
+      <div class="swatch-col">
+        <div class="swatch-color" style="background:#7A6F68;"></div>
+        <div class="swatch-info">
+          <span class="swatch-name">Muted</span>
+          <span class="swatch-hex">#7A6F68</span>
+          <span class="swatch-role">Labels & captions</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ACCENT SYSTEM ═══════════════════════════════════════ -->
+  <section>
+    <div class="label reveal" style="animation-delay:0.05s">02 — Accent system · Each colour owns a story</div>
+
+    <div class="accent-layout">
+
+      <!-- CORAL — full width, the "you" colour -->
+      <div class="accent-card coral wide reveal" style="animation-delay:0.1s" tabindex="0" role="button" aria-label="Coral accent — global personality colour">
+        <div style="display:flex;flex-direction:column;">
+          <div class="accent-pill">Global · Your colour</div>
+          <h3>Warm Coral</h3>
+          <p>The connective thread. CTAs, hover states, italic emphasis — the warmth of Reikotan across every section. Not assigned to a content type. Just <em>her</em>.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px;">
+          <div class="accent-swatch" style="background:#F4743B;width:88px;height:88px;"></div>
+          <span class="accent-hex">#F4743B</span>
+        </div>
+      </div>
+
+      <!-- MJ -->
+      <div class="accent-card mj reveal" style="animation-delay:0.15s" tabindex="0" role="button" aria-label="Mighty Jaxx yellow accent">
+        <div class="accent-pill">Mighty Jaxx</div>
+        <div class="accent-swatch" style="background:#FEED1E;width:56px;height:56px;margin-bottom:20px;"></div>
+        <span class="accent-hex">#FEED1E</span>
+        <h3>Electric Yellow</h3>
+        <p>Official brand colour. Badges, hover rules, section marks. Never as text — always as signal.</p>
+      </div>
+
+      <!-- THINK -->
+      <div class="accent-card think reveal" style="animation-delay:0.2s" tabindex="0" role="button" aria-label="Indigo accent for self-initiated work">
+        <div class="accent-pill">Self-Initiated</div>
+        <div class="accent-swatch" style="background:#5B4FE9;width:56px;height:56px;margin-bottom:20px;"></div>
+        <span class="accent-hex">#5B4FE9</span>
+        <h3>Electric Indigo</h3>
+        <p>Depth. Conviction. The colour of intellectual range and domain-jumping curiosity.</p>
+      </div>
+
+      <!-- PULSE -->
+      <div class="accent-card pulse reveal" style="animation-delay:0.25s" tabindex="0" role="button" aria-label="Teal accent for Pulse project">
+        <div class="accent-pill">Pulse · The Chase Figure</div>
+        <div class="accent-swatch" style="background:#2EC4B6;width:56px;height:56px;margin-bottom:20px;"></div>
+        <span class="accent-hex">#2EC4B6</span>
+        <h3>Bioluminescent Teal</h3>
+        <p>The rare pull. Reserved exclusively for Pulse — used sparingly so it hits harder.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ TYPOGRAPHY ══════════════════════════════════════════ -->
+  <section>
+    <div class="label reveal" style="animation-delay:0.05s">03 — Typography · Fraunces × DM Sans × DM Mono</div>
+
+    <div class="type-stage reveal" style="animation-delay:0.1s">
+      <div class="type-bg-char" aria-hidden="true">R</div>
+
+      <div class="type-rows">
+
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="role">Display</span>
+            <span class="spec">Fraunces 300i<br>72px / -2%</span>
+          </div>
+          <div class="t-display">She <em>thinks</em><br>differently.</div>
+        </div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="role">Heading</span>
+            <span class="spec">Fraunces 400<br>28px / -1%</span>
+          </div>
+          <div class="t-heading">How do you build a product<br>nobody asked for — but everyone <span class="u">needs?</span></div>
+        </div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="role">Body</span>
+            <span class="spec">DM Sans 300<br>15px / 1.75</span>
+          </div>
+          <div class="t-body">Most health apps collect your data and leave you to figure out what it means. Pulse does the opposite — it analyses every run, every night's sleep, every meal, finds the connections between them, and tells you what matters. When your sleep is hurting your runs, it says so.</div>
+        </div>
+
+        <div class="type-row">
+          <div class="type-meta">
+            <span class="role">Labels</span>
+            <span class="spec">DM Mono 400<br>11px / 0.12em</span>
+          </div>
+          <div class="t-mono">
+            MIGHTY JAXX · SENIOR PM · SINGAPORE · 2023–PRESENT<br>
+            SELF-INITIATED · CASE STUDY · FINTECH · 2025<br>
+            PULSE · AI HEALTH COACH · BUILDING NOW · MARCH 2026
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COMPONENTS ══════════════════════════════════════════ -->
+  <section>
+    <div class="label reveal" style="animation-delay:0.05s">04 — Components · Hover to see the accent system work</div>
+
+    <!-- NAV -->
+    <div class="nav-preview reveal" style="animation-delay:0.1s">
+      <div class="nav-wordmark">Reiko<em>tan</em></div>
+      <nav aria-label="Portfolio navigation">
+        <ul class="nav-links">
+          <li><a href="#" class="active">Work</a></li>
+          <li><a href="#">Thinking</a></li>
+          <li><a href="#">Building</a></li>
+        </ul>
+      </nav>
+      <button class="nav-cta">Say hello</button>
+    </div>
+
+    <!-- WORK CARDS -->
+    <div class="cards-grid reveal" style="animation-delay:0.15s">
+
+      <div class="work-card mj" tabindex="0" role="button" aria-label="Mighty Jaxx case study">
+        <div class="card-tag">Mighty Jaxx</div>
+        <h3>Vault — Digital Collectibles Platform</h3>
+        <p>Led end-to-end product strategy for a new digital ownership layer across physical collectibles.</p>
+      </div>
+
+      <div class="work-card think" tabindex="0" role="button" aria-label="Self-initiated case study">
+        <div class="card-tag">Self-Initiated</div>
+        <h3>Cash Wallet — UX Redesign</h3>
+        <p>Parachuted into fintech to understand a domain I don't work in daily — and found the real problem.</p>
+      </div>
+
+      <div class="work-card pulse" tabindex="0" role="button" aria-label="Pulse project">
+        <div class="card-tag"><span class="live-dot" aria-hidden="true"></span>&nbsp; Building Now</div>
+        <h3>Pulse — Personal AI Health Coach</h3>
+        <p>Built infrastructure that finds you. Five data streams. One brain. Zero dashboards to check.</p>
+      </div>
+
+    </div>
+
+    <!-- INSIGHT + DATA -->
+    <div class="insight-row reveal" style="animation-delay:0.2s">
+      <div class="callout">
+        <blockquote>"The insight wasn't in the data — it was in what users stopped tracking after week two."</blockquote>
+        <cite>Insight callout · Fraunces italic · Indigo left rule · used inside case studies</cite>
+      </div>
+      <div class="data-chip">
+        <div>
+          <div class="chip-label" style="margin-bottom:16px;">Pulse · Monthly export</div>
+          <div class="big-num">1st<span style="color:var(--pulse);">↗</span></div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:var(--text-muted);margin-top:4px;">of every month, 9am SGT</div>
+        </div>
+        <p class="chip-sub">Data card component — Fraunces numerals, DM Mono labels, pulse teal accent.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MOTION ══════════════════════════════════════════════ -->
+  <section>
+    <div class="label reveal" style="animation-delay:0.05s">05 — Motion principles · ui-ux-pro-max guidelines</div>
+
+    <div class="motion-grid reveal" style="animation-delay:0.1s">
+
+      <div class="motion-card">
+        <div class="motion-bar" style="background:var(--coral);"></div>
+        <div class="timing">150<small>ms</small></div>
+        <h4>Micro-interactions</h4>
+        <p>Hover states, tag highlights, button press. Immediate, responsive.</p>
+      </div>
+
+      <div class="motion-card">
+        <div class="motion-bar" style="background:var(--think);"></div>
+        <div class="timing">250<small>ms</small></div>
+        <h4>Card transitions</h4>
+        <p>Lift, border reveal, background tint. The primary delight layer.</p>
+      </div>
+
+      <div class="motion-card">
+        <div class="motion-bar" style="background:var(--pulse);"></div>
+        <div class="timing">400<small>ms</small></div>
+        <h4>Section reveals</h4>
+        <p>Content surfacing on scroll. Ease-out. Staggered per item.</p>
+      </div>
+
+      <div class="motion-card">
+        <div class="motion-bar" style="background:var(--mj);"></div>
+        <div class="timing">700<small>ms</small></div>
+        <h4>Page entrances</h4>
+        <p>Hero load sequence. One orchestrated reveal, not scattered chaos.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ══════════════════════════════════════════════ -->
+  <div class="ds-footer">
+    <p>Reikotan Portfolio · Design System v0.2 · Party Mode · March 2026</p>
+    <div class="version-badge">
+      <span class="version-dot"></span>
+      Active session
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Scroll-triggered reveals — staggered per section
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const delay = parseFloat(el.style.animationDelay || '0') * 1000;
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.animationPlayState = 'running';
+        }, delay);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+
+  // Keyboard support for card interactions
+  document.querySelectorAll('[role="button"]').forEach(el => {
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        el.click();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

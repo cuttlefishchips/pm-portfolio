@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reikotan Portfolio — Brand Voice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --base:       #FAF7F2;
+      --surface:    #F2EDE4;
+      --surface-2:  #EAE3D8;
+      --border:     #E0D8CE;
+      --text:       #1A1614;
+      --muted:      #7A6F68;
+      --faint:      #B8AFA8;
+      --mj:         #FEED1E;
+      --think:      #5B4FE9;
+      --pulse:      #2EC4B6;
+      --coral:      #F4743B;
+      --ease:       cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--base);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 48px 120px; }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero {
+      padding: 100px 0 72px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: end;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-left { }
+
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .eyebrow::after {
+      content: '';
+      height: 1px;
+      width: 36px;
+      background: var(--border);
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(44px, 6vw, 72px);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 200;
+      color: var(--coral);
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 400px;
+    }
+
+    .hero-right {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .hero-right-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--faint);
+      margin-bottom: 4px;
+    }
+
+    /* the brand in one sentence */
+    .brand-sentence {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--text);
+    }
+
+    .brand-sentence em { font-style: italic; color: var(--coral); }
+
+    .brand-sentence .u {
+      text-decoration: underline;
+      text-decoration-color: var(--mj);
+      text-underline-offset: 4px;
+      text-decoration-thickness: 2px;
+    }
+
+    /* ─── SECTION WRAPPER ──────────────────────────────────── */
+    .section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .section-label::after {
+      content: '';
+      height: 1px;
+      flex: 1;
+      background: var(--border);
+    }
+
+    /* ─── REGISTER CARDS ───────────────────────────────────── */
+    .register-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .register-card {
+      border-radius: 20px;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      border: 1.5px solid transparent;
+    }
+
+    .register-card.act1 { background: #FFFCE6; border-color: var(--mj); }
+    .register-card.act2 { background: #ECEAFC; border-color: var(--think); }
+    .register-card.act3 { background: #E0F5F3; border-color: var(--pulse); }
+
+    .reg-act {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .act1 .reg-act { color: #A08800; }
+    .act2 .reg-act { color: var(--think); }
+    .act3 .reg-act { color: #1A9990; }
+
+    .register-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 1.15;
+    }
+
+    .register-card .register-tone {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .register-card .register-example {
+      background: rgba(255,255,255,0.7);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'Fraunces', serif;
+      font-size: 15px;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.9);
+    }
+
+    .register-card .register-example cite {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--faint);
+      font-style: normal;
+      margin-top: 8px;
+    }
+
+    /* ─── BEFORE / AFTER ───────────────────────────────────── */
+    .ba-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .ba-card {
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 36px;
+      border: 1.5px solid var(--border);
+    }
+
+    .ba-card.after { border-color: var(--coral); background: #FFF5EF; }
+
+    .ba-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .ba-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .ba-card .ba-badge    { background: var(--surface-2); color: var(--faint); }
+    .ba-card.after .ba-badge { background: var(--coral); color: white; }
+
+    .ba-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ba-item {
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--border);
+    }
+
+    .ba-card.after .ba-item { background: rgba(255,255,255,0.8); border-color: rgba(244,116,59,0.15); }
+
+    .ba-item p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .ba-item .strike {
+      text-decoration: line-through;
+      color: var(--faint);
+    }
+
+    .ba-item p strong { font-weight: 500; color: var(--text); }
+    .ba-card.after .ba-item p { font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; }
+
+    /* ─── RULES GRID ───────────────────────────────────────── */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .rule-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rule-num {
+      font-family: 'Fraunces', serif;
+      font-size: 40px;
+      font-weight: 200;
+      color: var(--border);
+      line-height: 1;
+    }
+
+    .rule-card h4 {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .rule-card h4 em { font-style: italic; color: var(--coral); }
+
+    .rule-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .rule-examples {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .ex {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .ex .icon {
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      font-style: normal;
+    }
+
+    .ex.no  { color: var(--faint); }
+    .ex.yes { color: var(--text); }
+    .ex.yes .icon { color: var(--coral); }
+
+    /* ─── TYPOGRAPHY VOICE MAP ─────────────────────────────── */
+    .type-voice {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .tv-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+      min-height: 80px;
+    }
+
+    .tv-row:last-child { border-bottom: none; }
+
+    .tv-role {
+      padding: 24px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      background: rgba(0,0,0,0.015);
+    }
+
+    .tv-role span {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--faint);
+      display: block;
+    }
+
+    .tv-role strong {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .tv-specimen {
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .tv-rule {
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ─── WORDS TO LIVE BY ─────────────────────────────────── */
+    .words-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .word-pair {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .word-out {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--faint);
+      text-decoration: line-through;
+      text-align: right;
+    }
+
+    .word-arrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      color: var(--coral);
+    }
+
+    .word-in {
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text);
+    }
+
+    /* ─── HEADLINE EXAMPLES ────────────────────────────────── */
+    .headline-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .headline-item {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 28px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      gap: 24px;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      cursor: default;
+    }
+
+    .headline-item:first-child { border-radius: 14px 14px 4px 4px; }
+    .headline-item:last-child  { border-radius: 4px 4px 14px 14px; }
+
+    .headline-item:hover { background: #FFF5EF; border-color: var(--coral); }
+
+    .hl-text {
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      font-weight: 300;
+      line-height: 1.2;
+    }
+
+    .hl-text em { font-style: italic; color: var(--coral); font-weight: 200; }
+
+    .hl-meta {
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .hl-meta .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .hl-meta .section-tag.mj    { background: var(--mj); color: var(--text); }
+    .hl-meta .section-tag.think { background: #EAE8FC; color: var(--think); }
+    .hl-meta .section-tag.pulse { background: #DDF5F3; color: #1A9990; }
+    .hl-meta .section-tag.global { background: var(--surface-2); color: var(--muted); }
+
+    .hl-meta p {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--faint);
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────── */
+    .page-footer {
+      padding: 48px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      margin-top: 72px;
+    }
+
+    .page-footer p {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .paige-credit {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ═══ HERO ════════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-left">
+      <p class="eyebrow">Brand Voice Card · Design System v0.2</p>
+      <h1>How Reiko<em>tan</em><br>sounds<br>on the page.</h1>
+      <p class="hero-desc">A reference for writing portfolio copy that stays true to the design system and to the person behind it. Every visual token has a voice equivalent. This card maps both.</p>
+    </div>
+    <div class="hero-right">
+      <p class="hero-right-label">The brand in one sentence</p>
+      <p class="brand-sentence">A PM who gets <span class="u">curious</span> about new problems quickly, connects dots across domains, and builds things to <em>understand</em> them better.</p>
+      <div style="display:flex;flex-direction:column;gap:8px;padding-top:16px;border-top:1px solid var(--border);">
+        <p style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--faint);">What this sentence is doing</p>
+        <p style="font-size:13px;font-weight:300;color:var(--muted);line-height:1.6;">Curious about problems → Act 2 self-initiated claim, humble framing. Connects dots across domains → intellectual range without bragging. Builds to understand → Pulse origin story, genuine motivation.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ THREE REGISTERS ═════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">01 · Three tonal registers, one per act</p>
+
+    <div class="register-grid">
+      <div class="register-card act1">
+        <span class="reg-act">Act 1 · Mighty Jaxx</span>
+        <h3>Professional authority</h3>
+        <p class="register-tone">Clear about what was decided and why. Specific about outcomes. Not self-aggrandising, but not vague either. The work is real, and the writing treats it that way.</p>
+        <div class="register-example">
+          "The data showed most vault additions happened before the first scroll, so we moved the CTA up. Wishlist additions went up 18% over the following two weeks."
+          <cite>Specific · Evidence-first · Outcome named · No ego</cite>
+        </div>
+      </div>
+
+      <div class="register-card act2">
+        <span class="reg-act">Act 2 · Self-Initiated</span>
+        <h3>Intellectual curiosity</h3>
+        <p class="register-tone">Honest about starting from scratch. Shows the curiosity that drove it. Names what was found without overstating it. The voice of someone who went somewhere unfamiliar and came back with genuine questions.</p>
+        <div class="register-example">
+          "I didn't work in fintech. Going in without assumptions helped me see something the product had been quietly papering over for a while."
+          <cite>Honest · Curious · Reframe without the swagger</cite>
+        </div>
+      </div>
+
+      <div class="register-card act3">
+        <span class="reg-act">Act 3 · Pulse</span>
+        <h3>Builder's warmth</h3>
+        <p class="register-tone">Warm and a little personal. Shows genuine curiosity about the problem. Honest about what worked and what didn't. Lets the product speak for itself rather than overselling it.</p>
+        <div class="register-example">
+          "It started because I was opening four different apps to understand one run. I wanted something that connected all of it and just told me what mattered."
+          <cite>Personal · Origin story · Problem-first · No hype</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ BEFORE / AFTER ══════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">02 · Before and after · Translating portfolio-speak into Reikotan</p>
+
+    <div class="ba-grid">
+      <div class="ba-card">
+        <div class="ba-header">
+          <span class="ba-badge">Portfolio-speak · Do not use</span>
+        </div>
+        <div class="ba-list">
+          <div class="ba-item">
+            <p class="strike">I am a product manager with a passion for user-centred design.</p>
+          </div>
+          <div class="ba-item">
+            <p class="strike">Collaborated cross-functionally to drive alignment on key product decisions.</p>
+          </div>
+          <div class="ba-item">
+            <p class="strike">Leveraged data insights to improve key metrics across the platform.</p>
+          </div>
+          <div class="ba-item">
+            <p class="strike">I have a proven track record of delivering results in ambiguous environments.</p>
+          </div>
+          <div class="ba-item">
+            <p class="strike">This project taught me the importance of stakeholder communication.</p>
+          </div>
+          <div class="ba-item">
+            <p class="strike">I pick up context fast. That's not a soft skill.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ba-card after">
+        <div class="ba-header">
+          <span class="ba-badge">Reikotan voice · Use this</span>
+        </div>
+        <div class="ba-list">
+          <div class="ba-item">
+            <p>Six weeks into a domain I'd never worked in, I found something the team had been puzzling over for months. Going in without assumptions helped.</p>
+          </div>
+          <div class="ba-item">
+            <p>There was a disagreement about whether to build the feature at all. We decided not to. This is what led us there.</p>
+          </div>
+          <div class="ba-item">
+            <p>Wishlist additions went up 18% after one change to image sizing. The signal was in the data for a while before anyone ran the test.</p>
+          </div>
+          <div class="ba-item">
+            <p>The brief asked us to improve the flow. What we found was that the feature people wanted wasn't there yet. So that became the brief.</p>
+          </div>
+          <div class="ba-item">
+            <p>The first two versions didn't work. The third one did, and understanding why the earlier ones failed was what made the difference.</p>
+          </div>
+          <div class="ba-item">
+            <p>I got curious about fintech even though it's not my day-to-day. I wanted to see if the thinking transferred. It did, mostly, and where it didn't was interesting too.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ FOUR RULES ══════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">03 · Four rules · Non-negotiable</p>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-num">01</div>
+        <h4>Start with what <em>happened.</em></h4>
+        <p>Lead with the situation or finding, not a claim about yourself. Let the reader draw the conclusion. Fraunces rewards the short, grounded sentence. Evidence is more convincing than self-description.</p>
+        <div class="rule-examples">
+          <div class="ex no"><span class="icon">✕</span> "Throughout this project I had the opportunity to explore various approaches to the problem of user retention."</div>
+          <div class="ex yes"><span class="icon">→</span> "Retention had been declining for two quarters. Week two of the project is when we found out why."</div>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-num">02</div>
+        <h4>Show the <em>decision,</em> not just the output.</h4>
+        <p>Outputs are what shipped. Decisions are what you thought through. A portfolio that only shows outputs looks like a design portfolio. Showing the reasoning is what makes it a PM portfolio.</p>
+        <div class="rule-examples">
+          <div class="ex no"><span class="icon">✕</span> "We launched a new onboarding flow with improved UX and reduced drop-off."</div>
+          <div class="ex yes"><span class="icon">→</span> "We cut onboarding from seven steps to three. It was a contentious call. This is what the data said and how we got there."</div>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-num">03</div>
+        <h4>Be <em>specific</em> or be silent.</h4>
+        <p>Numbers, timeframes, names of things. "Improved key metrics" says nothing. "62% of vault additions happened before the first scroll" says everything. DM Mono is there to carry exactly these kinds of specifics.</p>
+        <div class="rule-examples">
+          <div class="ex no"><span class="icon">✕</span> "Drove significant improvements in user engagement across the platform."</div>
+          <div class="ex yes"><span class="icon">→</span> "+18% wishlist additions. One change. Image size. Six weeks of data."</div>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-num">04</div>
+        <h4>Name the <em>reframe</em> when it happened.</h4>
+        <p>Some of the most interesting PM work is realising the problem you started with wasn't quite the right one. When that happened, say so. It's not a mistake to admit. It's the whole point.</p>
+        <div class="rule-examples">
+          <div class="ex no"><span class="icon">✕</span> "After conducting user research I identified several opportunities for improvement."</div>
+          <div class="ex yes"><span class="icon">→</span> "The brief was to improve the flow. A few weeks in, we realised the issue was upstream of that. So the brief changed."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ TYPOGRAPHY ↔ VOICE MAP ══════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">04 · Typography mapped to voice register</p>
+
+    <div class="type-voice">
+      <div class="tv-row" style="background:var(--surface-2);">
+        <div class="tv-role" style="background:transparent;">
+          <span>Typeface</span>
+          <strong>Role</strong>
+        </div>
+        <div class="tv-specimen" style="border-right:1px solid var(--border);">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--faint);">Specimen</span>
+        </div>
+        <div class="tv-rule">
+          <span style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--faint);">Voice rule</span>
+        </div>
+      </div>
+
+      <div class="tv-row">
+        <div class="tv-role">
+          <span>Fraunces 300i</span>
+          <strong>Emotional claim</strong>
+        </div>
+        <div class="tv-specimen">
+          <span style="font-family:'Fraunces',serif;font-size:28px;font-weight:300;font-style:italic;color:var(--coral);">She gets curious fast.</span>
+        </div>
+        <div class="tv-rule">Use for the one thing you want a hiring manager to feel, not read. Section openings, hero moments, pull quotes. One per section maximum.</div>
+      </div>
+
+      <div class="tv-row">
+        <div class="tv-role">
+          <span>Fraunces 400</span>
+          <strong>Argument heading</strong>
+        </div>
+        <div class="tv-specimen">
+          <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:400;line-height:1.3;">A few weeks in, we found<br>a different problem.</span>
+        </div>
+        <div class="tv-rule">For headings that describe what happened or what was found. Should be a complete thought. If it could stand alone without the rest of the copy, it's right.</div>
+      </div>
+
+      <div class="tv-row">
+        <div class="tv-role">
+          <span>DM Sans 300</span>
+          <strong>Proof</strong>
+        </div>
+        <div class="tv-specimen">
+          <span style="font-family:'DM Sans',sans-serif;font-size:14px;font-weight:300;line-height:1.7;max-width:300px;color:var(--muted);">User testing showed 62% of vault additions happened before the first scroll. We moved the CTA up. Additions increased 18% in the following two weeks.</span>
+        </div>
+        <div class="tv-rule">Body copy. Evidence, context, narrative. Calm and clear. Never longer than four sentences before a break. Line-height 1.7.</div>
+      </div>
+
+      <div class="tv-row">
+        <div class="tv-role">
+          <span>DM Mono 400</span>
+          <strong>Precision signal</strong>
+        </div>
+        <div class="tv-specimen">
+          <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);line-height:1.8;">MIGHTY JAXX · 2023–PRESENT<br>+18% WISHLIST ADDITIONS<br>6 WEEKS · 3 DECISION POINTS</span>
+        </div>
+        <div class="tv-rule">Labels, dates, metrics, tags. Never for sentences — always for data points. Signals: "I deal in facts, not impressions."</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ WORDS IN / OUT ══════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">05 · Vocabulary · Swap list</p>
+
+    <div class="words-grid">
+      <div class="word-pair">
+        <span class="word-out">passionate about</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">driven by</span>
+      </div>
+      <div class="word-pair">
+        <span class="word-out">leveraged</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">used</span>
+      </div>
+      <div class="word-pair">
+        <span class="word-out">collaborated with</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">worked through it with</span>
+      </div>
+      <div class="word-pair">
+        <span class="word-out">drove alignment</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">we decided to</span>
+      </div>
+      <div class="word-pair">
+        <span class="word-out">key metrics</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">[the actual number]</span>
+      </div>
+      <div class="word-pair">
+        <span class="word-out">unique perspective</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">[the actual perspective]</span>
+      </div>
+      <div class="word-pair">
+        <span class="word-out">I was involved in</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">my part was / I worked on</span>
+      </div>
+      <div class="word-pair">
+        <span class="word-out">results-driven</span>
+        <span class="word-arrow">→</span>
+        <span class="word-in">[the actual result, stated plainly]</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ HEADLINE EXAMPLES ════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">06 · Headline examples · Ready to use or adapt</p>
+
+    <div class="headline-stack">
+      <div class="headline-item">
+        <div class="hl-text">I wanted something that connected<br>all of it. So I <em>built</em> it.</div>
+        <div class="hl-meta">
+          <span class="section-tag pulse">Pulse</span>
+          <p>Hero / case study opening</p>
+        </div>
+      </div>
+      <div class="headline-item">
+        <div class="hl-text">I went in not knowing the domain.<br>That turned out to <em>matter.</em></div>
+        <div class="hl-meta">
+          <span class="section-tag think">Self-initiated</span>
+          <p>Opening line · any self-initiated case study</p>
+        </div>
+      </div>
+      <div class="headline-item">
+        <div class="hl-text">A few weeks in, we realised<br>we were solving the <em>wrong thing.</em></div>
+        <div class="hl-meta">
+          <span class="section-tag think">Self-initiated</span>
+          <p>Reframe moment · inside case study</p>
+        </div>
+      </div>
+      <div class="headline-item">
+        <div class="hl-text">What we built, what we <em>learned,</em><br>and what we'd do differently.</div>
+        <div class="hl-meta">
+          <span class="section-tag mj">Mighty Jaxx</span>
+          <p>Section header · honest register</p>
+        </div>
+      </div>
+      <div class="headline-item">
+        <div class="hl-text">New domains don't scare me.<br>They make me <em>curious.</em></div>
+        <div class="hl-meta">
+          <span class="section-tag global">Homepage</span>
+          <p>Hero headline · global brand claim</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <p>Brand Voice Card · Design System v0.2 · Party Mode · March 2026</p>
+    <div class="paige-credit">
+      <span>📚</span>
+      <span>Documented by Paige · Technical Writer</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
