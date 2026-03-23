@@ -473,83 +473,9 @@
       .footer-left { justify-content: center; }
     }
   </style>
-  <style>
-    #gate {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: var(--base);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'DM Sans', sans-serif;
-    }
-    #gate.hidden { display: none; }
-    .gate-box {
-      width: 100%;
-      max-width: 360px;
-      padding: 0 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .gate-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .gate-input-row {
-      display: flex;
-      gap: 10px;
-    }
-    .gate-input {
-      flex: 1;
-      padding: 12px 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-family: 'DM Mono', monospace;
-      font-size: 14px;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .gate-input:focus { border-color: var(--text-muted); }
-    .gate-input.error { border-color: var(--coral); }
-    .gate-btn {
-      padding: 12px 18px;
-      background: var(--text);
-      color: var(--base);
-      border: none;
-      border-radius: 6px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-    .gate-btn:hover { opacity: 0.8; }
-    .gate-error {
-      font-size: 13px;
-      color: var(--coral);
-      min-height: 18px;
-    }
-  </style>
+  <style id="gate-hide">html{visibility:hidden}</style>
 </head>
 <body>
-
-  <div id="gate">
-    <div class="gate-box">
-      <div class="gate-label">Password required</div>
-      <div class="gate-input-row">
-        <input id="gate-input" class="gate-input" type="password" placeholder="Enter password" autocomplete="current-password" />
-        <button class="gate-btn" onclick="checkGate()">Enter</button>
-      </div>
-      <div class="gate-error" id="gate-error"></div>
-    </div>
-  </div>
 
   <!-- NAV -->
   <nav class="nav" id="nav">
@@ -719,32 +645,7 @@
       nav.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
   </script>
-  <script>
-    (function () {
-      const gate = document.getElementById('gate');
-      if (sessionStorage.getItem('unlocked') === '1') {
-        gate.classList.add('hidden');
-        return;
-      }
-      document.getElementById('gate-input').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') checkGate();
-      });
-    })();
-
-    function checkGate() {
-      const input = document.getElementById('gate-input');
-      const error = document.getElementById('gate-error');
-      if (input.value === 'F1NDJ0BN0W!') {
-        sessionStorage.setItem('unlocked', '1');
-        document.getElementById('gate').classList.add('hidden');
-      } else {
-        input.classList.add('error');
-        error.textContent = 'Incorrect password.';
-        input.value = '';
-        setTimeout(() => input.classList.remove('error'), 1500);
-      }
-    }
-  </script>
+  <script src="gate.js"></script>
 
 </body>
 </html>

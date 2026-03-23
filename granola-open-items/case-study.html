@@ -221,6 +221,7 @@
   @media (max-width: 600px) { .sect-dropdown { right: 16px; left: 16px; min-width: unset; } }
 
 </style>
+  <style id="gate-hide">html{visibility:hidden}</style>
 </head>
 <body>
 
@@ -540,5 +541,6 @@
   }, { rootMargin: '-20% 0px -70% 0px' });
   document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
 </script>
+  <script src="../gate.js"></script>
 </body>
 </html>
