@@ -1,432 +1,649 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reiko Tan — Product Manager</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <meta name="description" content="Reiko Tan is a Product Manager based in Singapore. Four years at Mighty Jaxx finding the questions nobody wanted to ask, and building what came after." />
+  <meta property="og:title" content="Reiko Tan — Product Manager" />
+  <meta property="og:description" content="Good products start with the question nobody wanted to ask." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --ink: #111111;
-      --ink-2: #444444;
-      --ink-3: #888888;
-      --rule: #e0e0e0;
-      --bg: #fafaf8;
-      --bg-2: #f2f1ee;
-      --accent: #1a3c5e;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --sans: 'DM Sans', system-ui, sans-serif;
-      --max: 740px;
+      --base:        #FAF7F2;
+      --surface:     #F2EDE4;
+      --surface-2:   #EAE3D8;
+      --border:      #E0D8CE;
+      --text:        #1A1614;
+      --text-muted:  #7A6F68;
+      --text-faint:  #B8AFA8;
+      --mj:          #FEED1E;
+      --mj-dim:      #FEF4A0;
+      --think:       #5B4FE9;
+      --think-dim:   #EAE8FC;
+      --pulse:       #2EC4B6;
+      --pulse-dim:   #DDF5F3;
+      --coral:       #F4743B;
+      --coral-dim:   #FDEEE6;
+      --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    html { font-size: 17px; scroll-behavior: smooth; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-weight: 300;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
+      background-color: var(--base);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes slideLine {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; opacity: 1 !important; }
+    }
+
+    .page { max-width: 1160px; margin: 0 auto; padding: 0 48px; }
+
+    /* ── NAV ──────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
       z-index: 100;
-      background: var(--bg);
-      border-bottom: 1px solid var(--rule);
-      padding: 0 2rem;
-      height: 52px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-    }
-
-    .nav-brand {
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    .nav-right {
-      display: flex;
       align-items: center;
-      gap: 1.5rem;
+      padding: 20px 48px;
+      border-bottom: 1px solid transparent;
+      background: transparent;
+      transition:
+        background 0.3s var(--ease-out),
+        border-color 0.3s var(--ease-out),
+        backdrop-filter 0.3s var(--ease-out);
+      max-width: 100%;
     }
-
-    .nav-link {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      text-decoration: none;
-      transition: color 0.2s;
+    .nav.scrolled {
+      background: rgba(242, 237, 228, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom-color: var(--border);
     }
-
-    .nav-link:hover { color: var(--ink); }
-
-    .nav-icon { display: flex; align-items: center; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
-    .nav-icon:hover { color: var(--ink); }
-
-    /* ── HERO ── */
-    .hero {
-      padding-top: 52px;
-      min-height: 60vh;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .hero-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 5rem 2rem 4rem;
-    }
-
-    .hero-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .hero-eyebrow::before {
-      content: '';
-      width: 24px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(2.4rem, 5vw, 3.5rem);
-      font-weight: 400;
-      line-height: 1.1;
-      color: var(--ink);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 em {
+    .nav-logo {
+      font-family: 'Fraunces', serif;
       font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-bio {
-      font-size: 1rem;
       font-weight: 300;
-      color: var(--ink-2);
-      max-width: 520px;
-      line-height: 1.75;
-      margin-bottom: 2rem;
+      font-size: 17px;
+      color: var(--text);
+      letter-spacing: -0.01em;
     }
-
-    .hero-contact {
-      font-size: 0.82rem;
-      color: var(--ink-3);
-    }
-
-    .hero-contact a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .hero-contact a:hover { text-decoration: underline; }
-
-    /* ── WORK SECTIONS ── */
-    .work {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 4rem 2rem;
-    }
-
-    .work-label {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      margin-bottom: 2rem;
+    .nav-links {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      gap: 36px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      color: var(--text-faint);
     }
-
-    .work-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--rule);
-    }
-
-    /* ── EMPLOYER HEADER ── */
-    .employer-header {
-      padding: 1.5rem 0 1.75rem;
-      border-bottom: 1px solid var(--rule);
-      margin-bottom: 0;
-    }
-
-    .employer-name {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      font-weight: 400;
-      color: var(--ink);
-      margin-bottom: 0.25rem;
-    }
-
-    .employer-role {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-    }
-
-    /* ── STUB CARD ── */
-    .project-card-stub {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: start;
-      gap: 2rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--rule);
+    .nav-links a {
       color: inherit;
-      cursor: default;
-    }
-
-    .stub-badge {
-      display: inline-block;
-      font-size: 0.62rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      border: 1px solid var(--rule);
-      border-radius: 2px;
-      padding: 2px 8px;
-      margin-top: 0.5rem;
-    }
-
-    .section-gap {
-      padding-top: 3rem;
-    }
-
-    .project-card {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: start;
-      gap: 2rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--rule);
       text-decoration: none;
-      color: inherit;
-    }
-
-    .project-card:first-of-type { border-top: 1px solid var(--rule); }
-
-    .project-card:hover .project-title { color: var(--accent); }
-
-    .project-archetype {
-      font-size: 0.62rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.3rem;
-    }
-
-    .project-tag {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      margin-bottom: 0.5rem;
-    }
-
-    .project-title {
-      font-family: var(--serif);
-      font-size: 1.5rem;
-      font-weight: 400;
-      line-height: 1.2;
-      color: var(--ink);
-      margin-bottom: 0.6rem;
       transition: color 0.15s;
     }
+    .nav-links a:hover { color: var(--text); }
 
-    .project-desc {
-      font-size: 0.87rem;
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      padding: 96px 0 84px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 28px;
+      animation: fadeIn 0.5s var(--ease-out) 0.1s both;
+    }
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(44px, 6.5vw, 88px);
       font-weight: 300;
-      color: var(--ink-2);
+      line-height: 0.97;
+      letter-spacing: -0.02em;
+      max-width: 760px;
+      margin-bottom: 44px;
+      animation: fadeUp 0.8s var(--ease-out) 0.15s both;
+    }
+    .hero-title em { font-style: italic; font-weight: 200; color: var(--coral); }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      animation: fadeIn 0.6s var(--ease-out) 0.4s both;
+    }
+    .hero-meta p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      max-width: 380px;
       line-height: 1.65;
-      max-width: 520px;
+    }
+    .hero-divider { width: 1px; height: 44px; background: var(--border); flex-shrink: 0; }
+    .hero-stat { text-align: center; }
+    .hero-stat .num {
+      font-family: 'Fraunces', serif;
+      font-size: 28px;
+      font-weight: 300;
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero-stat .lbl {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+    }
+    .hero-float {
+      position: absolute;
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      pointer-events: none;
+      animation: fadeIn 1.2s var(--ease-out) 0.6s both;
+    }
+    .hero-float::before {
+      content: '';
+      position: absolute;
+      inset: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+    }
+    .hero-float::after {
+      content: '';
+      position: absolute;
+      inset: 72px;
+      border-radius: 50%;
+      background: var(--surface) url('assets/headshot.jpg') center 15% / cover no-repeat;
+      border: 1px solid var(--border);
+      overflow: hidden;
     }
 
-    .project-meta {
+    /* ── SECTION LABEL ────────────────────────────────── */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 48px 0 24px;
+    }
+    .section-label::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 48px;
+      background: var(--border);
+      transform-origin: left;
+      animation: slideLine 0.6s var(--ease-out) 0.3s both;
+    }
+
+    /* ── ACT ROWS ─────────────────────────────────────── */
+    .acts {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
-      gap: 0.5rem;
-      flex-shrink: 0;
-      padding-top: 0.25rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
+    .act-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 220px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      border-left: 4px solid transparent;
+      cursor: pointer;
+      transition: background 0.2s var(--ease-out);
+      text-decoration: none;
+      color: inherit;
+    }
+    .act-row:last-child { border-bottom: none; }
+    .act-row.mj    { border-left-color: var(--mj); }
+    .act-row.think { border-left-color: var(--think); }
+    .act-row.pulse { border-left-color: var(--pulse); }
+    .act-row.mj:hover    { background: #FFFDE8; }
+    .act-row.think:hover { background: var(--think-dim); }
+    .act-row.pulse:hover { background: var(--pulse-dim); }
 
-    .project-type {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
+    .act-left {
+      padding: 32px 28px 32px 32px;
+      border-right: 1px solid var(--border);
+    }
+    .act-type {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--ink-3);
-      text-align: right;
+      color: var(--text-faint);
+      margin-bottom: 6px;
     }
-
-    .project-arrow {
-      font-size: 1rem;
-      color: var(--accent);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--rule);
-      padding: 2.5rem 2rem;
-      max-width: var(--max);
-      margin: 0 auto;
-    }
-
-    footer p {
-      font-size: 0.78rem;
-      color: var(--ink-3);
+    .act-name {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
       font-weight: 300;
+      line-height: 1.1;
     }
+    .act-middle {
+      padding: 32px 36px;
+      border-right: 1px solid var(--border);
+    }
+    .act-teaser {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .act-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .act-link .arrow { color: var(--coral); }
+    .act-right { padding: 24px 28px; }
+    .act-preview { border-radius: 8px; padding: 14px 16px; }
+    .mj-bg    { background: var(--mj-dim); }
+    .think-bg { background: var(--think-dim); }
+    .pulse-bg { background: var(--pulse-dim); }
+    .preview-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .mj-bg    .preview-tag { color: #7A6800; }
+    .think-bg .preview-tag { color: var(--think); }
+    .pulse-bg .preview-tag { color: #178078; }
+    .preview-name   { font-size: 13px; font-weight: 400; color: var(--text); margin-bottom: 3px; }
+    .preview-detail { font-size: 12px; font-weight: 300; color: var(--text-muted); }
 
-    footer a {
-      color: var(--accent);
+    /* ── CONTACT SECTION ──────────────────────────────── */
+    .contact-section {
+      padding: 88px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .contact-headline {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+    .contact-sub {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 360px;
+    }
+    .contact-icons {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .contact-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
       text-decoration: none;
     }
+    .icon-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s var(--ease-out);
+    }
+    .contact-icon:hover .icon-circle {
+      border-color: var(--coral);
+      background: var(--coral-dim);
+      transform: translateY(-3px);
+    }
+    .icon-circle svg { width: 20px; height: 20px; color: var(--coral); }
+    .icon-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
 
-    @media (max-width: 560px) {
-      .project-card { grid-template-columns: 1fr; }
-      .project-meta { flex-direction: row; align-items: center; }
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer {
+      padding: 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .footer-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+    }
+    .footer-icons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .footer-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--text-faint);
+      transition: border-color 0.2s, color 0.2s, transform 0.2s var(--ease-out);
+    }
+    .footer-icon:hover {
+      border-color: var(--coral);
+      color: var(--coral);
+      transform: translateY(-2px);
+    }
+    .footer-icon svg { width: 15px; height: 15px; }
+
+    /* ── MOBILE ───────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-float {
+        right: -120px;
+        width: 280px;
+        height: 280px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page { padding: 0 24px; }
+
+      /* Nav */
+      .nav { padding: 18px 24px; }
+      .nav-links { gap: 20px; font-size: 10px; }
+
+      /* Hero */
+      .hero { padding: 60px 0 56px; }
+      .hero-title { font-size: clamp(36px, 10vw, 56px); margin-bottom: 32px; }
+      .hero-meta { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .hero-divider { width: 44px; height: 1px; }
+      .hero-stat { text-align: left; }
+      .hero-float { display: none; }
+
+      /* Act rows — stack vertically */
+      .act-row {
+        grid-template-columns: 1fr;
+        border-left-width: 0;
+        border-top: 4px solid transparent;
+      }
+      .act-row.mj    { border-top-color: var(--mj); }
+      .act-row.think { border-top-color: var(--think); }
+      .act-row.pulse { border-top-color: var(--pulse); }
+
+      .act-left {
+        padding: 24px 20px 16px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .act-middle {
+        padding: 16px 20px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .act-right { padding: 16px 20px 24px; }
+
+      /* Contact */
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      /* Footer */
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-left { justify-content: center; }
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <span class="nav-brand">Reiko Tan</span>
-  <div class="nav-right">
-    <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-    </a>
-    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram" target="_blank" rel="noopener">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-    </a>
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <span class="nav-logo">Reiko</span>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#thinking">Thinking</a>
+      <a href="#building">Building</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-eyebrow">Reiko Tan &nbsp;·&nbsp; Product Manager</div>
+      <h1 class="hero-title">Good products start with the question <em>nobody wanted to ask.</em></h1>
+      <div class="hero-meta">
+        <p>Five years at Mighty Jaxx, finding those questions and building for what came after.</p>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <span class="num">5</span>
+          <span class="lbl">Years at MJ</span>
+        </div>
+      </div>
+      <div class="hero-float"></div>
+    </section>
+
+    <!-- THREE ACTS -->
+    <div class="section-label">Three types of work</div>
+    <div class="acts" id="work">
+
+      <a class="act-row mj" href="work/index.html" aria-label="Work — Mighty Jaxx projects">
+        <div class="act-left">
+          <div class="act-type">Work</div>
+          <div class="act-name">Mighty Jaxx</div>
+        </div>
+        <div class="act-middle">
+          <p class="act-teaser">Five years finding what was structurally missing at Mighty Jaxx and building for that. Vault, payments, authentication, collectibles commerce.</p>
+          <div class="act-link"><span class="arrow">→</span> Vault · Payments · Auth · more</div>
+        </div>
+        <div class="act-right">
+          <div class="act-preview mj-bg">
+            <div class="preview-tag">Featured</div>
+            <div class="preview-name">— placeholder —</div>
+            <div class="preview-detail">Top MJ project</div>
+          </div>
+        </div>
+      </a>
+
+      <a class="act-row think" href="thinking/index.html" id="thinking" aria-label="Thinking — independent case studies">
+        <div class="act-left">
+          <div class="act-type">Case studies</div>
+          <div class="act-name">Thinking</div>
+        </div>
+        <div class="act-middle">
+          <p class="act-teaser">Problems I chose to think hard about outside my day job. Not because I had to. Because they were interesting.</p>
+          <div class="act-link"><span class="arrow">→</span> Cash Wallet · Granola</div>
+        </div>
+        <div class="act-right">
+          <div class="act-preview think-bg">
+            <div class="preview-tag">Featured</div>
+            <div class="preview-name">Cash Wallet</div>
+            <div class="preview-detail">Payments redesign analysis</div>
+          </div>
+        </div>
+      </a>
+
+      <a class="act-row pulse" href="building/index.html" id="building" aria-label="Building — personal projects">
+        <div class="act-left">
+          <div class="act-type">Projects</div>
+          <div class="act-name">Building</div>
+        </div>
+        <div class="act-middle">
+          <p class="act-teaser">Things I built because I got curious about a problem. A hackathon, a Telegram bot, and whatever comes next.</p>
+          <div class="act-link"><span class="arrow">→</span> Pulse · Tag Team</div>
+        </div>
+        <div class="act-right">
+          <div class="act-preview pulse-bg">
+            <div class="preview-tag">Featured</div>
+            <div class="preview-name">Pulse v1</div>
+            <div class="preview-detail">Problem to shipped in 6 weeks</div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact-section">
+      <div class="section-label">Get in touch</div>
+      <div class="contact-inner">
+        <div>
+          <div class="contact-headline">Let's find the right question together.</div>
+          <p class="contact-sub">Looking for my next Senior PM role. Ideally somewhere the hard questions are still open. Fastest response on Telegram.</p>
+        </div>
+        <div class="contact-icons">
+
+          <!-- Email -->
+          <a class="contact-icon" href="mailto:reiko98@live.com.sg">
+            <div class="icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m2 7 10 7 10-7"/>
+              </svg>
+            </div>
+            <span class="icon-label">Email</span>
+          </a>
+
+          <!-- Telegram -->
+          <a class="contact-icon" href="https://t.me/rracko">
+            <div class="icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 3.5 2.5 10.5l7 2m12-9-5 17-5-7m5-10-7 9"/>
+              </svg>
+            </div>
+            <span class="icon-label">Telegram</span>
+          </a>
+
+          <!-- LinkedIn -->
+          <a class="contact-icon" href="https://www.linkedin.com/in/reikotan">
+            <div class="icon-circle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="4"/>
+                <path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/>
+              </svg>
+            </div>
+            <span class="icon-label">LinkedIn</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-left">
+        <span class="footer-logo">Reiko</span>
+        <span class="footer-year">© 2026</span>
+      </div>
+      <div class="footer-icons">
+        <a class="footer-icon" href="mailto:reiko98@live.com.sg" title="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m2 7 10 7 10-7"/>
+          </svg>
+        </a>
+        <a class="footer-icon" href="https://t.me/rracko" title="Telegram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 3.5 2.5 10.5l7 2m12-9-5 17-5-7m5-10-7 9"/>
+          </svg>
+        </a>
+        <a class="footer-icon" href="https://www.linkedin.com/in/reikotan" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="4"/>
+            <path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/>
+          </svg>
+        </a>
+      </div>
+    </footer>
+
   </div>
-</nav>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow">Product Manager · Singapore</div>
-    <h1>Reiko Tan</h1>
-    <p class="hero-bio">I start from the same question: what problem is everyone else not solving? Most of my work begins with a familiar-looking brief and ends somewhere different. Coordination infrastructure instead of a marketplace. Identity infrastructure instead of authentication. A deposit loop that turned out to be a reconciliation gap. The work is finding what's structurally missing, then building for that.</p>
-    <p class="hero-contact"><a href="mailto:reiko98@live.com.sg">reiko98@live.com.sg</a></p>
-  </div>
-</section>
-
-<main class="work">
-  <div class="work-label">Mighty Jaxx</div>
-
-  <div class="employer-header">
-    <div class="employer-name">Mighty Jaxx</div>
-    <div class="employer-role">Product Manager &nbsp;&middot;&nbsp; 2021&ndash;Present &nbsp;&middot;&nbsp; Singapore</div>
-  </div>
-
-  <a href="mighty-jaxx/vault/case-study.html" class="project-card">
-    <div>
-      <div class="project-archetype">Structural invisibility</div>
-      <div class="project-tag">Consumer Platform &nbsp;&middot;&nbsp; Loyalty &nbsp;&middot;&nbsp; 0 to 1</div>
-      <div class="project-title">Vault and QR Authentication</div>
-      <p class="project-desc">Mighty Jaxx sold millions of collectibles through distributors and had no idea who owned them. Building the identity layer that turned anonymous buyers into identified collectors, and the platform that gives them a reason to stay.</p>
-    </div>
-    <div class="project-meta">
-      <span class="project-type">Live &nbsp;&middot;&nbsp; 18 months</span>
-      <span class="project-arrow">&#8594;</span>
-    </div>
-  </a>
-
-  <a href="mighty-jaxx/interactive-toy/case-study.html" class="project-card">
-    <div>
-      <div class="project-archetype">Constraint-led design</div>
-      <div class="project-tag">Consumer Hardware · 0 to 1 · Dual Audience</div>
-      <div class="project-title">Building an Interactive Toy Ecosystem</div>
-      <p class="project-desc">Inventing the product category, hardware interaction model, and content architecture for a screen-free interactive toy. From blank page to pre-launch validation.</p>
-    </div>
-    <div class="project-meta">
-      <span class="project-type">Mighty Jaxx · Pre-launch</span>
-      <span class="project-arrow">&#8594;</span>
-    </div>
-  </a>
-
-  <div class="section-gap">
-    <div class="work-label">Independent Case Studies</div>
-  </div>
-
-  <a href="cash-wallet/case-study.html" class="project-card">
-    <div>
-      <div class="project-archetype">Infrastructure misdiagnosis</div>
-      <div class="project-tag">Case Study · Alternative Assets · Singapore</div>
-      <div class="project-title">[Company] Cash Wallet</div>
-      <p class="project-desc">Activation and growth strategy to close the gap between KYC approval and first deposit, and build a wallet investors choose to keep money in.</p>
-    </div>
-    <div class="project-meta">
-      <span class="project-type">MAS-licensed · PayNow</span>
-      <span class="project-arrow">→</span>
-    </div>
-  </a>
-
-  <a href="granola-open-items/case-study.html" class="project-card">
-    <div>
-      <div class="project-archetype">Product scope</div>
-      <div class="project-tag">Feature Design · Productivity · AI</div>
-      <div class="project-title">Granola Open Items</div>
-      <p class="project-desc">Proposing a native cross-meeting action tracker for Granola. Turning the best meeting notetaker into a system that ensures meetings actually lead to something.</p>
-    </div>
-    <div class="project-meta">
-      <span class="project-type">Discovery → PRD</span>
-      <span class="project-arrow">→</span>
-    </div>
-  </a>
-
-  <a href="tag-team/case-study.html" class="project-card">
-    <div>
-      <div class="project-archetype">Problem reframing</div>
-      <div class="project-tag">Hackathon · Social Impact · Eldercare · Singapore</div>
-      <div class="project-title">Tag Team</div>
-      <p class="project-desc">Everyone built a care marketplace. We identified the real gap: coordination infrastructure for families already doing the care. We built for that instead.</p>
-    </div>
-    <div class="project-meta">
-      <span class="project-type">Build for Good · In Discussion</span>
-      <span class="project-arrow">→</span>
-    </div>
-  </a>
-</main>
-
-<footer>
-  <p>Reiko Tan &nbsp;·&nbsp; <a href="mailto:reiko98@live.com.sg">reiko98@live.com.sg</a> &nbsp;·&nbsp; Product Manager</p>
-</footer>
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  </script>
 
 </body>
 </html>

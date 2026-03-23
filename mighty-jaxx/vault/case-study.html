@@ -1,1064 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vault and QR Auth — Mighty Jaxx | Reiko Tan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --yellow: #FFE000;
-      --yellow-pale: #FFFDE5;
-      --yellow-border: #E6CA00;
-      --black: #111111;
-      --grey-50: #fafaf8;
-      --grey-100: #f2f1ee;
-      --grey-200: #e0e0e0;
-      --grey-300: #c8c8c8;
-      --grey-500: #888888;
-      --grey-700: #444444;
-      --white: #ffffff;
-      --green: #1a6e42;
-      --green-light: #eef7f2;
-      --accent: #1a3c5e;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --sans: 'DM Sans', system-ui, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Anonymous Buyers to Identified Collectors | Mighty Jaxx | Reiko Tan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base:       #FAF7F2;
+    --surface:    #F2EDE4;
+    --surface-2:  #EAE3D8;
+    --border:     #E0D8CE;
+    --text:       #1A1614;
+    --text-muted: #7A6F68;
+    --text-faint: #B8AFA8;
+    --mj:         #FEED1E;
+    --coral:      #F4743B;
+    --coral-dim:  #FDEEE6;
+    --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+    --accent: var(--mj);
+  }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--grey-50);
-      color: var(--black);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 58px;
-      background: var(--white);
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0 48px;
-      border-bottom: 1px solid var(--grey-200);
-    }
-    nav a {
-      font-family: var(--sans);
-      font-weight: 700; font-size: 13px;
-      letter-spacing: 0.02em;
-      color: var(--black);
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-    nav a:hover { opacity: 0.55; }
-    .nav-logo { font-size: 16px; }
-    .nav-right { display: flex; gap: 24px; align-items: center; }
-    .nav-icon { display: flex; align-items: center; }
+  body {
+    background-color: var(--base);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
 
-    /* ── READING PROGRESS ── */
-    .reading-progress {
-      position: fixed; top: 58px; left: 0; right: 0;
-      height: 2px; background: var(--grey-200); z-index: 99;
-    }
-    .reading-progress-bar {
-      height: 100%; background: var(--yellow);
-      width: 0%; transition: width 0.1s linear;
-    }
+  .reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 200; pointer-events: none; }
+  .reading-progress-bar { height: 100%; background: var(--accent); width: 0; transition: width 0.1s linear; }
 
-    /* ── HERO ── */
-    .hero {
-      padding-top: 58px;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px; border-bottom: 1px solid transparent; background: transparent;
+    transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out), backdrop-filter 0.3s var(--ease-out);
+  }
+  .nav.scrolled { background: rgba(242,237,228,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom-color: var(--border); }
+  .nav-logo { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 17px; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+  .nav-right { display: flex; gap: 20px; align-items: center; }
+  .nav-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; color: var(--text-faint); text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: var(--text); }
+  .sect-btn { display: none; }
 
-    .hero-left {
-      background: var(--grey-50);
-      padding: 80px 56px;
-      display: flex; flex-direction: column; justify-content: center;
-      position: relative; overflow: hidden;
-    }
+  .sect-dropdown {
+    position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    visibility: hidden; opacity: 0; transform: translateY(-6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+  }
+  .sect-dropdown.open { visibility: visible; opacity: 1; transform: translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
+  .sect-dropdown-inner { padding: 8px 0 12px; }
+  .sect-dropdown a { display: flex; align-items: baseline; gap: 10px; padding: 10px 24px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--text-muted); transition: background 0.1s, color 0.1s; }
+  .sect-dropdown a:hover { background: var(--surface-2); color: var(--text); }
+  .sect-dropdown a .dn { font-size: 9px; color: var(--text-faint); }
+  .nav-icon { display: flex; align-items: center; color: var(--text-muted); transition: color 0.15s; text-decoration: none; }
+  .nav-icon:hover { color: var(--text); }
 
-    .hero-left::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(26,60,94,0.06) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
-    }
+  .hero { border-top: 4px solid var(--accent); padding: 64px 48px 56px; border-bottom: 1px solid var(--border); }
+  .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; }
+  .hero-focus { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; color: var(--text-faint); margin-bottom: 20px; }
+  .hero h1 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(34px, 4vw, 52px); line-height: 1.08; letter-spacing: -0.02em; color: var(--text); margin-bottom: 24px; max-width: 820px; }
+  .hero h1 em { font-style: italic; }
+  .hero-sub { font-size: 17px; font-weight: 300; color: var(--text-muted); line-height: 1.65; max-width: 660px; margin-bottom: 28px; }
+  .hero-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 36px; }
+  .hero-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--text-muted); border: 1px solid var(--border); border-radius: 2px; padding: 4px 10px; background: var(--surface); }
+  .hero-meta-row { display: flex; border-top: 1px solid var(--border); padding-top: 28px; max-width: 820px; }
+  .hero-meta-item { flex: 1; }
+  .hero-meta-item + .hero-meta-item { padding-left: 28px; border-left: 1px solid var(--border); }
+  .hero-meta-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: 5px; }
+  .hero-meta-value { font-size: 14px; font-weight: 400; color: var(--text); }
 
-    .hero-eyebrow {
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 20px; position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
-    }
+  .body-layout { display: grid; grid-template-columns: 220px 1fr; }
 
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(34px, 3.8vw, 54px);
-      font-weight: 400; line-height: 1.05;
-      letter-spacing: -0.01em;
-      color: var(--black);
-      margin-bottom: 28px; position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.25s forwards;
-    }
+  .sidebar { position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; background: var(--surface); border-right: 1px solid var(--border); padding: 40px 0 80px; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); padding: 0 24px 16px; display: block; }
+  .toc-item { display: flex; align-items: baseline; padding: 7px 24px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.03em; color: var(--text-faint); line-height: 1.4; border-left: 2px solid transparent; transition: color 0.15s, border-color 0.15s, background 0.15s; }
+  .toc-item:hover { color: var(--text-muted); background: var(--surface-2); }
+  .toc-item.active { color: var(--text); border-left-color: var(--accent); background: var(--surface-2); }
+  .toc-num { font-size: 9px; color: var(--text-faint); margin-right: 10px; flex-shrink: 0; }
+  .toc-item.active .toc-num { color: var(--text-muted); }
 
-    .hero h1 mark {
-      background: var(--yellow-pale);
-      color: var(--black);
-      padding: 0 5px;
-      border-radius: 2px;
-    }
+  .content { padding: 0 72px 120px; min-width: 0; }
+  .cs-section { padding: 72px 0 0; }
 
-    .hero-sub {
-      font-size: 15px; font-weight: 300;
-      color: var(--grey-700);
-      max-width: 400px; line-height: 1.7;
-      margin-bottom: 48px; position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
-    }
+  .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    .hero-tags {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
-    }
+  .cs-section h2 { font-family: 'Fraunces', serif; font-weight: 300; font-size: 30px; line-height: 1.18; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px; }
+  .cs-section h2 em { font-style: italic; }
+  .cs-section p { font-size: 16px; font-weight: 300; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
+  .cs-section p:last-child { margin-bottom: 0; }
+  .cs-section p strong { color: var(--text); font-weight: 400; }
 
-    .htag {
-      padding: 5px 12px;
-      border: 1px solid var(--grey-200);
-      border-radius: 3px;
-      font-size: 11px; font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--grey-500);
-      text-transform: uppercase;
-    }
+  .pm-note { border-left: 2px solid var(--coral); background: var(--coral-dim); padding: 14px 18px; margin: 28px 0; border-radius: 0 4px 4px 0; }
+  .pm-note-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); display: block; margin-bottom: 6px; }
+  .pm-note-text { font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 0; }
 
-    .hero-right {
-      background: var(--white);
-      border-left: 1px solid var(--grey-200);
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 64px 48px;
-      gap: 32px;
-    }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 28px 0; }
+  .stat-cell { padding: 20px 24px; border-right: 1px solid var(--border); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 36px; line-height: 1; color: var(--text); display: block; margin-bottom: 6px; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+  .stat-sub { font-size: 13px; font-weight: 300; color: var(--text-muted); display: block; margin-top: 8px; line-height: 1.5; }
 
-    .meta-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1px; background: var(--grey-200);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px; overflow: hidden;
-      opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
-    }
+  .decision-block { margin: 28px 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .decision-header { display: flex; align-items: baseline; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .decision-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); background: var(--text); padding: 2px 7px; border-radius: 2px; flex-shrink: 0; }
+  .decision-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400; color: var(--text); line-height: 1.4; }
+  .decision-cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .decision-col { padding: 18px 22px; }
+  .decision-col + .decision-col { border-left: 1px solid var(--border); }
+  .decision-col-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 8px; }
+  .label-tension { color: var(--coral); }
+  .label-resolution { color: var(--text-faint); }
+  .decision-col p { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 0; }
 
-    .meta-cell { background: var(--white); padding: 28px 24px; }
+  .img-placeholder { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin: 28px 0; }
 
-    .meta-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--grey-500); display: block; margin-bottom: 6px;
-    }
+  .cs-footer-wrap { display: grid; grid-template-columns: 220px 1fr; border-top: 1px solid var(--border); }
+  .cs-footer-sidebar { background: var(--surface); border-right: 1px solid var(--border); }
+  .cs-footer { padding: 32px 72px; display: flex; justify-content: space-between; align-items: center; }
+  .cs-footer-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; color: var(--text-faint); text-decoration: none; transition: color 0.15s; }
+  .cs-footer-back:hover { color: var(--text); }
+  .cs-footer-icons { display: flex; gap: 16px; }
+  .cs-footer-icon { color: var(--text-faint); transition: color 0.15s; text-decoration: none; }
+  .cs-footer-icon:hover { color: var(--text); }
 
-    .meta-value {
-      font-size: 17px; font-weight: 700;
-      color: var(--black); display: block; line-height: 1.2;
-    }
-
-    .byline {
-      font-size: 12px; font-weight: 500;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--grey-500);
-      opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
-    }
-
-    /* ── LAYOUT ── */
-    .container { max-width: 1120px; margin: 0 auto; padding: 0 48px; }
-    section { padding: 88px 0; border-bottom: 1px solid var(--grey-200); }
-    section:last-of-type { border-bottom: none; }
-
-    .section-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: currentColor;
-    }
-
-    h2 {
-      font-family: var(--serif);
-      font-size: clamp(1.5rem, 3vw, 1.9rem);
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-    }
-
-    p { color: var(--grey-700); font-weight: 300; margin-bottom: 16px; }
-    p:last-child { margin-bottom: 0; }
-    strong { color: var(--black); font-weight: 500; }
-
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
-    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-
-    /* ── CALLOUT ── */
-    .callout {
-      border-left: 3px solid var(--yellow-border);
-      padding: 20px 24px;
-      background: var(--yellow-pale);
-      margin: 32px 0;
-      border-radius: 0 4px 4px 0;
-    }
-    .callout p {
-      color: var(--black);
-      font-size: 16px; font-weight: 500; font-style: italic;
-      line-height: 1.55; margin: 0;
-    }
-
-    /* ── SIGNAL CARDS (discovery) ── */
-    .signal-stack { display: flex; flex-direction: column; gap: 2px; }
-    .signal-item {
-      display: grid; grid-template-columns: 40px 1fr;
-      gap: 16px; align-items: start;
-      padding: 20px 20px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 4px;
-      transition: border-color 0.15s;
-    }
-    .signal-item:hover { border-color: var(--grey-300); }
-    .signal-num {
-      font-size: 11px; font-weight: 700;
-      background: var(--yellow-pale);
-      color: var(--black);
-      border: 1px solid var(--yellow-border);
-      border-radius: 2px;
-      padding: 3px 7px;
-      text-align: center;
-      margin-top: 2px;
-    }
-    .signal-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 4px; }
-    .signal-item p { font-size: 14px; margin: 0; }
-
-    /* ── PROBLEM ITEMS ── */
-    .problem-stack { display: flex; flex-direction: column; gap: 2px; }
-    .problem-item {
-      display: flex; align-items: flex-start; gap: 14px;
-      padding: 16px 18px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 4px;
-      transition: border-color 0.15s;
-    }
-    .problem-item:hover { border-color: var(--grey-300); }
-    .problem-dot {
-      width: 7px; height: 7px; min-width: 7px;
-      border-radius: 50%;
-      background: var(--yellow);
-      border: 1.5px solid var(--yellow-border);
-      margin-top: 9px;
-    }
-    .problem-item p { margin: 0; font-size: 14px; }
-
-    /* ── INSIGHT FLOW ── */
-    .flow-col { display: flex; flex-direction: column; gap: 2px; }
-    .flow-step {
-      display: flex; align-items: center; gap: 16px;
-      padding: 16px 20px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 6px;
-      transition: border-color 0.15s;
-    }
-    .flow-step:hover { border-color: var(--grey-300); }
-    .flow-step.active {
-      background: var(--yellow-pale);
-      border-color: var(--yellow-border);
-      color: var(--black);
-    }
-    .flow-step-icon { font-size: 20px; flex-shrink: 0; width: 32px; text-align: center; }
-    .flow-step-label {
-      font-size: 13px; font-weight: 700;
-      color: var(--black); display: block; margin-bottom: 2px;
-    }
-    .flow-step-sub { font-size: 12px; color: var(--grey-500); display: block; }
-    .flow-connector {
-      width: 1px; height: 10px;
-      background: var(--grey-200);
-      margin-left: 35px;
-    }
-
-    /* ── DECISIONS ── */
-    .decision-block {
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px; overflow: hidden;
-      margin-bottom: 16px;
-      transition: border-color 0.15s;
-    }
-    .decision-block:hover { border-color: var(--grey-300); }
-    .decision-header {
-      padding: 16px 22px;
-      background: var(--grey-50);
-      border-bottom: 1px solid var(--grey-200);
-      display: flex; align-items: center; gap: 14px;
-    }
-    .decision-num {
-      font-size: 10px; font-weight: 700;
-      background: var(--yellow-pale);
-      color: var(--black);
-      padding: 3px 10px; border-radius: 2px;
-      border: 1px solid var(--yellow-border);
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .decision-header h3 {
-      font-size: 14px; font-weight: 500;
-      color: var(--black); margin: 0;
-    }
-    .decision-body { display: grid; grid-template-columns: 1fr 1fr; }
-    .decision-col { padding: 22px; }
-    .decision-col + .decision-col { border-left: 1px solid var(--grey-200); }
-    .decision-col-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      margin-bottom: 10px; display: block;
-    }
-    .label-before { color: var(--grey-500); }
-    .label-after { color: var(--green); }
-    .decision-col p { font-size: 14px; }
-    .decision-col p + p { color: var(--grey-500); font-size: 13px; margin-top: 8px; }
-    .decision-insight {
-      padding: 11px 22px;
-      background: var(--grey-50);
-      border-top: 1px solid var(--grey-200);
-      font-size: 12px; font-weight: 600;
-      color: var(--grey-700);
-      display: flex; gap: 10px; align-items: flex-start;
-    }
-    .decision-insight::before { content: 'Principle:'; color: var(--black); flex-shrink: 0; font-weight: 700; }
-
-    /* ── STAKEHOLDER BOX ── */
-    .stakeholder-box {
-      background: var(--grey-50);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px;
-      padding: 28px 32px;
-      margin-top: 16px;
-    }
-    .stakeholder-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--grey-500); margin-bottom: 12px; display: block;
-    }
-    .stakeholder-box p { font-size: 14px; }
-
-    /* ── TIMELINE ── */
-    .timeline { display: flex; flex-direction: column; gap: 2px; margin-top: 40px; }
-    .timeline-row {
-      display: grid; grid-template-columns: 160px 1fr;
-      gap: 0;
-      border: 1px solid var(--grey-200);
-      border-radius: 4px; overflow: hidden;
-      transition: border-color 0.15s;
-    }
-    .timeline-row:hover { border-color: var(--grey-300); }
-    .timeline-phase {
-      background: var(--grey-50);
-      border-right: 1px solid var(--grey-200);
-      padding: 20px 20px;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .timeline-phase-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--grey-500); margin-bottom: 4px; display: block;
-    }
-    .timeline-phase-name {
-      font-size: 13px; font-weight: 700;
-      color: var(--black); line-height: 1.3;
-    }
-    .timeline-content { padding: 20px 24px; }
-    .timeline-content p { font-size: 14px; margin: 0; }
-    .timeline-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-    .timeline-chip {
-      font-size: 11px; font-weight: 500;
-      padding: 3px 10px;
-      background: var(--yellow-pale);
-      border: 1px solid var(--yellow-border);
-      border-radius: 2px;
-      color: var(--black);
-    }
-
-    /* ── SYSTEM ── */
-    .system-diagram {
-      background: var(--grey-50);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px;
-      padding: 48px; margin: 40px 0;
-    }
-    .diagram-flow {
-      display: flex; align-items: stretch;
-      justify-content: center; gap: 0; flex-wrap: wrap;
-    }
-    .diagram-node {
-      text-align: center; padding: 22px 16px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 6px;
-      min-width: 148px; max-width: 162px;
-      transition: border-color 0.15s;
-    }
-    .diagram-node:hover { border-color: var(--grey-300); }
-    .diagram-node.highlight {
-      border-color: var(--yellow-border);
-      background: var(--yellow-pale);
-      border-width: 1.5px;
-    }
-    .diagram-node-icon { font-size: 22px; margin-bottom: 8px; display: block; }
-    .diagram-node-label {
-      font-size: 11px; font-weight: 700;
-      color: var(--black); display: block;
-      margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;
-    }
-    .diagram-node-sub { font-size: 11px; color: var(--grey-500); display: block; line-height: 1.4; }
-    .diagram-arrow { display: flex; align-items: center; color: var(--grey-300); font-size: 16px; padding: 0 6px; }
-    .diagram-caption { text-align: center; margin-top: 24px; font-size: 12px; color: var(--grey-500); font-style: italic; }
-
-    /* ── CARDS ── */
-    .card {
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 6px; padding: 24px;
-      transition: border-color 0.15s;
-    }
-    .card:hover { border-color: var(--grey-300); }
-    .card h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--black); }
-    .card p { font-size: 14px; margin: 0; }
-
-    /* ── EXECUTION ── */
-    .exec-card {
-      background: var(--grey-50); border: 1px solid var(--grey-200);
-      border-radius: 6px; padding: 18px 22px; margin-bottom: 10px;
-      transition: border-color 0.15s;
-    }
-    .exec-card:hover { border-color: var(--grey-300); }
-    .exec-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-    .exec-card p { font-size: 13px; margin: 0; }
-
-    /* ── OUTCOMES ── */
-    .outcome-strip {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: var(--grey-200);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px; overflow: hidden; margin: 40px 0;
-    }
-    .outcome-cell { background: var(--white); padding: 32px 24px; }
-    .outcome-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--grey-500); display: block; margin-bottom: 10px;
-    }
-    .outcome-value {
-      font-size: 34px; font-weight: 800;
-      color: var(--black); display: block;
-      margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1;
-    }
-    .outcome-cell p { font-size: 13px; margin: 0; line-height: 1.5; }
-
-    /* ── REFLECTION ── */
-    .reflection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .reflection-card {
-      background: var(--white); border: 1px solid var(--grey-200);
-      border-radius: 6px; padding: 22px;
-      transition: border-color 0.15s;
-    }
-    .reflection-card:hover { border-color: var(--grey-300); }
-    .ref-tag {
-      display: inline-block;
-      font-size: 9px; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 3px 10px; border-radius: 2px; margin-bottom: 12px;
-    }
-    .tag-learning { background: var(--yellow-pale); color: var(--black); border: 1px solid var(--yellow-border); }
-    .tag-next { background: var(--accent); color: var(--white); }
-    .reflection-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-    .reflection-card p { font-size: 13px; margin: 0; }
-
-    /* ── MY ROLE ── */
-    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
-    .role-item {
-      padding: 20px 22px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 6px;
-    }
-    .role-item-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--grey-500); margin-bottom: 6px; display: block;
-    }
-    .role-item p { font-size: 14px; margin: 0; }
-
-    /* ── SECTIONS DROPDOWN NAV ── */
-    .sect-btn {
-      background: none; border: 1.5px solid var(--grey-200);
-      color: var(--black); font-family: var(--sans);
-      font-size: 11px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 5px 12px; border-radius: 3px;
-      cursor: pointer; display: flex; align-items: center; gap: 5px;
-      transition: background 0.15s, border-color 0.15s;
-      white-space: nowrap;
-    }
-    .sect-btn:hover { background: var(--grey-100); border-color: var(--grey-300); }
-    .sect-btn.open { background: var(--accent); color: var(--white); border-color: var(--accent); }
-    .sect-btn-arrow { transition: transform 0.2s; display: inline-block; }
-    .sect-btn.open .sect-btn-arrow { transform: rotate(180deg); }
-
-    .sect-dropdown {
-      position: fixed; top: 60px; right: 48px;
-      background: var(--white);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 6px;
-      min-width: 210px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      z-index: 200;
-      visibility: hidden; opacity: 0; pointer-events: none;
-      transform: translateY(-6px);
-      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
-    }
-    .sect-dropdown.open {
-      visibility: visible; opacity: 1; pointer-events: all;
-      transform: translateY(0);
-      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
-    }
-    .sect-dropdown-top {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--grey-200);
-    }
-    .sect-dropdown-top a {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--grey-500); text-decoration: none;
-      display: flex; align-items: center; gap: 6px;
-      transition: color 0.15s;
-    }
-    .sect-dropdown-top a:hover { color: var(--black); }
-    .sect-dropdown ul {
-      list-style: none;
-      max-height: 65vh; overflow-y: auto;
-      padding: 6px 0;
-    }
-    .sect-dropdown ul li a {
-      display: block; font-size: 13px; font-weight: 400;
-      color: var(--grey-700); text-decoration: none;
-      padding: 8px 14px;
-      transition: background 0.1s, color 0.1s;
-      font-family: var(--sans); line-height: 1.3;
-    }
-    .sect-dropdown ul li a:hover { background: var(--grey-50); color: var(--black); }
-    .sect-dropdown ul li a.active {
-      color: var(--accent); font-weight: 600;
-      background: var(--yellow-pale);
-      border-left: 3px solid var(--yellow-border);
-      padding-left: 11px;
-    }
-
-    /* ── BACK TO TOP ── */
-    .back-to-top {
-      position: fixed; bottom: 24px; right: 24px;
-      width: 38px; height: 38px;
-      background: var(--white); border: 1.5px solid var(--grey-200);
-      color: var(--black); border-radius: 50%;
-      font-size: 15px; cursor: pointer;
-      display: none; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-      z-index: 9999; transition: background 0.15s, transform 0.15s;
-      font-family: var(--sans);
-    }
-    .back-to-top:hover { background: var(--yellow-pale); border-color: var(--yellow-border); transform: translateY(-2px); }
-    .back-to-top.visible { display: flex; }
-
-    @media (max-width: 600px) {
-      .sect-dropdown { right: 16px; left: 16px; min-width: unset; }
-    }
-
-    /* ── FOOTER ── */
-    .footer-band {
-      background: var(--grey-100);
-      border-top: 1px solid var(--grey-200);
-      padding: 40px 48px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .footer-band p { color: var(--grey-500); font-size: 13px; margin: 0; }
-    .footer-nav { display: flex; gap: 12px; }
-    .footer-nav a {
-      color: var(--white); text-decoration: none;
-      font-size: 13px; font-weight: 700;
-      padding: 8px 18px; border-radius: 3px;
-      background: var(--accent); border: 1.5px solid var(--accent);
-      transition: background 0.15s, color 0.15s;
-    }
-    .footer-nav a:hover { background: var(--black); border-color: var(--black); }
-
-    /* ── HERO FOCUS ── */
-    .hero-focus {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--grey-500);
-      margin-bottom: 1rem;
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .nav-right { gap: 16px; }
-      .hero { grid-template-columns: 1fr; }
-      .hero-right { border-left: none; border-top: 1px solid var(--grey-200); padding: 40px 24px; }
-      .hero-left { padding: 60px 24px; min-height: 60vh; justify-content: flex-end; }
-      .container { padding: 0 24px; }
-      section { padding: 64px 0; }
-      .two-col { grid-template-columns: 1fr; gap: 40px; }
-      .three-col { grid-template-columns: 1fr; }
-      .four-col { grid-template-columns: 1fr 1fr; }
-      .decision-body { grid-template-columns: 1fr; }
-      .decision-col + .decision-col { border-left: none; border-top: 1px solid var(--grey-200); }
-      .outcome-strip { grid-template-columns: 1fr; }
-      .reflection-grid { grid-template-columns: 1fr; }
-      .role-grid { grid-template-columns: 1fr; }
-      .diagram-flow { flex-direction: column; align-items: center; }
-      .diagram-arrow { transform: rotate(90deg); }
-      .timeline-row { grid-template-columns: 1fr; }
-      .timeline-phase { border-right: none; border-bottom: 1px solid var(--grey-200); }
-      .footer-band { flex-direction: column; gap: 20px; text-align: center; }
-      .signal-item { grid-template-columns: 32px 1fr; }
-    }
-  </style>
+  @media (max-width: 900px) {
+    .sect-btn { display: flex; background: none; border: 1.5px solid var(--border); color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 12px; border-radius: 3px; cursor: pointer; align-items: center; gap: 5px; transition: background 0.15s, color 0.15s; }
+    .sect-btn:hover, .sect-btn.open { background: var(--accent); border-color: var(--accent); color: var(--text); }
+    .nav { padding: 16px 24px; }
+    .hero { padding: 48px 24px 40px; }
+    .hero-meta-row { flex-wrap: wrap; gap: 16px; }
+    .hero-meta-item + .hero-meta-item { padding-left: 0; border-left: none; }
+    .body-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .content { padding: 0 24px 80px; }
+    .cs-footer-wrap { grid-template-columns: 1fr; }
+    .cs-footer-sidebar { display: none; }
+    .cs-footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .decision-cols { grid-template-columns: 1fr; }
+    .decision-col + .decision-col { border-left: none; border-top: 1px solid var(--border); }
+    .stat-row { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-cell:last-child { border-bottom: none; }
+  }
+</style>
 </head>
 <body>
 
-<!-- Reading progress -->
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
-<!-- Sections dropdown -->
-<div role="navigation" aria-label="Page sections" class="sect-dropdown" id="sectDropdown" inert>
-  <div class="sect-dropdown-top">
-    <a href="#" id="dropTopLink">&#8593; Back to top</a>
-  </div>
-  <ul>
-    <li><a href="#context" class="sect-link">01 &nbsp;&middot;&nbsp; Context</a></li>
-    <li><a href="#discovery" class="sect-link">02 &nbsp;&middot;&nbsp; Discovery</a></li>
-    <li><a href="#insight" class="sect-link">03 &nbsp;&middot;&nbsp; The Insight</a></li>
-    <li><a href="#decisions" class="sect-link">04 &nbsp;&middot;&nbsp; Product Decisions</a></li>
-    <li><a href="#outcomes" class="sect-link">05 &nbsp;&middot;&nbsp; Outcomes</a></li>
-    <li><a href="#reflection" class="sect-link">06 &nbsp;&middot;&nbsp; Since launch</a></li>
-  </ul>
-</div>
-
-<nav>
-  <a href="../../index.html" class="nav-logo">Reiko Tan</a>
+<nav class="nav" id="nav">
+  <a href="../../index.html" class="nav-logo">Reiko</a>
   <div class="nav-right">
-    <button class="sect-btn" id="sectBtn"
-      aria-haspopup="true" aria-expanded="false" aria-controls="sectDropdown">
-      Sections <span class="sect-btn-arrow" aria-hidden="true">&#8964;</span>
-    </button>
+    <a href="../../work/index.html" class="nav-back">← Work</a>
+    <button class="sect-btn" id="sectBtn" aria-expanded="false" aria-controls="sectDropdown">Sections &#8964;</button>
     <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     </a>
-    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram" target="_blank" rel="noopener">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
     </a>
   </div>
 </nav>
 
-<!-- Back to top -->
-<button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
-
-<div class="hero">
-  <div class="hero-left">
-    <p class="hero-eyebrow">Mighty Jaxx &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2021&ndash;Present</p>
-    <div class="hero-focus">Deep dive — channel model visibility</div>
-    <h1>From anonymous buyers<br>to <mark>identified</mark><br>collectors</h1>
-    <p class="hero-sub">The distributor model works at scale. It also means the brand can't see who owns its products.</p>
-    <div class="hero-tags">
-      <span class="htag">QR Authentication</span>
-      <span class="htag">Vault Platform</span>
-      <span class="htag">0 to 1 Infrastructure</span>
-      <span class="htag">Collector Identity</span>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="meta-grid">
-      <div class="meta-cell">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Product Manager</span>
-      </div>
-      <div class="meta-cell">
-        <span class="meta-label">Timeline</span>
-        <span class="meta-value">18 months</span>
-      </div>
-      <div class="meta-cell">
-        <span class="meta-label">Scope</span>
-        <span class="meta-value">QR Auth + Vault</span>
-      </div>
-      <div class="meta-cell">
-        <span class="meta-label">Status</span>
-        <span class="meta-value">Live</span>
-      </div>
-    </div>
-    <p class="byline">Reiko Tan &nbsp;&middot;&nbsp; Senior Product Manager &nbsp;&middot;&nbsp; Singapore</p>
+<div class="sect-dropdown" id="sectDropdown" aria-hidden="true">
+  <div class="sect-dropdown-inner">
+    <a href="#context"    onclick="closeDropdown()"><span class="dn">01</span>Context</a>
+    <a href="#discovery"  onclick="closeDropdown()"><span class="dn">02</span>Discovery</a>
+    <a href="#insight"    onclick="closeDropdown()"><span class="dn">03</span>The Insight</a>
+    <a href="#decisions"  onclick="closeDropdown()"><span class="dn">04</span>Product Decisions</a>
+    <a href="#outcomes"   onclick="closeDropdown()"><span class="dn">05</span>Outcomes</a>
+    <a href="#reflection" onclick="closeDropdown()"><span class="dn">06</span>Since launch</a>
   </div>
 </div>
 
-<!-- CONTEXT -->
-<section id="context">
-  <div class="container">
-    <div class="section-label">01 &nbsp;&middot;&nbsp; Context</div>
-    <div class="two-col">
-      <div class="reveal">
-        <h2>A company selling millions of products to people it couldn't see</h2>
-      </div>
-      <div class="reveal">
-        <p>Mighty Jaxx sells collectible designer toys globally through distributors and retailers. The channel works at scale but leaves no visibility into who actually owns the products. I defined and shipped the authentication infrastructure (QR Auth) and the collector engagement platform built on top of it (Vault). This spanned engineering, design, brand, marketing, production, and licensing.</p>
-      </div>
+<div class="hero">
+  <div class="hero-eyebrow">Mighty Jaxx &nbsp;·&nbsp; Senior Product Manager &nbsp;·&nbsp; 2021–Present</div>
+  <div class="hero-focus">Deep dive — channel model visibility</div>
+  <h1>From anonymous buyers<br>to <em>identified collectors</em></h1>
+  <p class="hero-sub">The distributor model works at scale. It also means the brand can't see who owns its products.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">QR Authentication</span>
+    <span class="hero-tag">Vault Platform</span>
+    <span class="hero-tag">0→1 Infrastructure</span>
+    <span class="hero-tag">Collector Identity</span>
+  </div>
+  <div class="hero-meta-row">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Role</span>
+      <span class="hero-meta-value">Senior Product Manager</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Timeline</span>
+      <span class="hero-meta-value">18 months</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Scope</span>
+      <span class="hero-meta-value">QR Auth + Vault</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Status</span>
+      <span class="hero-meta-value">Live</span>
     </div>
   </div>
-</section>
+</div>
 
-<!-- DISCOVERY -->
-<section id="discovery" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">02 &nbsp;&middot;&nbsp; Discovery</div>
-    <div class="two-col" style="margin-bottom: 40px;">
-      <h2 class="reveal">Four signals, same root cause</h2>
-    </div>
-    <div class="signal-stack reveal">
-      <div class="signal-item">
-        <div class="signal-num">01</div>
-        <div>
-          <div class="signal-title">Internal data gap</div>
-          <p>Marketing couldn't activate collectors because collectors didn't exist in any system.</p>
-        </div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-num">02</div>
-        <div>
-          <div class="signal-title">NFC authentication was failing silently</div>
-          <p>An NFC flow existed but completion rates were very low. Reader location, manual activation, and positioning requirements blocked users in ways we couldn't see.</p>
-        </div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-num">03</div>
-        <div>
-          <div class="signal-title">Community demand for authenticity, no official solution</div>
-          <p>Collector forums were active with counterfeit discussions and no official verification mechanism simple enough to use at scale.</p>
-        </div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-num">04</div>
-        <div>
-          <div class="signal-title">Marketing and licensing flagging the same dead end</div>
-          <p>Marketing and licensing flagged the same thing independently: once a product sells through the channel, the relationship ends.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="body-layout">
 
+  <aside class="sidebar">
+    <span class="sidebar-label">Contents</span>
+    <a href="#context"    class="toc-item active"><span class="toc-num">01</span>Context</a>
+    <a href="#discovery"  class="toc-item"><span class="toc-num">02</span>Discovery</a>
+    <a href="#insight"    class="toc-item"><span class="toc-num">03</span>The Insight</a>
+    <a href="#decisions"  class="toc-item"><span class="toc-num">04</span>Product Decisions</a>
+    <a href="#outcomes"   class="toc-item"><span class="toc-num">05</span>Outcomes</a>
+    <a href="#reflection" class="toc-item"><span class="toc-num">06</span>Since launch</a>
+  </aside>
 
-<!-- INSIGHT -->
-<section id="insight" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">03 &nbsp;&middot;&nbsp; The Insight</div>
-    <div class="two-col">
-      <div class="reveal">
-        <h2>Identity before loyalty</h2>
-        <p>The first product wasn't Vault. It was the identity layer underneath it: scan once, exist in the system.</p>
+  <div class="content">
+
+    <section class="cs-section" id="context">
+      <div class="section-eyebrow">01 &nbsp;·&nbsp; Context</div>
+      <h2>A company selling millions of products to people <em>it couldn't see</em></h2>
+      <p>Mighty Jaxx sells collectible designer toys globally through distributors and retailers. The channel works at scale but leaves no visibility into who actually owns the products.</p>
+      <p>I defined and shipped the authentication infrastructure (QR Auth) and the collector engagement platform built on top of it (Vault). This spanned engineering, design, brand, marketing, production, and licensing.</p>
+    </section>
+
+    <section class="cs-section" id="discovery">
+      <div class="section-eyebrow">02 &nbsp;·&nbsp; Discovery</div>
+      <h2>Four signals, <em>same root cause</em></h2>
+      <p><strong>Internal data gap.</strong> Marketing couldn't activate collectors because collectors didn't exist in any system.</p>
+      <p><strong>NFC authentication was failing silently.</strong> An NFC flow existed but completion rates were very low. Reader location, manual activation, and positioning requirements blocked users in ways we couldn't see.</p>
+      <p><strong>Community demand for authenticity, no official solution.</strong> Collector forums were active with counterfeit discussions and no official verification mechanism simple enough to use at scale.</p>
+      <p><strong>Marketing and licensing flagging the same dead end.</strong> Both teams flagged the same thing independently: once a product sells through the channel, the relationship ends.</p>
+      <div class="pm-note">
+        <span class="pm-note-label">Root cause</span>
+        <p class="pm-note-text">These weren't four separate problems. They were four symptoms of a single missing layer: collector identity. The brand knew its distributors. It didn't know its collectors.</p>
       </div>
-      <div class="flow-col reveal">
-        <div class="flow-step">
-          <div class="flow-step-icon">&#128241;</div>
-          <div>
-            <span class="flow-step-label">Collector Buys</span>
-            <span class="flow-step-sub">Through retail or distributor. Brand has no record.</span>
-          </div>
+    </section>
+
+    <section class="cs-section" id="insight">
+      <div class="section-eyebrow">03 &nbsp;·&nbsp; The Insight</div>
+      <h2>Identity before loyalty</h2>
+      <p>The first product wasn't Vault. It was the identity layer underneath it: scan once, exist in the system.</p>
+      <div class="img-placeholder" style="height: 180px;">Flow — collector buys → QR scan → collector identity → Vault (campaigns, rewards, progression)</div>
+      <p>Authentication and ownership registration had to happen in one action. QR over NFC was the right call — not because it was cheaper, but because it eliminated friction users couldn't resolve on their own. NFC tags were invisible, reader location was unclear, and some devices needed manual activation. QR needs no explanation.</p>
+    </section>
+
+    <section class="cs-section" id="decisions">
+      <div class="section-eyebrow">04 &nbsp;·&nbsp; Product Decisions</div>
+      <h2>Three decisions that <em>shaped the system</em></h2>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">01</span>
+          <h3>NFC to QR: a behaviour decision, not a technology decision</h3>
         </div>
-        <div class="flow-connector"></div>
-        <div class="flow-step">
-          <div class="flow-step-icon">&#128247;</div>
-          <div>
-            <span class="flow-step-label">QR Scan</span>
-            <span class="flow-step-sub">Authentication and ownership registration in one action</span>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">Before: NFC</span>
+            <p>NFC tags were embedded and invisible. Users couldn't find the reader, some devices needed manual activation, and completion rates were very low.</p>
           </div>
-        </div>
-        <div class="flow-connector"></div>
-        <div class="flow-step">
-          <div class="flow-step-icon">&#128219;</div>
-          <div>
-            <span class="flow-step-label">Collector Identity</span>
-            <span class="flow-step-sub">Persistent profile tied to verified ownership</span>
-          </div>
-        </div>
-        <div class="flow-connector"></div>
-        <div class="flow-step active">
-          <div class="flow-step-icon">&#127963;</div>
-          <div>
-            <span class="flow-step-label">Vault</span>
-            <span class="flow-step-sub">Campaigns, rewards, engagement, progression</span>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">After: QR</span>
+            <p>QR needs no explanation. The primary driver wasn't cost. It was eliminating friction users couldn't resolve on their own.</p>
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">02</span>
+          <h3>Authentication as engagement gateway, not anti-counterfeiting tool</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">Initial framing</span>
+            <p>Some stakeholders saw scanning as verify-and-done. Engagement features felt like scope creep on a contained infrastructure problem.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">My position</span>
+            <p>Scanning had to be the entry point: ownership registration, collector identity, campaign access. A verify-only system has no reason to be opened twice.</p>
+          </div>
+        </div>
+      </div>
+      <div class="pm-note">
+        <span class="pm-note-label">How alignment happened</span>
+        <p class="pm-note-text">Alignment came from reframing: not stopping fakes, but building collector relationships. That connected directly to what marketing and licensing were already asking for.</p>
+      </div>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">03</span>
+          <h3>Campaigns before loyalty tiers: sequence matters</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">What we cut</span>
+            <p>Tiered loyalty, social profiles, and secondary market transfer were all on the table. All were premature.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">What we shipped</span>
+            <p>Campaign-based engagement: time-bound missions, milestone unlocks, IP-specific challenges. Loyalty tiers need engagement history. Campaigns build it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-section" id="outcomes">
+      <div class="section-eyebrow">05 &nbsp;·&nbsp; Outcomes</div>
+      <h2>Foundation for loyalty, <em>not the finished system</em></h2>
+      <p>The core outcome: Mighty Jaxx can now identify who its collectors are.</p>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <span class="stat-num">0→1</span>
+          <span class="stat-label">Collector identity</span>
+          <span class="stat-sub">Thousands of verified registrations within the first authenticated product waves.</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">↑</span>
+          <span class="stat-label">Auth completion</span>
+          <span class="stat-sub">NFC to QR drove a meaningful lift in completion rate.</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">✓</span>
+          <span class="stat-label">Campaign validation</span>
+          <span class="stat-sub">One Piece Egghead pilot: meaningful completion rates when scanning tied to real progression.</span>
+        </div>
+      </div>
+      <p><strong>Channel model unchanged.</strong> Distributor and retail relationships unchanged. Identity layer intercepts post-purchase without disrupting the channel.</p>
+      <p><strong>Marketing and licensing unblocked.</strong> Both teams can now segment and activate collectors. IP-specific targeting became possible.</p>
+      <p><strong>Infrastructure for what comes next.</strong> Vault is the prerequisite for what comes next, not the endpoint.</p>
+    </section>
+
+    <section class="cs-section" id="reflection">
+      <div class="section-eyebrow">06 &nbsp;·&nbsp; Since launch</div>
+      <h2>The loop works. <em>The between-launches problem remains.</em></h2>
+      <p>QR Auth created a collector identity layer that didn't previously exist — thousands of verified registrations for a brand that previously knew only bulk distributor volumes.</p>
+      <p>The One Piece Egghead campaign pilot confirmed the core loop works: scan, register, unlock. What it revealed is a second problem the infrastructure alone can't solve: the platform needs a reason to open between launches, not just during them.</p>
+    </section>
+
   </div>
-</section>
+</div>
 
-<!-- DECISIONS -->
-<section id="decisions">
-  <div class="container">
-    <div class="section-label">04 &nbsp;&middot;&nbsp; Product Decisions</div>
-    <div class="two-col" style="margin-bottom: 48px;">
-      <h2 class="reveal">Three decisions that shaped the system</h2>
+<div class="cs-footer-wrap">
+  <div class="cs-footer-sidebar"></div>
+  <footer class="cs-footer">
+    <a href="../../work/index.html" class="cs-footer-back">← Back to Work</a>
+    <div class="cs-footer-icons">
+      <a href="mailto:reiko98@live.com.sg" class="cs-footer-icon" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+      <a href="https://t.me/rracko" class="cs-footer-icon" aria-label="Telegram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </a>
     </div>
-
-    <div class="decision-block reveal">
-      <div class="decision-header">
-        <span class="decision-num">01</span>
-        <h3>NFC to QR: a behaviour decision, not a technology decision</h3>
-      </div>
-      <div class="decision-body">
-        <div class="decision-col">
-          <span class="decision-col-label label-before">Before: NFC</span>
-          <p>NFC tags were embedded and invisible. Users couldn't find the reader, some devices needed manual activation, and completion rates were very low.</p>
-        </div>
-        <div class="decision-col">
-          <span class="decision-col-label label-after">After: QR</span>
-          <p>QR needs no explanation. The primary driver wasn't cost. It was eliminating friction users couldn't resolve on their own.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="decision-block reveal">
-      <div class="decision-header">
-        <span class="decision-num">02</span>
-        <h3>Authentication as engagement gateway, not anti-counterfeiting tool</h3>
-      </div>
-      <div class="decision-body">
-        <div class="decision-col">
-          <span class="decision-col-label label-before">Initial framing</span>
-          <p>Some stakeholders saw scanning as verify-and-done. Engagement features felt like scope creep on a contained infrastructure problem.</p>
-        </div>
-        <div class="decision-col">
-          <span class="decision-col-label label-after">My position</span>
-          <p>Scanning had to be the entry point: ownership registration, collector identity, campaign access. A verify-only system has no reason to be opened twice.</p>
-        </div>
-      </div>
-      <div class="stakeholder-box">
-        <span class="stakeholder-label">How alignment happened</span>
-        <p>Alignment came from reframing: not stopping fakes, but building collector relationships. That connected directly to what marketing and licensing were already asking for.</p>
-      </div>
-    </div>
-
-    <div class="decision-block reveal">
-      <div class="decision-header">
-        <span class="decision-num">03</span>
-        <h3>Campaigns before loyalty tiers: sequence matters</h3>
-      </div>
-      <div class="decision-body">
-        <div class="decision-col">
-          <span class="decision-col-label label-before">What we cut</span>
-          <p>Tiered loyalty, social profiles, and secondary market transfer were all on the table. All were premature.</p>
-        </div>
-        <div class="decision-col">
-          <span class="decision-col-label label-after">What we shipped</span>
-          <p>Campaign-based engagement: time-bound missions, milestone unlocks, IP-specific challenges. Loyalty tiers need engagement history. Campaigns build it.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- OUTCOMES -->
-<section id="outcomes" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">05 &nbsp;&middot;&nbsp; Outcomes</div>
-    <div class="two-col" style="margin-bottom: 16px;">
-      <h2 class="reveal">Foundation for loyalty, not the finished system</h2>
-      <p class="reveal">The core outcome: Mighty Jaxx can now identify who its collectors are.</p>
-    </div>
-    <div class="outcome-strip reveal">
-      <div class="outcome-cell">
-        <span class="outcome-label">Collector identity</span>
-        <span class="outcome-value">0 to 1</span>
-        <p>Thousands of verified registrations within the first authenticated product waves.</p>
-      </div>
-      <div class="outcome-cell">
-        <span class="outcome-label">Auth completion</span>
-        <span class="outcome-value">Significant lift</span>
-        <p>NFC to QR drove a meaningful lift in completion. [Replace with actual rate when shareable.]</p>
-      </div>
-      <div class="outcome-cell">
-        <span class="outcome-label">Campaign validation</span>
-        <span class="outcome-value">Proven</span>
-        <p>One Piece Egghead pilot: meaningful completion rates when scanning tied to real progression.</p>
-      </div>
-    </div>
-    <div class="three-col reveal">
-      <div class="card">
-        <h3>Channel model unchanged</h3>
-        <p>Distributor and retail relationships unchanged. Identity layer intercepts post-purchase without disrupting the channel.</p>
-      </div>
-      <div class="card">
-        <h3>Marketing and licensing unblocked</h3>
-        <p>Both teams can now segment and activate collectors. IP-specific targeting became possible.</p>
-      </div>
-      <div class="card">
-        <h3>Infrastructure for what comes next</h3>
-        <p>Vault is the prerequisite for what comes next, not the endpoint.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- REFLECTION -->
-<section id="reflection">
-  <div class="container">
-    <div class="section-label">06 &nbsp;&middot;&nbsp; Since launch</div>
-    <h2 class="reveal" style="max-width: 460px; margin-bottom: 36px;">Since launch</h2>
-    <div class="reflection-grid reveal">
-      <div class="reflection-card">
-        <p>QR Auth created a collector identity layer that didn't previously exist — thousands of verified registrations for a brand that previously knew only bulk distributor volumes. The One Piece Egghead campaign pilot confirmed the core loop works: scan, register, unlock. What it revealed is a second problem the infrastructure alone can't solve: the platform needs a reason to open between launches, not just during them.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="footer-band">
-  <p>Reiko Tan &nbsp;&middot;&nbsp; PM Portfolio &nbsp;&middot;&nbsp; Mighty Jaxx</p>
-  <div class="footer-nav">
-    <a href="../../index.html">← All Work</a>
-    <a href="mailto:reiko98@live.com.sg">reiko98@live.com.sg</a>
-    <a href="https://t.me/rracko" target="_blank" rel="noopener">@rracko</a>
-  </div>
+  </footer>
 </div>
 
 <script>
-  // Reading progress
+  const nav = document.getElementById('nav');
   const bar = document.getElementById('progress');
-  const backToTop = document.getElementById('backToTop');
   window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
     const doc = document.documentElement;
     bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-    backToTop.classList.toggle('visible', window.scrollY > 400);
   }, { passive: true });
 
-  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-  // Sections dropdown
-  const sectBtn = document.getElementById('sectBtn');
-  const sectDropdown = document.getElementById('sectDropdown');
-
-  function openDropdown() {
-    sectDropdown.classList.add('open');
-    sectDropdown.removeAttribute('inert');
-    sectBtn.classList.add('open');
-    sectBtn.setAttribute('aria-expanded', 'true');
-    // Move focus to first focusable item
-    const first = sectDropdown.querySelector('a');
-    if (first) first.focus();
-  }
-  function closeDropdown() {
-    sectDropdown.classList.remove('open');
-    sectDropdown.setAttribute('inert', '');
-    sectBtn.classList.remove('open');
-    sectBtn.setAttribute('aria-expanded', 'false');
-  }
-  function toggleDropdown() {
-    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
-  }
-
-  sectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(); });
-
-  // Keyboard: Escape closes, arrows navigate within dropdown
-  document.addEventListener('keydown', (e) => {
-    if (!sectDropdown.classList.contains('open')) return;
-    const links = [...sectDropdown.querySelectorAll('a')];
-    const idx = links.indexOf(document.activeElement);
-    if (e.key === 'Escape') { e.preventDefault(); closeDropdown(); sectBtn.focus(); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); links[(idx + 1) % links.length].focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); links[(idx - 1 + links.length) % links.length].focus(); }
-    if (e.key === 'Tab' && !e.shiftKey && idx === links.length - 1) { closeDropdown(); }
-    if (e.key === 'Tab' && e.shiftKey && idx === 0) { closeDropdown(); }
-  });
-
-  // Close on outside click
-  document.addEventListener('click', (e) => {
-    if (!sectDropdown.contains(e.target) && e.target !== sectBtn) closeDropdown();
-  });
-
-  document.getElementById('dropTopLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    closeDropdown();
-    sectBtn.focus();
-  });
-
-  // Close dropdown when a section link is clicked
-  document.querySelectorAll('.sect-link').forEach(a => {
-    a.addEventListener('click', () => closeDropdown());
-  });
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const revealObs = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 40);
-        revealObs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
-  reveals.forEach(el => revealObs.observe(el));
-
-  // Active section highlighting — track the topmost visible section
-  const sectLinks = document.querySelectorAll('.sect-link');
-  let activeSectionId = '';
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        activeSectionId = entry.target.id;
-        sectLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + activeSectionId);
-        });
+  const sections = document.querySelectorAll('.cs-section[id]');
+  const tocItems = document.querySelectorAll('.toc-item');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocItems.forEach(t => t.classList.remove('active'));
+        const active = document.querySelector(`.toc-item[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
       }
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
-  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+  sections.forEach(s => observer.observe(s));
+
+  const sectBtn = document.getElementById('sectBtn');
+  const sectDropdown = document.getElementById('sectDropdown');
+
+  function closeDropdown() {
+    sectDropdown.classList.remove('open');
+    sectDropdown.setAttribute('aria-hidden', 'true');
+    sectBtn.classList.remove('open');
+    sectBtn.setAttribute('aria-expanded', 'false');
+  }
+  function openDropdown() {
+    sectDropdown.classList.add('open');
+    sectDropdown.setAttribute('aria-hidden', 'false');
+    sectBtn.classList.add('open');
+    sectBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  sectBtn.addEventListener('click', () => {
+    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+  });
+  document.addEventListener('click', e => {
+    if (!sectBtn.contains(e.target) && !sectDropdown.contains(e.target)) closeDropdown();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDropdown(); });
 </script>
 </body>
 </html>

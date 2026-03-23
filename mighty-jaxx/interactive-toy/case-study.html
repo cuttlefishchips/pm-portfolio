@@ -1,1097 +1,529 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Building an Interactive Toy Ecosystem | Mighty Jaxx | Reiko Tan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --yellow: #FFE000;
-      --yellow-pale: #FFFDE5;
-      --yellow-border: #E6CA00;
-      --black: #111111;
-      --grey-50: #fafaf8;
-      --grey-100: #f2f1ee;
-      --grey-200: #e0e0e0;
-      --grey-300: #c8c8c8;
-      --grey-500: #888888;
-      --grey-700: #444444;
-      --white: #ffffff;
-      --green: #1a6e42;
-      --green-light: #eef7f2;
-      --accent: #1a3c5e;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --sans: 'DM Sans', system-ui, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Static Collectibles to Interactive Companions | Mighty Jaxx | Reiko Tan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base:       #FAF7F2;
+    --surface:    #F2EDE4;
+    --surface-2:  #EAE3D8;
+    --border:     #E0D8CE;
+    --text:       #1A1614;
+    --text-muted: #7A6F68;
+    --text-faint: #B8AFA8;
+    --mj:         #FEED1E;
+    --coral:      #F4743B;
+    --coral-dim:  #FDEEE6;
+    --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+    --accent: var(--mj);
+  }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--grey-50);
-      color: var(--black);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 58px;
-      background: var(--white);
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0 48px;
-      border-bottom: 1px solid var(--grey-200);
-    }
-    nav a {
-      font-family: var(--sans);
-      font-weight: 700; font-size: 13px;
-      letter-spacing: 0.02em;
-      color: var(--black);
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-    nav a:hover { opacity: 0.55; }
-    .nav-logo { font-size: 16px; }
-    .nav-right { display: flex; gap: 24px; align-items: center; }
-    .nav-icon { display: flex; align-items: center; }
+  body {
+    background-color: var(--base);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
 
-    /* ── READING PROGRESS ── */
-    .reading-progress {
-      position: fixed; top: 58px; left: 0; right: 0;
-      height: 2px; background: var(--grey-200); z-index: 99;
-    }
-    .reading-progress-bar {
-      height: 100%; background: var(--yellow);
-      width: 0%; transition: width 0.1s linear;
-    }
+  .reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 200; pointer-events: none; }
+  .reading-progress-bar { height: 100%; background: var(--accent); width: 0; transition: width 0.1s linear; }
 
-    /* ── HERO ── */
-    .hero {
-      padding-top: 58px;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px; border-bottom: 1px solid transparent; background: transparent;
+    transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out), backdrop-filter 0.3s var(--ease-out);
+  }
+  .nav.scrolled { background: rgba(242,237,228,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom-color: var(--border); }
+  .nav-logo { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 17px; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+  .nav-right { display: flex; gap: 20px; align-items: center; }
+  .nav-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; color: var(--text-faint); text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: var(--text); }
+  .sect-btn { display: none; }
 
-    .hero-left {
-      background: var(--grey-50);
-      padding: 80px 56px;
-      display: flex; flex-direction: column; justify-content: center;
-      position: relative; overflow: hidden;
-    }
+  .sect-dropdown {
+    position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    visibility: hidden; opacity: 0; transform: translateY(-6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+  }
+  .sect-dropdown.open { visibility: visible; opacity: 1; transform: translateY(0); transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s; }
+  .sect-dropdown-inner { padding: 8px 0 12px; }
+  .sect-dropdown a { display: flex; align-items: baseline; gap: 10px; padding: 10px 24px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.04em; color: var(--text-muted); transition: background 0.1s, color 0.1s; }
+  .sect-dropdown a:hover { background: var(--surface-2); color: var(--text); }
+  .sect-dropdown a .dn { font-size: 9px; color: var(--text-faint); }
+  .nav-icon { display: flex; align-items: center; color: var(--text-muted); transition: color 0.15s; text-decoration: none; }
+  .nav-icon:hover { color: var(--text); }
 
-    .hero-left::before {
-      content: '';
-      position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(26,60,94,0.06) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
-    }
+  .hero { border-top: 4px solid var(--accent); padding: 64px 48px 56px; border-bottom: 1px solid var(--border); }
+  .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; }
+  .hero-focus { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; color: var(--text-faint); margin-bottom: 20px; }
+  .hero h1 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(34px, 4vw, 52px); line-height: 1.08; letter-spacing: -0.02em; color: var(--text); margin-bottom: 24px; max-width: 820px; }
+  .hero h1 em { font-style: italic; }
+  .hero-sub { font-size: 17px; font-weight: 300; color: var(--text-muted); line-height: 1.65; max-width: 660px; margin-bottom: 28px; }
+  .hero-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 36px; }
+  .hero-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em; color: var(--text-muted); border: 1px solid var(--border); border-radius: 2px; padding: 4px 10px; background: var(--surface); }
+  .hero-meta-row { display: flex; border-top: 1px solid var(--border); padding-top: 28px; max-width: 820px; }
+  .hero-meta-item { flex: 1; }
+  .hero-meta-item + .hero-meta-item { padding-left: 28px; border-left: 1px solid var(--border); }
+  .hero-meta-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: 5px; }
+  .hero-meta-value { font-size: 14px; font-weight: 400; color: var(--text); }
+  .confidential { display: flex; gap: 10px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 12px 16px; margin-top: 28px; font-size: 13px; font-weight: 300; color: var(--text-muted); max-width: 660px; line-height: 1.55; }
+  .confidential svg { flex-shrink: 0; margin-top: 1px; color: var(--text-faint); }
+  .confidential strong { color: var(--text); font-weight: 400; }
 
-    .hero-eyebrow {
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 20px; position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
-    }
+  .body-layout { display: grid; grid-template-columns: 220px 1fr; }
 
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(34px, 3.8vw, 54px);
-      font-weight: 400; line-height: 1.05;
-      letter-spacing: -0.01em;
-      color: var(--black);
-      margin-bottom: 28px; position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.25s forwards;
-    }
+  .sidebar { position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; background: var(--surface); border-right: 1px solid var(--border); padding: 40px 0 80px; }
+  .sidebar-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); padding: 0 24px 16px; display: block; }
+  .toc-item { display: flex; align-items: baseline; padding: 7px 24px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.03em; color: var(--text-faint); line-height: 1.4; border-left: 2px solid transparent; transition: color 0.15s, border-color 0.15s, background 0.15s; }
+  .toc-item:hover { color: var(--text-muted); background: var(--surface-2); }
+  .toc-item.active { color: var(--text); border-left-color: var(--accent); background: var(--surface-2); }
+  .toc-num { font-size: 9px; color: var(--text-faint); margin-right: 10px; flex-shrink: 0; }
+  .toc-item.active .toc-num { color: var(--text-muted); }
 
-    .hero h1 mark {
-      background: var(--yellow-pale);
-      color: var(--black);
-      padding: 0 5px;
-      border-radius: 2px;
-    }
+  .content { padding: 0 72px 120px; min-width: 0; }
+  .cs-section { padding: 72px 0 0; }
 
-    .hero-sub {
-      font-size: 15px; font-weight: 300;
-      color: var(--grey-700);
-      max-width: 420px; line-height: 1.7;
-      margin-bottom: 48px; position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
-    }
+  .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    .hero-tags {
-      display: flex; flex-wrap: wrap; gap: 8px;
-      position: relative;
-      opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
-    }
+  .cs-section h2 { font-family: 'Fraunces', serif; font-weight: 300; font-size: 30px; line-height: 1.18; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px; }
+  .cs-section h2 em { font-style: italic; }
+  .cs-section p { font-size: 16px; font-weight: 300; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
+  .cs-section p:last-child { margin-bottom: 0; }
+  .cs-section p strong { color: var(--text); font-weight: 400; }
 
-    .htag {
-      padding: 5px 12px;
-      border: 1px solid var(--grey-200);
-      border-radius: 3px;
-      font-size: 11px; font-weight: 500;
-      letter-spacing: 0.04em;
-      color: var(--grey-500);
-      text-transform: uppercase;
-    }
+  .pm-note { border-left: 2px solid var(--coral); background: var(--coral-dim); padding: 14px 18px; margin: 28px 0; border-radius: 0 4px 4px 0; }
+  .pm-note-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); display: block; margin-bottom: 6px; }
+  .pm-note-text { font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.65; margin-bottom: 0; }
 
-    .hero-right {
-      background: var(--white);
-      border-left: 1px solid var(--grey-200);
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 64px 48px;
-      gap: 32px;
-    }
+  .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .audience-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 22px 24px; }
+  .audience-card-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: 8px; }
+  .audience-card h3 { font-family: 'Fraunces', serif; font-weight: 300; font-size: 20px; color: var(--text); margin-bottom: 10px; }
+  .audience-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 0; }
 
-    .meta-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1px; background: var(--grey-200);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px; overflow: hidden;
-      opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
-    }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 28px 0; }
+  .stat-cell { padding: 20px 24px; border-right: 1px solid var(--border); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 36px; line-height: 1; color: var(--text); display: block; margin-bottom: 6px; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
 
-    .meta-cell { background: var(--white); padding: 28px 24px; }
+  .decision-block { margin: 28px 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .decision-header { display: flex; align-items: baseline; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .decision-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); background: var(--text); padding: 2px 7px; border-radius: 2px; flex-shrink: 0; }
+  .decision-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400; color: var(--text); line-height: 1.4; }
+  .decision-cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .decision-col { padding: 18px 22px; }
+  .decision-col + .decision-col { border-left: 1px solid var(--border); }
+  .decision-col-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 8px; }
+  .label-tension { color: var(--coral); }
+  .label-resolution { color: var(--text-faint); }
+  .decision-col p { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 0; }
+  .decision-three { grid-template-columns: 1fr 1fr 1fr; }
 
-    .meta-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--grey-500); display: block; margin-bottom: 6px;
-    }
+  .img-placeholder { width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin: 28px 0; }
 
-    .meta-value {
-      font-size: 17px; font-weight: 700;
-      color: var(--black); display: block; line-height: 1.2;
-    }
+  .cs-footer-wrap { display: grid; grid-template-columns: 220px 1fr; border-top: 1px solid var(--border); }
+  .cs-footer-sidebar { background: var(--surface); border-right: 1px solid var(--border); }
+  .cs-footer { padding: 32px 72px; display: flex; justify-content: space-between; align-items: center; }
+  .cs-footer-back { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; color: var(--text-faint); text-decoration: none; transition: color 0.15s; }
+  .cs-footer-back:hover { color: var(--text); }
+  .cs-footer-icons { display: flex; gap: 16px; }
+  .cs-footer-icon { color: var(--text-faint); transition: color 0.15s; text-decoration: none; }
+  .cs-footer-icon:hover { color: var(--text); }
 
-    .byline {
-      font-size: 12px; font-weight: 500;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--grey-500);
-      opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
-    }
-
-    .confidential-note {
-      display: flex; align-items: flex-start; gap: 10px;
-      background: var(--yellow-pale);
-      border: 1px solid var(--yellow-border);
-      border-radius: 6px; padding: 14px 16px;
-      font-size: 12px; color: var(--grey-700); line-height: 1.5;
-      opacity: 0; animation: fadeUp 0.6s 0.65s forwards;
-    }
-    .confidential-note strong { color: var(--black); }
-
-    /* ── LAYOUT ── */
-    .container { max-width: 1120px; margin: 0 auto; padding: 0 48px; }
-    section { padding: 88px 0; border-bottom: 1px solid var(--grey-200); }
-    section:last-of-type { border-bottom: none; }
-
-    .section-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: currentColor;
-    }
-
-    h2 {
-      font-family: var(--serif);
-      font-size: clamp(1.5rem, 3vw, 1.9rem);
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-    }
-
-    p { color: var(--grey-700); font-weight: 300; margin-bottom: 16px; }
-    p:last-child { margin-bottom: 0; }
-    strong { color: var(--black); font-weight: 500; }
-
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start; }
-    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-
-    /* ── CALLOUT ── */
-    .callout {
-      border-left: 3px solid var(--yellow-border);
-      padding: 20px 24px;
-      background: var(--yellow-pale);
-      margin: 32px 0;
-      border-radius: 0 4px 4px 0;
-    }
-    .callout p {
-      color: var(--black);
-      font-size: 16px; font-weight: 500; font-style: italic;
-      line-height: 1.55; margin: 0;
-    }
-
-    /* ── AUDIENCE CARDS ── */
-    .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 40px; }
-    .audience-card {
-      padding: 32px 28px;
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px;
-    }
-    .audience-card-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--grey-500); display: block; margin-bottom: 4px;
-    }
-    .audience-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 16px; color: var(--black); }
-    .audience-need {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--grey-100);
-    }
-    .audience-need:last-child { border-bottom: none; padding-bottom: 0; }
-    .audience-dot {
-      width: 6px; height: 6px; min-width: 6px;
-      border-radius: 50%;
-      background: var(--yellow); border: 1.5px solid var(--yellow-border);
-      margin-top: 9px;
-    }
-    .audience-need p { font-size: 14px; margin: 0; }
-
-    /* ── ECOSYSTEM DIAGRAM ── */
-    .ecosystem-diagram {
-      background: var(--grey-50);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 12px;
-      padding: 48px 40px;
-      margin: 40px 0;
-    }
-    .ecosystem-center {
-      display: flex; flex-direction: column; align-items: center;
-      margin-bottom: 40px;
-    }
-    .ecosystem-hub {
-      background: var(--accent);
-      color: var(--white);
-      border-radius: 10px;
-      padding: 20px 32px;
-      text-align: center;
-      border: 2px solid var(--accent);
-    }
-    .ecosystem-hub-icon { font-size: 28px; display: block; margin-bottom: 6px; }
-    .ecosystem-hub-label {
-      font-size: 12px; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--white); display: block; margin-bottom: 2px;
-    }
-    .ecosystem-hub-sub { font-size: 11px; color: rgba(255,255,255,0.5); display: block; }
-    .ecosystem-spokes {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%;
-    }
-    .ecosystem-connector {
-      display: flex; justify-content: center;
-      width: 100%; margin: 16px 0;
-    }
-    .ecosystem-connector-line {
-      width: 1px; height: 28px; background: var(--grey-300);
-    }
-    .ecosystem-spoke {
-      background: var(--white);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px; padding: 20px 16px;
-      text-align: center;
-      transition: border-color 0.15s;
-    }
-    .ecosystem-spoke:hover { border-color: var(--grey-300); }
-    .ecosystem-spoke.highlight {
-      border-color: var(--yellow-border);
-      background: var(--yellow-pale);
-      color: var(--black);
-    }
-    .ecosystem-spoke-icon { font-size: 22px; display: block; margin-bottom: 8px; }
-    .ecosystem-spoke-label {
-      font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.05em;
-      color: var(--black); display: block; margin-bottom: 4px;
-    }
-    .ecosystem-spoke-sub { font-size: 11px; color: var(--grey-500); display: block; line-height: 1.4; }
-    .ecosystem-caption { text-align: center; font-size: 12px; color: var(--grey-500); font-style: italic; margin-top: 24px; }
-
-    /* ── COMPONENT CARDS ── */
-    .component-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 40px; }
-    .component-card {
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 6px; padding: 20px;
-      transition: border-color 0.15s;
-    }
-    .component-card:hover { border-color: var(--grey-300); }
-    .component-icon { font-size: 20px; margin-bottom: 10px; display: block; }
-    .component-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--black); }
-    .component-card p { font-size: 13px; margin: 0; }
-
-    /* ── DECISIONS ── */
-    .decision-block {
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px; overflow: hidden;
-      margin-bottom: 16px;
-      transition: border-color 0.15s;
-    }
-    .decision-block:hover { border-color: var(--grey-300); }
-    .decision-header {
-      padding: 16px 22px;
-      background: var(--grey-50);
-      border-bottom: 1px solid var(--grey-200);
-      display: flex; align-items: center; gap: 14px;
-    }
-    .decision-num {
-      font-size: 10px; font-weight: 700;
-      background: var(--yellow-pale);
-      color: var(--black);
-      padding: 3px 10px; border-radius: 2px;
-      border: 1px solid var(--yellow-border);
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .decision-header h3 {
-      font-size: 14px; font-weight: 500;
-      color: var(--black); margin: 0;
-    }
-    .decision-body { display: grid; grid-template-columns: 1fr 1fr; }
-    .decision-col { padding: 22px; }
-    .decision-col + .decision-col { border-left: 1px solid var(--grey-200); }
-    .decision-col-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      margin-bottom: 10px; display: block;
-    }
-    .label-tension { color: #c05000; }
-    .label-resolution { color: var(--green); }
-    .label-option { color: var(--grey-500); }
-    .decision-col p { font-size: 14px; }
-    .decision-col p + p { color: var(--grey-500); font-size: 13px; margin-top: 8px; }
-    .decision-insight {
-      padding: 11px 22px;
-      background: var(--grey-50);
-      border-top: 1px solid var(--grey-200);
-      font-size: 12px; font-weight: 600;
-      color: var(--grey-700);
-      display: flex; gap: 10px; align-items: flex-start;
-    }
-    .decision-insight::before { content: 'Principle:'; color: var(--black); flex-shrink: 0; font-weight: 700; }
-
-    /* Three-option decision variant */
-    .decision-body-three { display: grid; grid-template-columns: 1fr 1fr 1fr; }
-    .decision-body-three .decision-col + .decision-col { border-left: 1px solid var(--grey-200); }
-    .decision-body-three .decision-col:last-child {
-      background: var(--yellow-pale);
-      border-top: none;
-      border-left: 1px solid var(--yellow-border);
-    }
-
-    /* ── CONSTRAINTS ── */
-    .constraint-stack { display: flex; flex-direction: column; gap: 2px; }
-    .constraint-item {
-      display: grid; grid-template-columns: 36px 1fr;
-      gap: 16px; align-items: start;
-      padding: 20px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 4px;
-      transition: border-color 0.15s;
-    }
-    .constraint-item:hover { border-color: var(--grey-300); }
-    .constraint-icon { font-size: 18px; margin-top: 2px; text-align: center; }
-    .constraint-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 4px; }
-    .constraint-item p { font-size: 14px; margin: 0; }
-
-    /* ── VALIDATION ── */
-    .validation-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 40px; }
-    .validation-card {
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 6px; padding: 24px;
-      transition: border-color 0.15s;
-    }
-    .validation-card:hover { border-color: var(--grey-300); }
-    .validation-num {
-      font-size: 10px; font-weight: 700;
-      background: var(--yellow-pale); color: var(--black);
-      border: 1px solid var(--yellow-border); border-radius: 2px;
-      padding: 2px 8px; display: inline-block;
-      margin-bottom: 12px;
-    }
-    .validation-card h3 { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 8px; }
-    .validation-card p { font-size: 13px; margin-bottom: 12px; }
-    .signal-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-    .signal-list li {
-      font-size: 12px; color: var(--grey-700);
-      padding-left: 14px; position: relative; line-height: 1.4;
-    }
-    .signal-list li::before {
-      content: '→'; position: absolute; left: 0;
-      color: var(--grey-300); font-size: 11px;
-    }
-
-    /* ── PLANNED METRICS ── */
-    .metrics-strip {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 1px; background: var(--grey-200);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 8px; overflow: hidden;
-      margin-top: 40px;
-    }
-    .metrics-cell { background: var(--white); padding: 24px 20px; }
-    .metrics-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--grey-500); display: block; margin-bottom: 8px;
-    }
-    .metrics-name {
-      font-size: 14px; font-weight: 700;
-      color: var(--black); display: block; margin-bottom: 4px; line-height: 1.3;
-    }
-    .metrics-why { font-size: 12px; color: var(--grey-500); display: block; line-height: 1.4; }
-
-    /* ── XFUNC CHALLENGES ── */
-    .xfunc-stack { display: flex; flex-direction: column; gap: 2px; }
-    .xfunc-item {
-      padding: 22px 24px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 4px;
-      transition: border-color 0.15s;
-    }
-    .xfunc-item:hover { border-color: var(--grey-300); }
-    .xfunc-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .xfunc-tag {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--grey-100);
-      border: 1px solid var(--grey-200);
-      color: var(--grey-700);
-      padding: 3px 10px; border-radius: 2px;
-    }
-    .xfunc-item h3 { font-size: 14px; font-weight: 600; color: var(--black); margin: 0; }
-    .xfunc-item p { font-size: 14px; margin: 0; }
-
-    /* ── ROLE ── */
-    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
-    .role-item {
-      padding: 20px 22px;
-      background: var(--white);
-      border: 1px solid var(--grey-200);
-      border-radius: 6px;
-    }
-    .role-item-label {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--grey-500); margin-bottom: 6px; display: block;
-    }
-    .role-item p { font-size: 14px; margin: 0; }
-
-    /* ── REFLECTION ── */
-    .reflection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .reflection-card {
-      background: var(--white); border: 1px solid var(--grey-200);
-      border-radius: 6px; padding: 22px;
-      transition: border-color 0.15s;
-    }
-    .reflection-card:hover { border-color: var(--grey-300); }
-    .ref-tag {
-      display: inline-block;
-      font-size: 9px; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 3px 10px; border-radius: 2px; margin-bottom: 12px;
-    }
-    .tag-learning { background: var(--yellow-pale); color: var(--black); border: 1px solid var(--yellow-border); }
-    .tag-open { background: var(--accent); color: var(--white); }
-    .reflection-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-    .reflection-card p { font-size: 13px; margin: 0; }
-
-    /* ── SECTIONS DROPDOWN NAV ── */
-    .sect-btn {
-      background: none; border: 1.5px solid var(--grey-200);
-      color: var(--black); font-family: var(--sans);
-      font-size: 11px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 5px 12px; border-radius: 3px;
-      cursor: pointer; display: flex; align-items: center; gap: 5px;
-      transition: background 0.15s, border-color 0.15s;
-      white-space: nowrap;
-    }
-    .sect-btn:hover { background: var(--grey-100); border-color: var(--grey-300); }
-    .sect-btn.open { background: var(--accent); color: var(--white); border-color: var(--accent); }
-    .sect-btn-arrow { transition: transform 0.2s; display: inline-block; }
-    .sect-btn.open .sect-btn-arrow { transform: rotate(180deg); }
-    .sect-dropdown {
-      position: fixed; top: 60px; right: 48px;
-      background: var(--white);
-      border: 1.5px solid var(--grey-200);
-      border-radius: 6px; min-width: 210px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      z-index: 200;
-      visibility: hidden; opacity: 0; pointer-events: none;
-      transform: translateY(-6px);
-      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
-    }
-    .sect-dropdown.open {
-      visibility: visible; opacity: 1; pointer-events: all;
-      transform: translateY(0);
-      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
-    }
-    .sect-dropdown-top { padding: 10px 14px; border-bottom: 1px solid var(--grey-200); }
-    .sect-dropdown-top a {
-      font-size: 11px; font-weight: 700;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      color: var(--grey-500); text-decoration: none;
-      display: flex; align-items: center; gap: 6px; transition: color 0.15s;
-    }
-    .sect-dropdown-top a:hover { color: var(--black); }
-    .sect-dropdown ul { list-style: none; max-height: 65vh; overflow-y: auto; padding: 6px 0; }
-    .sect-dropdown ul li a {
-      display: block; font-size: 13px; font-weight: 400;
-      color: var(--grey-700); text-decoration: none;
-      padding: 8px 14px; transition: background 0.1s, color 0.1s;
-      font-family: var(--sans); line-height: 1.3;
-    }
-    .sect-dropdown ul li a:hover { background: var(--grey-50); color: var(--black); }
-    .sect-dropdown ul li a.active {
-      color: var(--accent); font-weight: 600;
-      background: var(--yellow-pale);
-      border-left: 3px solid var(--yellow-border); padding-left: 11px;
-    }
-    /* ── BACK TO TOP ── */
-    .back-to-top {
-      position: fixed; bottom: 24px; right: 24px;
-      width: 38px; height: 38px;
-      background: var(--white); border: 1.5px solid var(--grey-200);
-      color: var(--black); border-radius: 50%;
-      font-size: 15px; cursor: pointer;
-      display: none; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-      z-index: 9999; transition: background 0.15s, transform 0.15s;
-      font-family: var(--sans);
-    }
-    .back-to-top:hover { background: var(--yellow-pale); border-color: var(--yellow-border); transform: translateY(-2px); }
-    .back-to-top.visible { display: flex; }
-    @media (max-width: 600px) { .sect-dropdown { right: 16px; left: 16px; min-width: unset; } }
-
-    /* ── FOOTER ── */
-    .footer-band {
-      background: var(--grey-100);
-      border-top: 1px solid var(--grey-200);
-      padding: 40px 48px;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .footer-band p { color: var(--grey-500); font-size: 13px; margin: 0; }
-    .footer-nav { display: flex; gap: 12px; }
-    .footer-nav a {
-      color: var(--white); text-decoration: none;
-      font-size: 13px; font-weight: 700;
-      padding: 8px 18px; border-radius: 3px;
-      background: var(--accent); border: 1.5px solid var(--accent);
-      transition: background 0.15s, color 0.15s;
-    }
-    .footer-nav a:hover { background: var(--black); border-color: var(--black); }
-
-    /* ── HERO FOCUS ── */
-    .hero-focus {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--grey-500);
-      margin-bottom: 1rem;
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      nav { padding: 0 24px; }
-      .nav-right { gap: 16px; }
-      .hero { grid-template-columns: 1fr; }
-      .hero-right { border-left: none; border-top: 1px solid var(--grey-200); padding: 40px 24px; }
-      .hero-left { padding: 60px 24px; min-height: 60vh; justify-content: flex-end; }
-      .container { padding: 0 24px; }
-      section { padding: 64px 0; }
-      .two-col { grid-template-columns: 1fr; gap: 40px; }
-      .three-col { grid-template-columns: 1fr; }
-      .four-col { grid-template-columns: 1fr 1fr; }
-      .component-grid { grid-template-columns: 1fr 1fr; }
-      .decision-body { grid-template-columns: 1fr; }
-      .decision-body-three { grid-template-columns: 1fr; }
-      .decision-col + .decision-col { border-left: none; border-top: 1px solid var(--grey-200); }
-      .validation-grid { grid-template-columns: 1fr; }
-      .metrics-strip { grid-template-columns: 1fr 1fr; }
-      .audience-grid { grid-template-columns: 1fr; }
-      .reflection-grid { grid-template-columns: 1fr; }
-      .role-grid { grid-template-columns: 1fr; }
-      .ecosystem-spokes { grid-template-columns: 1fr; }
-      .footer-band { flex-direction: column; gap: 20px; text-align: center; }
-    }
-  </style>
+  @media (max-width: 900px) {
+    .sect-btn { display: flex; background: none; border: 1.5px solid var(--border); color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 12px; border-radius: 3px; cursor: pointer; align-items: center; gap: 5px; transition: background 0.15s, color 0.15s; }
+    .sect-btn:hover, .sect-btn.open { background: var(--accent); border-color: var(--accent); color: var(--text); }
+    .nav { padding: 16px 24px; }
+    .hero { padding: 48px 24px 40px; }
+    .hero-meta-row { flex-wrap: wrap; gap: 16px; }
+    .hero-meta-item + .hero-meta-item { padding-left: 0; border-left: none; }
+    .body-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .content { padding: 0 24px 80px; }
+    .cs-footer-wrap { grid-template-columns: 1fr; }
+    .cs-footer-sidebar { display: none; }
+    .cs-footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .decision-cols { grid-template-columns: 1fr; }
+    .decision-three { grid-template-columns: 1fr; }
+    .decision-col + .decision-col { border-left: none; border-top: 1px solid var(--border); }
+    .stat-row { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-cell:last-child { border-bottom: none; }
+    .audience-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-<!-- Reading progress -->
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
-<!-- Sections dropdown -->
-<div role="navigation" aria-label="Page sections" class="sect-dropdown" id="sectDropdown" inert>
-  <div class="sect-dropdown-top">
-    <a href="#" id="dropTopLink">&#8593; Back to top</a>
-  </div>
-  <ul>
-    <li><a href="#context" class="sect-link">01 &nbsp;&middot;&nbsp; Context</a></li>
-    <li><a href="#audience" class="sect-link">02 &nbsp;&middot;&nbsp; The Audience</a></li>
-    <li><a href="#ecosystem" class="sect-link">03 &nbsp;&middot;&nbsp; Ecosystem Design</a></li>
-    <li><a href="#decisions" class="sect-link">04 &nbsp;&middot;&nbsp; Product Decisions</a></li>
-    <li><a href="#constraints" class="sect-link">05 &nbsp;&middot;&nbsp; Designing Under Constraints</a></li>
-    <li><a href="#validation" class="sect-link">06 &nbsp;&middot;&nbsp; Pre-Launch Validation</a></li>
-    <li><a href="#execution" class="sect-link">07 &nbsp;&middot;&nbsp; Cross-Functional Execution</a></li>
-    <li><a href="#reflection" class="sect-link">08 &nbsp;&middot;&nbsp; What remains open</a></li>
-  </ul>
-</div>
-
-<nav>
-  <a href="../../index.html" class="nav-logo">Reiko Tan</a>
+<nav class="nav" id="nav">
+  <a href="../../index.html" class="nav-logo">Reiko</a>
   <div class="nav-right">
-    <button class="sect-btn" id="sectBtn"
-      aria-haspopup="true" aria-expanded="false" aria-controls="sectDropdown">
-      Sections <span class="sect-btn-arrow" aria-hidden="true">&#8964;</span>
-    </button>
+    <a href="../../work/index.html" class="nav-back">← Work</a>
+    <button class="sect-btn" id="sectBtn" aria-expanded="false" aria-controls="sectDropdown">Sections &#8964;</button>
     <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     </a>
-    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram" target="_blank" rel="noopener">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
     </a>
   </div>
 </nav>
 
-<!-- Back to top -->
-<button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <p class="hero-eyebrow">Mighty Jaxx &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2021&ndash;Present</p>
-    <div class="hero-focus">Deep dive — constraint-led design</div>
-    <h1>From static<br>collectibles to<br><mark>interactive</mark><br>companions</h1>
-    <p class="hero-sub">Most products add intelligence by adding a screen. Removing that option forced every other decision — interaction model, trigger technology, content architecture, conversation scope.</p>
-    <div class="hero-tags">
-      <span class="htag">0→1 Product Creation</span>
-      <span class="htag">Ecosystem Design</span>
-      <span class="htag">Screen-Free Interaction</span>
-      <span class="htag">Licensed IP</span>
-      <span class="htag">Hardware + Software</span>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="meta-grid">
-      <div class="meta-cell">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Product Manager</span>
-      </div>
-      <div class="meta-cell">
-        <span class="meta-label">Company</span>
-        <span class="meta-value">Mighty Jaxx</span>
-      </div>
-      <div class="meta-cell">
-        <span class="meta-label">Scope</span>
-        <span class="meta-value">Hardware + Software + Content</span>
-      </div>
-      <div class="meta-cell">
-        <span class="meta-label">Status</span>
-        <span class="meta-value">In Development</span>
-      </div>
-    </div>
-    <div class="confidential-note">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      <span><strong>Product is in development.</strong> Specific product name and partner details are confidential. All product thinking, decisions, and methodology are described in full.</span>
-    </div>
-    <p class="byline">Reiko Tan &nbsp;&middot;&nbsp; Product Manager &nbsp;&middot;&nbsp; Singapore</p>
+<div class="sect-dropdown" id="sectDropdown" aria-hidden="true">
+  <div class="sect-dropdown-inner">
+    <a href="#context"     onclick="closeDropdown()"><span class="dn">01</span>Context</a>
+    <a href="#audience"    onclick="closeDropdown()"><span class="dn">02</span>The Audience</a>
+    <a href="#ecosystem"   onclick="closeDropdown()"><span class="dn">03</span>Ecosystem Design</a>
+    <a href="#decisions"   onclick="closeDropdown()"><span class="dn">04</span>Product Decisions</a>
+    <a href="#constraints" onclick="closeDropdown()"><span class="dn">05</span>Designing Under Constraints</a>
+    <a href="#validation"  onclick="closeDropdown()"><span class="dn">06</span>Pre-Launch Validation</a>
+    <a href="#execution"   onclick="closeDropdown()"><span class="dn">07</span>Cross-Functional Execution</a>
+    <a href="#reflection"  onclick="closeDropdown()"><span class="dn">08</span>What remains open</a>
   </div>
 </div>
 
-<!-- CONTEXT -->
-<section id="context">
-  <div class="container">
-    <div class="section-label">01 &nbsp;&middot;&nbsp; Context</div>
-    <div class="reveal">
+<div class="hero">
+  <div class="hero-eyebrow">Mighty Jaxx &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2021–Present</div>
+  <div class="hero-focus">Deep dive — constraint-led design</div>
+  <h1>From static collectibles to<br><em>interactive companions</em></h1>
+  <p class="hero-sub">Most products add intelligence by adding a screen. Removing that option forced every other decision — interaction model, trigger technology, content architecture, conversation scope.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">0→1 Product Creation</span>
+    <span class="hero-tag">Ecosystem Design</span>
+    <span class="hero-tag">Screen-Free Interaction</span>
+    <span class="hero-tag">Licensed IP</span>
+    <span class="hero-tag">Hardware + Software</span>
+  </div>
+  <div class="hero-meta-row">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Role</span>
+      <span class="hero-meta-value">Product Manager</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Company</span>
+      <span class="hero-meta-value">Mighty Jaxx</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Scope</span>
+      <span class="hero-meta-value">Hardware + Software + Content</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Status</span>
+      <span class="hero-meta-value">In Development</span>
+    </div>
+  </div>
+  <div class="confidential">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <span><strong>Product is in development.</strong> Specific product name and partner details are confidential. All product thinking, decisions, and methodology are described in full.</span>
+  </div>
+</div>
+
+<div class="body-layout">
+
+  <aside class="sidebar">
+    <span class="sidebar-label">Contents</span>
+    <a href="#context"     class="toc-item active"><span class="toc-num">01</span>Context</a>
+    <a href="#audience"    class="toc-item"><span class="toc-num">02</span>The Audience</a>
+    <a href="#ecosystem"   class="toc-item"><span class="toc-num">03</span>Ecosystem Design</a>
+    <a href="#decisions"   class="toc-item"><span class="toc-num">04</span>Product Decisions</a>
+    <a href="#constraints" class="toc-item"><span class="toc-num">05</span>Constraints</a>
+    <a href="#validation"  class="toc-item"><span class="toc-num">06</span>Validation</a>
+    <a href="#execution"   class="toc-item"><span class="toc-num">07</span>Execution</a>
+    <a href="#reflection"  class="toc-item"><span class="toc-num">08</span>What remains open</a>
+  </aside>
+
+  <div class="content">
+
+    <section class="cs-section" id="context">
+      <div class="section-eyebrow">01 &nbsp;·&nbsp; Context</div>
       <h2>Why a collectibles company moved into interactive toys</h2>
-      <p>Mighty Jaxx built a strong business around collectible designer figures — one-time purchases that end when they go on a shelf. IP partners wanted fan engagement that extended beyond purchase. The brief was a screen-free interactive toy: a physical object that talks back, without a display, without buttons, without setup. I was PM across interaction design, content ecosystem structure, hardware-software behaviour definition, and licensing partner coordination.</p>
-    </div>
-  </div>
-</section>
+      <p>Mighty Jaxx built a strong business around collectible designer figures — one-time purchases that end when they go on a shelf. IP partners wanted fan engagement that extended beyond purchase. The brief was a screen-free interactive toy: a physical object that talks back, without a display, without buttons, without setup.</p>
+      <p>I was PM across interaction design, content ecosystem structure, hardware-software behaviour definition, and licensing partner coordination.</p>
+    </section>
 
-<!-- AUDIENCE -->
-<section id="audience" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">02 &nbsp;&middot;&nbsp; The Audience</div>
-    <h2 class="reveal">Designing for two decision-makers with different goals</h2>
-    <p class="reveal">The product has two decision-makers with opposing priorities: children want characters they love, stories that respond to them, and interaction that feels immediate; parents want no screen, age-appropriate content, and parental visibility into what the product says. Every major design decision navigated both.</p>
-  </div>
-</section>
+    <section class="cs-section" id="audience">
+      <div class="section-eyebrow">02 &nbsp;·&nbsp; The Audience</div>
+      <h2>Designing for two decision-makers with <em>different goals</em></h2>
+      <p>The product has two decision-makers with opposing priorities. Every major design decision navigated both.</p>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <span class="audience-card-label">Primary user</span>
+          <h3>The child</h3>
+          <p>Characters they love. Stories that respond. Interaction that feels immediate and alive, not scripted.</p>
+        </div>
+        <div class="audience-card">
+          <span class="audience-card-label">Decision-maker</span>
+          <h3>The parent</h3>
+          <p>No screen. Age-appropriate content. Visibility into what the product says to their child.</p>
+        </div>
+      </div>
+      <div class="pm-note">
+        <span class="pm-note-label">Key tension</span>
+        <p class="pm-note-text">Solving for both meant no decision was clean. Every feature trade-off had to be made explicit — features that delighted children often made parents nervous, and vice versa.</p>
+      </div>
+    </section>
 
-<!-- ECOSYSTEM -->
-<section id="ecosystem">
-  <div class="container">
-    <div class="section-label">03 &nbsp;&middot;&nbsp; Ecosystem Design</div>
-    <div class="two-col" style="margin-bottom: 40px;">
-      <h2 class="reveal">One experience, four connected components</h2>
-      <p class="reveal">A standalone speaker lacks physical interaction; physical toys alone lack storytelling. The product had to be an ecosystem: hardware, content, and software as a unified experience.</p>
-    </div>
+    <section class="cs-section" id="ecosystem">
+      <div class="section-eyebrow">03 &nbsp;·&nbsp; Ecosystem Design</div>
+      <h2>One experience, <em>four connected components</em></h2>
+      <p>A standalone speaker lacks physical interaction; physical toys alone lack storytelling. The product had to be an ecosystem: hardware, content, and software as a unified experience.</p>
+      <div class="img-placeholder" style="height: 220px;">Ecosystem diagram — speaker base · figurines · content system · parent app</div>
+      <p><strong>Figurines:</strong> NFC-enabled characters with ~60 minutes of base content — stories, songs, interactive experiences, and a distinct personality shaping conversational responses.</p>
+      <p><strong>Playsets:</strong> Environment accessories (forest, home, school) that introduce new activities. Character-playset pairings unlock bonus content, creating cross-sell incentive.</p>
+      <p><strong>Speaker base:</strong> Manages NFC detection, voice I/O, LED cues, and mode transitions. No screen.</p>
+      <p><strong>Content system:</strong> Pre-loaded stories work offline; branching narratives and conversational mode require a connection. New characters and content expand the system over time.</p>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <span class="stat-num">4</span>
+          <span class="stat-label">system components</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">~60</span>
+          <span class="stat-label">minutes per character</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">0</span>
+          <span class="stat-label">buttons or screens</span>
+        </div>
+      </div>
+      <div class="pm-note">
+        <span class="pm-note-label">PM note</span>
+        <p class="pm-note-text">Ecosystem diagrams were the most useful artefact for aligning engineering, content, and IP partners on scope. A single diagram replaced three separate briefing documents.</p>
+      </div>
+    </section>
 
-    <div class="ecosystem-diagram reveal">
-      <div class="ecosystem-center">
-        <div class="ecosystem-hub">
-          <span class="ecosystem-hub-icon">🔊</span>
-          <span class="ecosystem-hub-label">Speaker Base</span>
-          <span class="ecosystem-hub-sub">Central interaction hub · NFC detection · Voice I/O · LED feedback</span>
-        </div>
-        <div class="ecosystem-connector"><div class="ecosystem-connector-line"></div></div>
-      </div>
-      <div class="ecosystem-spokes">
-        <div class="ecosystem-spoke highlight">
-          <span class="ecosystem-spoke-icon">🧸</span>
-          <span class="ecosystem-spoke-label">Character Figurines</span>
-          <span class="ecosystem-spoke-sub">NFC-enabled · Place on base to activate · ~60 min of base content per character</span>
-        </div>
-        <div class="ecosystem-spoke">
-          <span class="ecosystem-spoke-icon">☁️</span>
-          <span class="ecosystem-spoke-label">Content System</span>
-          <span class="ecosystem-spoke-sub">Stories · Songs · Interactive scenarios · Conversational AI · Expandable over time</span>
-        </div>
-        <div class="ecosystem-spoke">
-          <span class="ecosystem-spoke-icon">📱</span>
-          <span class="ecosystem-spoke-label">Parent App</span>
-          <span class="ecosystem-spoke-sub">Content controls · Usage visibility · Safe conversation monitoring</span>
-        </div>
-      </div>
-      <p class="ecosystem-caption">The base is the physical hub. Figurines trigger experiences via NFC. Content lives in the cloud. The parent app provides oversight and control.</p>
-    </div>
+    <section class="cs-section" id="decisions">
+      <div class="section-eyebrow">04 &nbsp;·&nbsp; Product Decisions</div>
+      <h2>Three decisions that <em>shaped the system</em></h2>
+      <p>Each involved real constraints and competing pressures — not obvious calls at the time.</p>
 
-    <div class="component-grid reveal">
-      <div class="component-card">
-        <span class="component-icon">🧸</span>
-        <h3>Figurines</h3>
-        <p>Each character has an NFC tag and ~60 minutes of base content: stories, songs, and interactive experiences, with a distinct personality shaping conversational responses.</p>
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">01</span>
+          <h3>Committing to screen-free, even when a screen would have been easier</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">The temptation</span>
+            <p>Early concepts included a small display on the base. A screen would have made it easier to show animations, guide children through prompts, and give demos something visible. Internal teams liked the option.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">Why we removed it</span>
+            <p>A screen puts the product in direct competition with tablets, collapsing the value proposition. Without it, the interaction simplified: place a character, respond to a voice.</p>
+          </div>
+        </div>
       </div>
-      <div class="component-card">
-        <span class="component-icon">🏡</span>
-        <h3>Playsets</h3>
-        <p>Environment-based accessories (forest, home, school) that introduce new activities. Any character can use a playset, but certain pairings unlock bonus content, creating cross-sell incentive.</p>
-      </div>
-      <div class="component-card">
-        <span class="component-icon">🔊</span>
-        <h3>Speaker Base</h3>
-        <p>Manages NFC detection, voice I/O, LED cues, and mode transitions. No screen.</p>
-      </div>
-      <div class="component-card">
-        <span class="component-icon">☁️</span>
-        <h3>Content System</h3>
-        <p>Pre-loaded stories work offline; branching narratives and conversational mode require a connection. New characters, playsets, and content expand the system over time.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- DECISIONS -->
-<section id="decisions" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">04 &nbsp;&middot;&nbsp; Product Decisions</div>
-    <div class="two-col" style="margin-bottom: 48px;">
-      <h2 class="reveal">Three decisions that shaped the system</h2>
-      <p class="reveal">Each involved real constraints and competing pressures.</p>
-    </div>
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">02</span>
+          <h3>NFC as the physical trigger: choosing simplicity over capability</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">Alternatives considered</span>
+            <p>Bluetooth required pairing and batteries in each figurine. Camera recognition raised privacy concerns and had lighting reliability issues.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">Why NFC</span>
+            <p>NFC identifies a figurine the instant it touches the base: no pairing, no batteries in the toy. Place the character, it activates. Any setup step breaks the interaction for a 3–10 year old.</p>
+          </div>
+        </div>
+      </div>
 
-    <!-- Decision 1 -->
-    <div class="decision-block reveal">
-      <div class="decision-header">
-        <span class="decision-num">01</span>
-        <h3>Committing to screen-free, even when a screen would have been easier</h3>
+      <div class="pm-note">
+        <span class="pm-note-label">What I'd do differently</span>
+        <p class="pm-note-text">Test NFC detection reliability across figurine materials and sizes earlier. We found edge cases late in hardware validation that required a minor base redesign.</p>
       </div>
-      <div class="decision-body">
-        <div class="decision-col">
-          <span class="decision-col-label label-tension">The temptation</span>
-          <p>Early concepts included a small display on the base. A screen would have made it easier to show animations, guide children through prompts, and give demos something visible. Internal teams liked the option.</p>
-        </div>
-        <div class="decision-col">
-          <span class="decision-col-label label-resolution">Why we removed it</span>
-          <p>A screen puts the product in direct competition with tablets, collapsing the value proposition. Without it, the interaction simplified: place a character, respond to a voice.</p>
-        </div>
-      </div>
-    </div>
 
-    <!-- Decision 2 -->
-    <div class="decision-block reveal">
-      <div class="decision-header">
-        <span class="decision-num">02</span>
-        <h3>NFC as the physical trigger: choosing simplicity over capability</h3>
-      </div>
-      <div class="decision-body">
-        <div class="decision-col">
-          <span class="decision-col-label label-tension">Alternatives considered</span>
-          <p>Bluetooth required pairing and batteries in each figurine. Camera recognition raised privacy concerns and had lighting reliability issues.</p>
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">03</span>
+          <h3>How open should character conversations be? A real design debate.</h3>
         </div>
-        <div class="decision-col">
-          <span class="decision-col-label label-resolution">Why NFC</span>
-          <p>NFC identifies a figurine the instant it touches the base: no pairing, no batteries in the toy. Place the character, it activates. Any setup step breaks the interaction for a 3–10 year old.</p>
+        <div class="decision-cols decision-three">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">Option A: Fully open</span>
+            <p>Characters respond to almost any question within safety limits. Natural, but conversations drift outside the character's universe, removing the incentive to buy new playsets.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">Option B: Scene-locked</span>
+            <p>Conversations tightly constrained by the active playset. Children become frustrated by constant redirects, and the interaction feels scripted rather than alive.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">What we chose: Hybrid</span>
+            <p>Characters respond broadly, but answers are shaped by the active character, environment, and safety layer. Off-scene questions get acknowledged, then redirected: <em>"That's interesting! But since we're in the forest today, want to explore the river with me?"</em></p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Decision 3 -->
-    <div class="decision-block reveal">
-      <div class="decision-header">
-        <span class="decision-num">03</span>
-        <h3>How open should character conversations be? A real design debate.</h3>
-      </div>
-      <div class="decision-body-three decision-body">
-        <div class="decision-col">
-          <span class="decision-col-label label-option">Option A: Fully open</span>
-          <p>Characters respond to almost any question within safety limits. Natural, but conversations drift outside the character's universe, removing the incentive to buy new playsets.</p>
-        </div>
-        <div class="decision-col">
-          <span class="decision-col-label label-option">Option B: Scene-locked</span>
-          <p>Conversations are tightly constrained by the active playset. Children become frustrated by constant redirects, and the interaction feels scripted rather than alive.</p>
-        </div>
-        <div class="decision-col">
-          <span class="decision-col-label label-resolution">What we chose: Hybrid</span>
-          <p>Characters respond broadly, but answers are shaped by the active character, environment, and safety layer. Off-scene questions get acknowledged, then redirected: <em>"That's interesting! But since we're in the forest today, want to explore the river with me?"</em></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <section class="cs-section" id="constraints">
+      <div class="section-eyebrow">05 &nbsp;·&nbsp; Designing Under Constraints</div>
+      <h2>The product is defined by <em>what it can't do</em></h2>
+      <p>Screen-free interaction means the system communicates only through voice, sound, and light. Hardware minimalism means a single NFC sensor, microphones, and LED indicators. Designing within those limits was the brief.</p>
+      <p><strong>No screen.</strong> Navigation became placement. Menus became voice prompts. Visual feedback became LED cues and sound design.</p>
+      <p><strong>Single NFC sensor, limited inputs.</strong> One figurine at a time, no physical buttons beyond power. The entire interaction model is built around placement and voice — the two most natural inputs for young children.</p>
+      <p><strong>Children's unpredictable responses.</strong> Children pause, repeat phrases, answer unrelated questions, go silent, or talk over the character. The system handles all of these with fallback behaviours that keep stories moving without making the child feel like they did something wrong.</p>
+      <p><strong>Licensed IP character integrity.</strong> Licensed characters have tightly controlled tone, vocabulary, and worldview. A conversational system that generates flexible responses is in direct tension with that. A single out-of-character response in a live partner demo could end a licensing relationship. A policy layer, character personality guidelines, and I/O filtering are built into the system from the start.</p>
+      <p><strong>Safety requirements for direct child interaction.</strong> Input filtering, output validation, and conversation boundaries enforced by a policy engine — all running before any response reaches the child.</p>
+    </section>
 
-<!-- CONSTRAINTS -->
-<section id="constraints">
-  <div class="container">
-    <div class="section-label">05 &nbsp;&middot;&nbsp; Designing Under Constraints</div>
-    <div class="two-col" style="margin-bottom: 48px;">
-      <h2 class="reveal">The product is defined by what it can't do</h2>
-      <p class="reveal">Screen-free interaction means the system communicates only through voice, sound, and light. Hardware minimalism means a single NFC sensor, microphones, and LED indicators. Designing within those limits was the brief.</p>
-    </div>
-    <div class="constraint-stack reveal">
-      <div class="constraint-item">
-        <div class="constraint-icon">🚫</div>
-        <div>
-          <div class="constraint-title">No screen</div>
-          <p>Navigation became placement. Menus became voice prompts. Visual feedback became LED cues and sound design.</p>
-        </div>
-      </div>
-      <div class="constraint-item">
-        <div class="constraint-icon">📡</div>
-        <div>
-          <div class="constraint-title">Single NFC sensor, limited inputs</div>
-          <p>One figurine at a time, no physical buttons beyond power. The entire interaction model is built around placement and voice: the two most natural inputs for young children.</p>
-        </div>
-      </div>
-      <div class="constraint-item">
-        <div class="constraint-icon">🧒</div>
-        <div>
-          <div class="constraint-title">Children's unpredictable responses</div>
-          <p>Children pause, repeat phrases, answer unrelated questions, go silent, or talk over the character. The system handles all of these with fallback behaviours that keep stories moving without making the child feel like they did something wrong.</p>
-        </div>
-      </div>
-      <div class="constraint-item">
-        <div class="constraint-icon">🔒</div>
-        <div>
-          <div class="constraint-title">Licensed IP character integrity</div>
-          <p>Licensed characters have tightly controlled tone, vocabulary, and worldview. A conversational system that generates flexible responses is in direct tension with that. A single out-of-character response in a live partner demo could end a licensing relationship. A policy layer, character personality guidelines, and I/O filtering are built into the system from the start.</p>
-        </div>
-      </div>
-      <div class="constraint-item">
-        <div class="constraint-icon">🛡️</div>
-        <div>
-          <div class="constraint-title">Safety requirements for direct child interaction</div>
-          <p>Input filtering, output validation, and conversation boundaries enforced by a policy engine. All of this runs before any response reaches the child.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <section class="cs-section" id="validation">
+      <div class="section-eyebrow">06 &nbsp;·&nbsp; Pre-Launch Validation</div>
+      <h2>Validating interaction assumptions <em>before the full build</em></h2>
+      <p>The product is still in development. Research focused on the core interaction assumptions that had to be true for the ecosystem to work at all.</p>
 
-<!-- VALIDATION -->
-<section id="validation" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">06 &nbsp;&middot;&nbsp; Pre-Launch Validation</div>
-    <div class="two-col" style="margin-bottom: 16px;">
-      <h2 class="reveal">Validating interaction assumptions before the full build</h2>
-      <p class="reveal">The product is still in development. Research focused on the core interaction assumptions that had to be true for the ecosystem to work at all.</p>
-    </div>
-    <div class="validation-grid reveal">
-      <div class="validation-card">
-        <span class="validation-num">01</span>
-        <h3>Will children understand the interaction model without instruction?</h3>
-        <p>If children couldn't figure out that placing a figurine activates the character, nothing else would work.</p>
-        <p><strong>Signals we looked for:</strong></p>
-        <ul class="signal-list">
-          <li>Children attempting to place the figurine without being told to</li>
-          <li>Understanding that the character was now "active" and listening</li>
-          <li>Responding to voice prompts without needing to be coached</li>
-        </ul>
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">01</span>
+          <h3>Will children understand the interaction model without instruction?</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">The risk</span>
+            <p>If children couldn't figure out that placing a figurine activates the character, nothing else would work.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">Signals we looked for</span>
+            <p>Children attempting to place the figurine without being told. Understanding that the character was now "active" and listening. Responding to voice prompts without coaching.</p>
+          </div>
+        </div>
       </div>
-      <div class="validation-card">
-        <span class="validation-num">02</span>
-        <h3>How do children actually behave during voice interaction?</h3>
-        <p>The system needed to be designed for real child behaviour, not idealised responses.</p>
-        <p><strong>Patterns observed:</strong></p>
-        <ul class="signal-list">
-          <li>Long pauses before responding, often 3–5 seconds or longer</li>
-          <li>Repeating the prompt back instead of answering</li>
-          <li>Responding with unrelated phrases or questions</li>
-          <li>Talking over the character mid-sentence</li>
-        </ul>
-        <p style="margin-top:12px;">These patterns informed the fallback response design: stories continue regardless of how the child responds.</p>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">02</span>
+          <h3>How do children actually behave during voice interaction?</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">What we assumed</span>
+            <p>Children would respond on cue, stay on topic, and progress through story segments predictably.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">What we observed</span>
+            <p>Long pauses before responding (3–5+ seconds), repeating prompts back instead of answering, unrelated questions, talking over the character mid-sentence. These patterns directly shaped the fallback response design: stories continue regardless of how the child responds.</p>
+          </div>
+        </div>
       </div>
-      <div class="validation-card">
-        <span class="validation-num">03</span>
-        <h3>Do children form emotional connection with character voices?</h3>
-        <p>Without emotional connection to the character, there's no reason to return.</p>
-        <p><strong>Signals we looked for:</strong></p>
-        <ul class="signal-list">
-          <li>Continuing conversations beyond the first prompt unprompted</li>
-          <li>Asking questions back to the character</li>
-          <li>Replaying story segments voluntarily</li>
-          <li>Referring to the character by name in conversation</li>
-        </ul>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">03</span>
+          <h3>Do children form emotional connection with character voices?</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">Why it matters</span>
+            <p>Without emotional connection to the character, there is no reason to return. Return is the business model.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">Signals we looked for</span>
+            <p>Continuing conversations beyond the first prompt unprompted. Asking questions back to the character. Replaying story segments voluntarily. Referring to the character by name.</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <section class="cs-section" id="execution">
+      <div class="section-eyebrow">07 &nbsp;·&nbsp; Cross-Functional Execution</div>
+      <h2>Four workstreams that <em>couldn't proceed independently</em></h2>
+      <p>Hardware, content, licensing, and partner demos each owned a critical piece. The hardest cross-functional dependency was licensed character integrity: a single out-of-character response in a live partner demo could end a licensing relationship, which made the policy layer and I/O filtering non-negotiable from the start.</p>
+      <div class="pm-note">
+        <span class="pm-note-label">What this required</span>
+        <p class="pm-note-text">Weekly syncs across hardware, content, and licensing to surface dependencies early. The policy engine had to be defined before content scripting could begin, and content structure had to be defined before hardware audio specs were finalised.</p>
+      </div>
+    </section>
+
+    <section class="cs-section" id="reflection">
+      <div class="section-eyebrow">08 &nbsp;·&nbsp; What remains open</div>
+      <h2>The hardware model is solved. <em>The content pipeline isn't.</em></h2>
+      <p>Pre-launch validation confirmed that children understand the placement interaction without instruction, and that fallback response design is not a polish decision — it is what makes the product safe to ship.</p>
+      <p>The unresolved question is not hardware. The hardware interaction model is defined and testable. What isn't yet resolved is whether the content pipeline can scale fast enough to sustain engagement past the first few characters.</p>
+    </section>
 
   </div>
-</section>
+</div>
 
-<!-- EXECUTION -->
-<section id="execution">
-  <div class="container">
-    <div class="section-label">07 &nbsp;&middot;&nbsp; Cross-Functional Execution</div>
-    <p class="reveal">Hardware, content, licensing, and partner demos each owned a critical piece and none could proceed independently. The hardest cross-functional dependency was licensed character integrity: a single out-of-character response in a live partner demo could end a licensing relationship, which made the policy layer and I/O filtering non-negotiable from the start.</p>
-  </div>
-</section>
-
-<!-- REFLECTION -->
-<section id="reflection" style="background: var(--grey-50);">
-  <div class="container">
-    <div class="section-label">08 &nbsp;&middot;&nbsp; What remains open</div>
-    <h2 class="reveal" style="max-width: 480px; margin-bottom: 36px;">What remains open</h2>
-    <div class="reflection-grid reveal">
-      <div class="reflection-card">
-        <p>Pre-launch validation confirmed that children understand the placement interaction without instruction, and that fallback response design is not a polish decision — it is what makes the product safe to ship. The unresolved question is not hardware. The hardware interaction model is defined and testable. What isn't yet resolved is whether the content pipeline can scale fast enough to sustain engagement past the first few characters.</p>
-      </div>
+<div class="cs-footer-wrap">
+  <div class="cs-footer-sidebar"></div>
+  <footer class="cs-footer">
+    <a href="../../work/index.html" class="cs-footer-back">← Back to Work</a>
+    <div class="cs-footer-icons">
+      <a href="mailto:reiko98@live.com.sg" class="cs-footer-icon" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+      <a href="https://t.me/rracko" class="cs-footer-icon" aria-label="Telegram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </a>
     </div>
-  </div>
-</section>
-
-<div class="footer-band">
-  <p>Reiko Tan &nbsp;&middot;&nbsp; PM Portfolio &nbsp;&middot;&nbsp; Mighty Jaxx</p>
-  <div class="footer-nav">
-    <a href="../../index.html">← All Work</a>
-    <a href="mailto:reiko98@live.com.sg">reiko98@live.com.sg</a>
-    <a href="https://t.me/rracko" target="_blank" rel="noopener">@rracko</a>
-  </div>
+  </footer>
 </div>
 
 <script>
-  // Reading progress + back-to-top
+  const nav = document.getElementById('nav');
   const bar = document.getElementById('progress');
-  const backToTop = document.getElementById('backToTop');
   window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
     const doc = document.documentElement;
     bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-    backToTop.classList.toggle('visible', window.scrollY > 400);
   }, { passive: true });
-  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  // Sections dropdown
-  const sectBtn = document.getElementById('sectBtn');
-  const sectDropdown = document.getElementById('sectDropdown');
-
-  function openDropdown() {
-    sectDropdown.classList.add('open');
-    sectDropdown.removeAttribute('inert');
-    sectBtn.classList.add('open');
-    sectBtn.setAttribute('aria-expanded', 'true');
-    const first = sectDropdown.querySelector('a');
-    if (first) first.focus();
-  }
-  function closeDropdown() {
-    sectDropdown.classList.remove('open');
-    sectDropdown.setAttribute('inert', '');
-    sectBtn.classList.remove('open');
-    sectBtn.setAttribute('aria-expanded', 'false');
-  }
-  function toggleDropdown() {
-    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
-  }
-
-  sectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(); });
-
-  document.addEventListener('keydown', (e) => {
-    if (!sectDropdown.classList.contains('open')) return;
-    const links = [...sectDropdown.querySelectorAll('a')];
-    const idx = links.indexOf(document.activeElement);
-    if (e.key === 'Escape') { e.preventDefault(); closeDropdown(); sectBtn.focus(); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); links[(idx + 1) % links.length].focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); links[(idx - 1 + links.length) % links.length].focus(); }
-    if (e.key === 'Tab' && !e.shiftKey && idx === links.length - 1) { closeDropdown(); }
-    if (e.key === 'Tab' && e.shiftKey && idx === 0) { closeDropdown(); }
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!sectDropdown.contains(e.target) && e.target !== sectBtn) closeDropdown();
-  });
-
-  document.getElementById('dropTopLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    closeDropdown();
-    sectBtn.focus();
-  });
-
-  document.querySelectorAll('.sect-link').forEach(a => {
-    a.addEventListener('click', () => closeDropdown());
-  });
-
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  reveals.forEach(el => observer.observe(el));
-
-  // Active section highlighting
-  const sectLinks = [...sectDropdown.querySelectorAll('a[href^="#"]')];
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        sectLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
+  const sections = document.querySelectorAll('.cs-section[id]');
+  const tocItems = document.querySelectorAll('.toc-item');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocItems.forEach(t => t.classList.remove('active'));
+        const active = document.querySelector(`.toc-item[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
       }
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
-  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+  sections.forEach(s => observer.observe(s));
+
+  const sectBtn = document.getElementById('sectBtn');
+  const sectDropdown = document.getElementById('sectDropdown');
+
+  function closeDropdown() {
+    sectDropdown.classList.remove('open');
+    sectDropdown.setAttribute('aria-hidden', 'true');
+    sectBtn.classList.remove('open');
+    sectBtn.setAttribute('aria-expanded', 'false');
+  }
+  function openDropdown() {
+    sectDropdown.classList.add('open');
+    sectDropdown.setAttribute('aria-hidden', 'false');
+    sectBtn.classList.add('open');
+    sectBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  sectBtn.addEventListener('click', () => {
+    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
+  });
+  document.addEventListener('click', e => {
+    if (!sectBtn.contains(e.target) && !sectDropdown.contains(e.target)) closeDropdown();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDropdown(); });
 </script>
 </body>
 </html>
