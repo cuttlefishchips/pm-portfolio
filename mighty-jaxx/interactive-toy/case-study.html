@@ -6,30 +6,33 @@
   <title>Building an Interactive Toy Ecosystem | Mighty Jaxx | Reiko Tan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
   <style>
     :root {
       --yellow: #FFE000;
       --yellow-pale: #FFFDE5;
       --yellow-border: #E6CA00;
       --black: #111111;
-      --grey-50: #FAFAFA;
-      --grey-100: #F4F4F4;
-      --grey-200: #E8E8E8;
-      --grey-300: #D0D0D0;
-      --grey-500: #808080;
+      --grey-50: #fafaf8;
+      --grey-100: #f2f1ee;
+      --grey-200: #e0e0e0;
+      --grey-300: #c8c8c8;
+      --grey-500: #888888;
       --grey-700: #444444;
-      --white: #FFFFFF;
+      --white: #ffffff;
       --green: #1a6e42;
       --green-light: #eef7f2;
+      --accent: #1a3c5e;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--white);
+      background: var(--grey-50);
       color: var(--black);
-      font-family: 'Rubik', sans-serif;
+      font-family: var(--sans);
       font-size: 16px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
@@ -39,13 +42,13 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       height: 58px;
-      background: var(--yellow);
+      background: var(--white);
       display: flex; justify-content: space-between; align-items: center;
       padding: 0 48px;
-      border-bottom: 2px solid var(--black);
+      border-bottom: 1px solid var(--grey-200);
     }
     nav a {
-      font-family: 'Rubik', sans-serif;
+      font-family: var(--sans);
       font-weight: 700; font-size: 13px;
       letter-spacing: 0.02em;
       color: var(--black);
@@ -63,7 +66,7 @@
       height: 2px; background: var(--grey-200); z-index: 99;
     }
     .reading-progress-bar {
-      height: 100%; background: var(--black);
+      height: 100%; background: var(--yellow);
       width: 0%; transition: width 0.1s linear;
     }
 
@@ -76,7 +79,7 @@
     }
 
     .hero-left {
-      background: var(--black);
+      background: var(--grey-50);
       padding: 80px 56px;
       display: flex; flex-direction: column; justify-content: center;
       position: relative; overflow: hidden;
@@ -85,7 +88,7 @@
     .hero-left::before {
       content: '';
       position: absolute; inset: 0;
-      background-image: radial-gradient(circle, rgba(255,224,0,0.1) 1px, transparent 1px);
+      background-image: radial-gradient(circle, rgba(26,60,94,0.06) 1px, transparent 1px);
       background-size: 28px 28px;
       pointer-events: none;
     }
@@ -93,22 +96,23 @@
     .hero-eyebrow {
       font-size: 11px; font-weight: 600;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--yellow);
+      color: var(--accent);
       margin-bottom: 20px; position: relative;
       opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
     }
 
     .hero h1 {
+      font-family: var(--serif);
       font-size: clamp(34px, 3.8vw, 54px);
-      font-weight: 800; line-height: 1.05;
-      letter-spacing: -0.02em;
-      color: var(--white);
+      font-weight: 400; line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--black);
       margin-bottom: 28px; position: relative;
       opacity: 0; animation: fadeUp 0.6s 0.25s forwards;
     }
 
     .hero h1 mark {
-      background: var(--yellow);
+      background: var(--yellow-pale);
       color: var(--black);
       padding: 0 5px;
       border-radius: 2px;
@@ -116,7 +120,7 @@
 
     .hero-sub {
       font-size: 15px; font-weight: 300;
-      color: rgba(255,255,255,0.5);
+      color: var(--grey-700);
       max-width: 420px; line-height: 1.7;
       margin-bottom: 48px; position: relative;
       opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
@@ -130,17 +134,17 @@
 
     .htag {
       padding: 5px 12px;
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid var(--grey-200);
       border-radius: 3px;
       font-size: 11px; font-weight: 500;
       letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.45);
+      color: var(--grey-500);
       text-transform: uppercase;
     }
 
     .hero-right {
-      background: var(--grey-50);
-      border-left: 2px solid var(--black);
+      background: var(--white);
+      border-left: 1px solid var(--grey-200);
       display: flex; flex-direction: column; justify-content: center;
       padding: 64px 48px;
       gap: 32px;
@@ -186,27 +190,34 @@
 
     /* ── LAYOUT ── */
     .container { max-width: 1120px; margin: 0 auto; padding: 0 48px; }
-    section { padding: 96px 0; }
-    section + section { border-top: 1px solid var(--grey-200); }
+    section { padding: 88px 0; border-bottom: 1px solid var(--grey-200); }
+    section:last-of-type { border-bottom: none; }
 
     .section-label {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--grey-500);
-      margin-bottom: 40px;
-      display: flex; align-items: center; gap: 12px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
     }
     .section-label::before {
-      content: ''; width: 20px; height: 2px;
-      background: var(--yellow);
-      border: 1px solid var(--black);
-      display: block; flex-shrink: 0;
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: currentColor;
     }
 
     h2 {
-      font-size: clamp(24px, 2.8vw, 36px);
-      font-weight: 800; line-height: 1.1;
-      letter-spacing: -0.02em; margin-bottom: 20px;
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
     }
 
     p { color: var(--grey-700); font-weight: 300; margin-bottom: 16px; }
@@ -253,7 +264,7 @@
     .audience-dot {
       width: 6px; height: 6px; min-width: 6px;
       border-radius: 50%;
-      background: var(--yellow); border: 1.5px solid var(--black);
+      background: var(--yellow); border: 1.5px solid var(--yellow-border);
       margin-top: 9px;
     }
     .audience-need p { font-size: 14px; margin: 0; }
@@ -271,12 +282,12 @@
       margin-bottom: 40px;
     }
     .ecosystem-hub {
-      background: var(--black);
+      background: var(--accent);
       color: var(--white);
       border-radius: 10px;
       padding: 20px 32px;
       text-align: center;
-      border: 2px solid var(--black);
+      border: 2px solid var(--accent);
     }
     .ecosystem-hub-icon { font-size: 28px; display: block; margin-bottom: 6px; }
     .ecosystem-hub-label {
@@ -306,6 +317,7 @@
     .ecosystem-spoke.highlight {
       border-color: var(--yellow-border);
       background: var(--yellow-pale);
+      color: var(--black);
     }
     .ecosystem-spoke-icon { font-size: 22px; display: block; margin-bottom: 8px; }
     .ecosystem-spoke-label {
@@ -344,11 +356,11 @@
       display: flex; align-items: center; gap: 14px;
     }
     .decision-num {
-      font-size: 10px; font-weight: 800;
-      background: var(--yellow);
+      font-size: 10px; font-weight: 700;
+      background: var(--yellow-pale);
       color: var(--black);
       padding: 3px 10px; border-radius: 2px;
-      border: 1px solid var(--black);
+      border: 1px solid var(--yellow-border);
       white-space: nowrap; flex-shrink: 0;
     }
     .decision-header h3 {
@@ -384,6 +396,7 @@
     .decision-body-three .decision-col:last-child {
       background: var(--yellow-pale);
       border-top: none;
+      border-left: 1px solid var(--yellow-border);
     }
 
     /* ── CONSTRAINTS ── */
@@ -412,9 +425,9 @@
     }
     .validation-card:hover { border-color: var(--grey-300); }
     .validation-num {
-      font-size: 10px; font-weight: 800;
-      background: var(--yellow); color: var(--black);
-      border: 1px solid var(--black); border-radius: 2px;
+      font-size: 10px; font-weight: 700;
+      background: var(--yellow-pale); color: var(--black);
+      border: 1px solid var(--yellow-border); border-radius: 2px;
       padding: 2px 8px; display: inline-block;
       margin-bottom: 12px;
     }
@@ -501,15 +514,15 @@
       letter-spacing: 0.1em; text-transform: uppercase;
       padding: 3px 10px; border-radius: 2px; margin-bottom: 12px;
     }
-    .tag-learning { background: var(--yellow); color: var(--black); border: 1px solid var(--black); }
-    .tag-open { background: var(--black); color: var(--white); }
+    .tag-learning { background: var(--yellow-pale); color: var(--black); border: 1px solid var(--yellow-border); }
+    .tag-open { background: var(--accent); color: var(--white); }
     .reflection-card h3 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
     .reflection-card p { font-size: 13px; margin: 0; }
 
     /* ── SECTIONS DROPDOWN NAV ── */
     .sect-btn {
-      background: none; border: 1.5px solid rgba(0,0,0,0.25);
-      color: var(--black); font-family: 'Rubik', sans-serif;
+      background: none; border: 1.5px solid var(--grey-200);
+      color: var(--black); font-family: var(--sans);
       font-size: 11px; font-weight: 700;
       letter-spacing: 0.08em; text-transform: uppercase;
       padding: 5px 12px; border-radius: 3px;
@@ -517,8 +530,8 @@
       transition: background 0.15s, border-color 0.15s;
       white-space: nowrap;
     }
-    .sect-btn:hover { background: rgba(0,0,0,0.07); border-color: rgba(0,0,0,0.4); }
-    .sect-btn.open { background: var(--black); color: var(--yellow); border-color: var(--black); }
+    .sect-btn:hover { background: var(--grey-100); border-color: var(--grey-300); }
+    .sect-btn.open { background: var(--accent); color: var(--white); border-color: var(--accent); }
     .sect-btn-arrow { transition: transform 0.2s; display: inline-block; }
     .sect-btn.open .sect-btn-arrow { transform: rotate(180deg); }
     .sect-dropdown {
@@ -550,11 +563,11 @@
       display: block; font-size: 13px; font-weight: 400;
       color: var(--grey-700); text-decoration: none;
       padding: 8px 14px; transition: background 0.1s, color 0.1s;
-      font-family: 'Rubik', sans-serif; line-height: 1.3;
+      font-family: var(--sans); line-height: 1.3;
     }
     .sect-dropdown ul li a:hover { background: var(--grey-50); color: var(--black); }
     .sect-dropdown ul li a.active {
-      color: var(--black); font-weight: 600;
+      color: var(--accent); font-weight: 600;
       background: var(--yellow-pale);
       border-left: 3px solid var(--yellow-border); padding-left: 11px;
     }
@@ -562,35 +575,45 @@
     .back-to-top {
       position: fixed; bottom: 24px; right: 24px;
       width: 38px; height: 38px;
-      background: var(--white); border: 2px solid var(--black);
+      background: var(--white); border: 1.5px solid var(--grey-200);
       color: var(--black); border-radius: 50%;
       font-size: 15px; cursor: pointer;
       display: none; align-items: center; justify-content: center;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.14);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
       z-index: 9999; transition: background 0.15s, transform 0.15s;
-      font-family: 'Rubik', sans-serif;
+      font-family: var(--sans);
     }
-    .back-to-top:hover { background: var(--yellow); transform: translateY(-2px); }
+    .back-to-top:hover { background: var(--yellow-pale); border-color: var(--yellow-border); transform: translateY(-2px); }
     .back-to-top.visible { display: flex; }
     @media (max-width: 600px) { .sect-dropdown { right: 16px; left: 16px; min-width: unset; } }
 
     /* ── FOOTER ── */
     .footer-band {
-      background: var(--black);
-      border-top: 2px solid var(--black);
+      background: var(--grey-100);
+      border-top: 1px solid var(--grey-200);
       padding: 40px 48px;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .footer-band p { color: rgba(255,255,255,0.35); font-size: 13px; margin: 0; }
+    .footer-band p { color: var(--grey-500); font-size: 13px; margin: 0; }
     .footer-nav { display: flex; gap: 12px; }
     .footer-nav a {
-      color: var(--black); text-decoration: none;
+      color: var(--white); text-decoration: none;
       font-size: 13px; font-weight: 700;
       padding: 8px 18px; border-radius: 3px;
-      background: var(--yellow); border: 1.5px solid var(--yellow);
+      background: var(--accent); border: 1.5px solid var(--accent);
       transition: background 0.15s, color 0.15s;
     }
-    .footer-nav a:hover { background: var(--white); border-color: var(--white); }
+    .footer-nav a:hover { background: var(--black); border-color: var(--black); }
+
+    /* ── HERO FOCUS ── */
+    .hero-focus {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey-500);
+      margin-bottom: 1rem;
+    }
 
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
@@ -605,7 +628,7 @@
       nav { padding: 0 24px; }
       .nav-right { gap: 16px; }
       .hero { grid-template-columns: 1fr; }
-      .hero-right { border-left: none; border-top: 2px solid var(--black); padding: 40px 24px; }
+      .hero-right { border-left: none; border-top: 1px solid var(--grey-200); padding: 40px 24px; }
       .hero-left { padding: 60px 24px; min-height: 60vh; justify-content: flex-end; }
       .container { padding: 0 24px; }
       section { padding: 64px 0; }
@@ -637,14 +660,14 @@
     <a href="#" id="dropTopLink">&#8593; Back to top</a>
   </div>
   <ul>
-    <li><a href="#context" class="sect-link">Context</a></li>
-    <li><a href="#audience" class="sect-link">The Audience</a></li>
-    <li><a href="#ecosystem" class="sect-link">Ecosystem</a></li>
-    <li><a href="#decisions" class="sect-link">Decisions</a></li>
-    <li><a href="#constraints" class="sect-link">Constraints</a></li>
-    <li><a href="#validation" class="sect-link">Validation</a></li>
-    <li><a href="#execution" class="sect-link">Execution</a></li>
-    <li><a href="#reflection" class="sect-link">Reflection</a></li>
+    <li><a href="#context" class="sect-link">01 &nbsp;&middot;&nbsp; Context</a></li>
+    <li><a href="#audience" class="sect-link">02 &nbsp;&middot;&nbsp; The Audience</a></li>
+    <li><a href="#ecosystem" class="sect-link">03 &nbsp;&middot;&nbsp; Ecosystem Design</a></li>
+    <li><a href="#decisions" class="sect-link">04 &nbsp;&middot;&nbsp; Product Decisions</a></li>
+    <li><a href="#constraints" class="sect-link">05 &nbsp;&middot;&nbsp; Designing Under Constraints</a></li>
+    <li><a href="#validation" class="sect-link">06 &nbsp;&middot;&nbsp; Pre-Launch Validation</a></li>
+    <li><a href="#execution" class="sect-link">07 &nbsp;&middot;&nbsp; Cross-Functional Execution</a></li>
+    <li><a href="#reflection" class="sect-link">08 &nbsp;&middot;&nbsp; What remains open</a></li>
   </ul>
 </div>
 
@@ -671,8 +694,9 @@
 <div class="hero">
   <div class="hero-left">
     <p class="hero-eyebrow">Mighty Jaxx &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2021&ndash;Present</p>
+    <div class="hero-focus">Deep dive — constraint-led design</div>
     <h1>From static<br>collectibles to<br><mark>interactive</mark><br>companions</h1>
-    <p class="hero-sub">Screen-free alternatives to tablets are mostly passive or static. This is the product work exploring what comes next.</p>
+    <p class="hero-sub">Most products add intelligence by adding a screen. Removing that option forced every other decision — interaction model, trigger technology, content architecture, conversation scope.</p>
     <div class="hero-tags">
       <span class="htag">0→1 Product Creation</span>
       <span class="htag">Ecosystem Design</span>
@@ -711,19 +735,10 @@
 <!-- CONTEXT -->
 <section id="context">
   <div class="container">
-    <div class="section-label">Context</div>
-    <div class="two-col">
-      <div class="reveal">
-        <h2>Why a collectibles company moved into interactive toys</h2>
-        <p>Mighty Jaxx built a strong business around collectible designer figures, but collectibles are a one-time purchase. Once a figure goes on a shelf, the interaction ends.</p>
-        <p>IP partners wanted products that extended fan engagement beyond purchase, and the company had characters with storytelling potential sitting idle. That opened a new category: physical collectibles that unlock interactive storytelling and conversation, without a screen.</p>
-      </div>
-      <div class="reveal">
-        <div class="callout">
-          <p>"Place a figurine on the base. The character wakes up and starts a conversation. No screen, no buttons, no setup. Just a toy that becomes a companion."</p>
-        </div>
-        <p>I was the primary PM, responsible for defining the product experience from the ground up: how the ecosystem's pieces connect, how interactions work without a screen, and how content scales across characters and environments. My work spanned interaction design, content ecosystem structure, and hardware-software behaviour definition, coordinating across hardware vendors, engineering, content creators, and licensing partners.</p>
-      </div>
+    <div class="section-label">01 &nbsp;&middot;&nbsp; Context</div>
+    <div class="reveal">
+      <h2>Why a collectibles company moved into interactive toys</h2>
+      <p>Mighty Jaxx built a strong business around collectible designer figures — one-time purchases that end when they go on a shelf. IP partners wanted fan engagement that extended beyond purchase. The brief was a screen-free interactive toy: a physical object that talks back, without a display, without buttons, without setup. I was PM across interaction design, content ecosystem structure, hardware-software behaviour definition, and licensing partner coordination.</p>
     </div>
   </div>
 </section>
@@ -731,60 +746,16 @@
 <!-- AUDIENCE -->
 <section id="audience" style="background: var(--grey-50);">
   <div class="container">
-    <div class="section-label">The Audience</div>
-    <div class="two-col" style="margin-bottom: 16px;">
-      <h2 class="reveal">Designing for two decision-makers with different goals</h2>
-      <p class="reveal">Children experience the product; parents buy it. Designing for both required navigating their different priorities, a tension that shaped every major product decision.</p>
-    </div>
-    <div class="audience-grid reveal">
-      <div class="audience-card">
-        <span class="audience-card-label">Primary user</span>
-        <h3>Children (3–10)</h3>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>Characters they love: familiar IP or original personalities they can build a relationship with</p>
-        </div>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>Stories that respond to them, not just play at them: a sense of agency in the narrative</p>
-        </div>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>Interaction that feels immediate and magical: placing a toy and having it talk back</p>
-        </div>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>New content and surprises over time, with a reason to keep coming back</p>
-        </div>
-      </div>
-      <div class="audience-card">
-        <span class="audience-card-label">Purchase decision-maker</span>
-        <h3>Parents</h3>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>Screen-free: the product should not become another reason for a child to stare at a display</p>
-        </div>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>Safe and age-appropriate, especially for a product that talks directly with their child</p>
-        </div>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>Educational or imaginative value, not passive consumption</p>
-        </div>
-        <div class="audience-need">
-          <div class="audience-dot"></div>
-          <p>Clear control: visibility into what the product says and does, with parental oversight</p>
-        </div>
-      </div>
-    </div>
+    <div class="section-label">02 &nbsp;&middot;&nbsp; The Audience</div>
+    <h2 class="reveal">Designing for two decision-makers with different goals</h2>
+    <p class="reveal">The product has two decision-makers with opposing priorities: children want characters they love, stories that respond to them, and interaction that feels immediate; parents want no screen, age-appropriate content, and parental visibility into what the product says. Every major design decision navigated both.</p>
   </div>
 </section>
 
 <!-- ECOSYSTEM -->
 <section id="ecosystem">
   <div class="container">
-    <div class="section-label">Ecosystem Design</div>
+    <div class="section-label">03 &nbsp;&middot;&nbsp; Ecosystem Design</div>
     <div class="two-col" style="margin-bottom: 40px;">
       <h2 class="reveal">One experience, four connected components</h2>
       <p class="reveal">A standalone speaker lacks physical interaction; physical toys alone lack storytelling. The product had to be an ecosystem: hardware, content, and software as a unified experience.</p>
@@ -847,7 +818,7 @@
 <!-- DECISIONS -->
 <section id="decisions" style="background: var(--grey-50);">
   <div class="container">
-    <div class="section-label">Product Decisions</div>
+    <div class="section-label">04 &nbsp;&middot;&nbsp; Product Decisions</div>
     <div class="two-col" style="margin-bottom: 48px;">
       <h2 class="reveal">Three decisions that shaped the system</h2>
       <p class="reveal">Each involved real constraints and competing pressures.</p>
@@ -916,7 +887,7 @@
 <!-- CONSTRAINTS -->
 <section id="constraints">
   <div class="container">
-    <div class="section-label">Designing Under Constraints</div>
+    <div class="section-label">05 &nbsp;&middot;&nbsp; Designing Under Constraints</div>
     <div class="two-col" style="margin-bottom: 48px;">
       <h2 class="reveal">The product is defined by what it can't do</h2>
       <p class="reveal">Screen-free interaction means the system communicates only through voice, sound, and light. Hardware minimalism means a single NFC sensor, microphones, and LED indicators. Designing within those limits was the brief.</p>
@@ -947,14 +918,14 @@
         <div class="constraint-icon">🔒</div>
         <div>
           <div class="constraint-title">Licensed IP character integrity</div>
-          <p>Licensed characters have tightly controlled tone, vocabulary, and worldview. A conversational system that generates flexible responses is in direct tension with that, and a single out-of-character response in a live partner demo could end a licensing relationship. A policy layer, character personality guidelines, and I/O filtering are built into the system from the start.</p>
+          <p>Licensed characters have tightly controlled tone, vocabulary, and worldview. A conversational system that generates flexible responses is in direct tension with that. A single out-of-character response in a live partner demo could end a licensing relationship. A policy layer, character personality guidelines, and I/O filtering are built into the system from the start.</p>
         </div>
       </div>
       <div class="constraint-item">
         <div class="constraint-icon">🛡️</div>
         <div>
           <div class="constraint-title">Safety requirements for direct child interaction</div>
-          <p>Input filtering, output validation, and conversation boundaries enforced by a policy engine — all before any response reaches the child.</p>
+          <p>Input filtering, output validation, and conversation boundaries enforced by a policy engine. All of this runs before any response reaches the child.</p>
         </div>
       </div>
     </div>
@@ -964,10 +935,10 @@
 <!-- VALIDATION -->
 <section id="validation" style="background: var(--grey-50);">
   <div class="container">
-    <div class="section-label">Pre-Launch Validation</div>
+    <div class="section-label">06 &nbsp;&middot;&nbsp; Pre-Launch Validation</div>
     <div class="two-col" style="margin-bottom: 16px;">
       <h2 class="reveal">Validating interaction assumptions before the full build</h2>
-      <p class="reveal">With the product still in development, research focused on the core interaction assumptions that had to be true for the ecosystem to work at all.</p>
+      <p class="reveal">The product is still in development. Research focused on the core interaction assumptions that had to be true for the ecosystem to work at all.</p>
     </div>
     <div class="validation-grid reveal">
       <div class="validation-card">
@@ -1008,122 +979,25 @@
       </div>
     </div>
 
-    <div style="margin-top: 56px;">
-      <p class="section-label">Metrics planned for launch</p>
-      <div class="metrics-strip reveal">
-        <div class="metrics-cell">
-          <span class="metrics-label">Interaction quality</span>
-          <span class="metrics-name">Story completion rate</span>
-          <span class="metrics-why">Whether children follow interactive stories to completion</span>
-        </div>
-        <div class="metrics-cell">
-          <span class="metrics-label">Voice engagement</span>
-          <span class="metrics-name">Response participation rate</span>
-          <span class="metrics-why">Whether children actively respond to prompts or passively listen</span>
-        </div>
-        <div class="metrics-cell">
-          <span class="metrics-label">Companion behaviour</span>
-          <span class="metrics-name">Conversation duration</span>
-          <span class="metrics-why">Average time in conversational mode; proxy for companion vs. toy experience</span>
-        </div>
-        <div class="metrics-cell">
-          <span class="metrics-label">Retention signal</span>
-          <span class="metrics-name">Replay rate</span>
-          <span class="metrics-why">How often children return to completed stories; signals lasting content value</span>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
 <!-- EXECUTION -->
 <section id="execution">
   <div class="container">
-    <div class="section-label">Cross-Functional Execution</div>
-    <div class="two-col" style="margin-bottom: 48px;">
-      <h2 class="reveal">Four disciplines that had to move together</h2>
-      <p class="reveal">Hardware, software, content, and licensing each owned a critical piece and none could proceed independently.</p>
-    </div>
-    <div class="xfunc-stack reveal">
-      <div class="xfunc-item">
-        <div class="xfunc-header">
-          <span class="xfunc-tag">Hardware</span>
-          <h3>Translating product requirements into device behaviour</h3>
-        </div>
-        <p>Hardware was built by external vendors; software was managed internally. Bridging both required defining behaviours specifically enough for vendors to implement without constraining engineering. Key areas: NFC detection timing for small children's hands, microphone calibration for children's voices at varying distances, and speaker volume safe for young ears.</p>
-      </div>
-      <div class="xfunc-item">
-        <div class="xfunc-header">
-          <span class="xfunc-tag">Content</span>
-          <h3>Designing a scalable storytelling pipeline</h3>
-        </div>
-        <p>Interactive storytelling spans branching narratives, activity scripts, fallback responses, personality guidelines, and voice briefs, all of which interact. I defined a framework covering timing windows, branching logic, and fallback coverage so content production could scale without a product review on every piece.</p>
-      </div>
-      <div class="xfunc-item">
-        <div class="xfunc-header">
-          <span class="xfunc-tag">Licensing</span>
-          <h3>Designing for character integrity without killing conversational flexibility</h3>
-        </div>
-        <p>Conversational AI generates flexible responses that can easily drift out of a licensed character's established vocabulary and tone. I worked with licensing partners to define personality layers that constrained the system without making conversations feel scripted.</p>
-      </div>
-      <div class="xfunc-item">
-        <div class="xfunc-header">
-          <span class="xfunc-tag">Partner Demos</span>
-          <h3>Designing demonstrations for licensing and retail partners</h3>
-        </div>
-        <p>A live demo must work reliably with a stranger operating it under time pressure. I designed curated flows showcasing the core loop: place character, activate story, enter conversation. The demo was itself a product design problem.</p>
-      </div>
-    </div>
-
-    <div style="margin-top: 64px;">
-      <div class="section-label" style="margin-bottom: 24px;">What I owned</div>
-      <div class="role-grid reveal">
-        <div class="role-item">
-          <span class="role-item-label">Interaction design</span>
-          <p>Mapped how children trigger experiences, navigate between modes, and how the system responds to unpredictable inputs. Defined the interaction flows hardware vendors and engineering built against.</p>
-        </div>
-        <div class="role-item">
-          <span class="role-item-label">Content ecosystem structure</span>
-          <p>Defined what each character and playset unlocks, how content expands over time, and the framework content creators worked within.</p>
-        </div>
-        <div class="role-item">
-          <span class="role-item-label">Hardware-software behaviour definition</span>
-          <p>Translated product requirements into specifications for external vendors: NFC detection logic, microphone timing, LED feedback states, audio output behaviour.</p>
-        </div>
-        <div class="role-item">
-          <span class="role-item-label">Partner demonstration design</span>
-          <p>Designed and prepared demonstration flows for licensors and retail partners: reliable enough for live environments, clear enough to communicate the ecosystem vision.</p>
-        </div>
-      </div>
-    </div>
+    <div class="section-label">07 &nbsp;&middot;&nbsp; Cross-Functional Execution</div>
+    <p class="reveal">Hardware, content, licensing, and partner demos each owned a critical piece and none could proceed independently. The hardest cross-functional dependency was licensed character integrity: a single out-of-character response in a live partner demo could end a licensing relationship, which made the policy layer and I/O filtering non-negotiable from the start.</p>
   </div>
 </section>
 
 <!-- REFLECTION -->
 <section id="reflection" style="background: var(--grey-50);">
   <div class="container">
-    <div class="section-label">Reflection</div>
-    <h2 class="reveal" style="max-width: 480px; margin-bottom: 36px;">What this project taught me about 0→1 product work</h2>
+    <div class="section-label">08 &nbsp;&middot;&nbsp; What remains open</div>
+    <h2 class="reveal" style="max-width: 480px; margin-bottom: 36px;">What remains open</h2>
     <div class="reflection-grid reveal">
       <div class="reflection-card">
-        <span class="ref-tag tag-learning">Learning</span>
-        <h3>Physical interaction affordances need to be self-explanatory</h3>
-        <p>The figurine placement model works because it mirrors natural play behaviour. Any interaction that required explanation would have been abandoned.</p>
-      </div>
-      <div class="reflection-card">
-        <span class="ref-tag tag-learning">Learning</span>
-        <h3>Voice systems must be designed for the user's actual behaviour, not ideal behaviour</h3>
-        <p>Designing fallback responses was a core product requirement, not a polish task. Every story beat needed a graceful continuation path for silence, repetition, and unrelated answers.</p>
-      </div>
-      <div class="reflection-card">
-        <span class="ref-tag tag-learning">Learning</span>
-        <h3>Licensing constraints are product constraints, not external blockers</h3>
-        <p>Character personality layers, conversation boundaries, and content review processes are built into the system, not added later.</p>
-      </div>
-      <div class="reflection-card">
-        <span class="ref-tag tag-open">Open question</span>
-        <h3>How much of the ecosystem value survives without the content pipeline?</h3>
-        <p>The hardware interaction model is strong. Long-term value depends on a continuous content pipeline, which is a separate operational capability the company still needs to build. The open question isn't about the product; it's whether content infrastructure can scale fast enough to sustain engagement past the first few characters.</p>
+        <p>Pre-launch validation confirmed that children understand the placement interaction without instruction, and that fallback response design is not a polish decision — it is what makes the product safe to ship. The unresolved question is not hardware. The hardware interaction model is defined and testable. What isn't yet resolved is whether the content pipeline can scale fast enough to sustain engagement past the first few characters.</p>
       </div>
     </div>
   </div>
