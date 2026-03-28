@@ -233,7 +233,7 @@
       border-bottom: 1px solid var(--border);
       border-left: 4px solid transparent;
       cursor: pointer;
-      transition: background 0.2s var(--ease-out);
+      transition: background 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
       text-decoration: none;
       color: inherit;
     }
@@ -241,9 +241,9 @@
     .act-row.mj    { border-left-color: var(--mj); }
     .act-row.think { border-left-color: var(--think); }
     .act-row.pulse { border-left-color: var(--pulse); }
-    .act-row.mj:hover    { background: #FFFDE8; }
-    .act-row.think:hover { background: var(--think-dim); }
-    .act-row.pulse:hover { background: var(--pulse-dim); }
+    .act-row.mj:hover    { background: #FFFDE8; transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
+    .act-row.think:hover { background: var(--think-dim); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
+    .act-row.pulse:hover { background: var(--pulse-dim); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
 
     .act-left {
       padding: 32px 28px 32px 32px;
@@ -637,13 +637,19 @@
 
   <script>
     const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
   </script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
   <script>
     AOS.init({ duration: 700, easing: 'ease-out-quart', once: true, offset: 60 });
+
+    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+    lenis.on('scroll', ({ scroll }) => {
+      nav.classList.toggle('scrolled', scroll > 40);
+      AOS.refresh();
+    });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
   </script>
   <script src="gate.js"></script>
 
