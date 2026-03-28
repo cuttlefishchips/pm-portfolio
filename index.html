@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
   <style>
     :root {
       --base:        #FAF7F2;
@@ -500,10 +501,10 @@
     </section>
 
     <!-- THREE ACTS -->
-    <div class="section-label">Three types of work</div>
+    <div class="section-label" data-aos="fade-up">Three types of work</div>
     <div class="acts" id="work">
 
-      <a class="act-row mj" href="work/index.html" aria-label="Work — Mighty Jaxx projects">
+      <a class="act-row mj" href="work/index.html" aria-label="Work — Mighty Jaxx projects" data-aos="fade-up" data-aos-delay="50">
         <div class="act-left">
           <div class="act-type">Work</div>
           <div class="act-name">Mighty Jaxx</div>
@@ -521,7 +522,7 @@
         </div>
       </a>
 
-      <a class="act-row think" href="thinking/index.html" id="thinking" aria-label="Thinking — independent case studies">
+      <a class="act-row think" href="thinking/index.html" id="thinking" aria-label="Thinking — independent case studies" data-aos="fade-up" data-aos-delay="150">
         <div class="act-left">
           <div class="act-type">Case studies</div>
           <div class="act-name">Thinking</div>
@@ -539,7 +540,7 @@
         </div>
       </a>
 
-      <a class="act-row pulse" href="building/index.html" id="building" aria-label="Building — personal projects">
+      <a class="act-row pulse" href="building/index.html" id="building" aria-label="Building — personal projects" data-aos="fade-up" data-aos-delay="250">
         <div class="act-left">
           <div class="act-type">Projects</div>
           <div class="act-name">Building</div>
@@ -560,7 +561,7 @@
     </div>
 
     <!-- CONTACT SECTION -->
-    <section class="contact-section">
+    <section class="contact-section" data-aos="fade-up">
       <div class="section-label">Get in touch</div>
       <div class="contact-inner">
         <div>
@@ -639,6 +640,10 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
+  </script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 700, easing: 'ease-out-quart', once: true, offset: 60 });
   </script>
   <script src="gate.js"></script>
 
