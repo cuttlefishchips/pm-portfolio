@@ -237,19 +237,24 @@
       <div class="section-eyebrow">01 &nbsp;·&nbsp; Context</div>
       <h2>A company selling millions of products to people <em>it couldn't see</em></h2>
       <p>Mighty Jaxx sells collectible designer toys globally through distributors and retailers. The channel works at scale but leaves no visibility into who actually owns the products.</p>
-      <p>I defined and shipped the authentication infrastructure (QR Auth) and the collector engagement platform built on top of it (Vault). This spanned engineering, design, brand, marketing, production, and licensing.</p>
+      <p>QR Auth created the authentication layer; Vault is the engagement platform built on top of it. To get both live, I worked with engineering, design, brand, marketing, production, and licensing across every stage.</p>
+      <p>My ownership: product strategy, prioritisation, and sequencing. I framed the problem, scoped the first shipped version, and decided what launched and what was deferred.</p>
     </section>
 
     <section class="cs-section" id="discovery">
       <div class="section-eyebrow">02 &nbsp;·&nbsp; Discovery</div>
       <h2>Four signals, <em>same root cause</em></h2>
       <p><strong>Internal data gap.</strong> Marketing couldn't activate collectors because collectors didn't exist in any system.</p>
-      <p><strong>NFC authentication was failing silently.</strong> An NFC flow existed but completion rates were very low. Reader location, manual activation, and positioning requirements blocked users in ways we couldn't see.</p>
-      <p><strong>Community demand for authenticity, no official solution.</strong> Collector forums were active with counterfeit discussions and no official verification mechanism simple enough to use at scale.</p>
+      <p><strong>NFC authentication was failing silently.</strong> An NFC flow existed but completion rates were low enough that the flow was effectively broken. Reader location, manual activation, and positioning requirements blocked users in ways we couldn't see.</p>
+      <p><strong>Community demand for authenticity, no official solution.</strong> Collector forums were active with counterfeit discussions and no official solution simple enough to actually use.</p>
       <p><strong>Marketing and licensing flagging the same dead end.</strong> Both teams flagged the same thing independently: once a product sells through the channel, the relationship ends.</p>
       <div class="pm-note">
+        <span class="pm-note-label">The framing trap</span>
+        <p class="pm-note-text">Early internal pressure framed this as an anti-counterfeiting problem: build a verify-and-done scanner, close the counterfeit gap. However, that framing was too narrow. A verify-only system has no reason to be opened twice. The real problem was identity: the brand had no ongoing relationship with the people who owned its products. Counterfeiting was a symptom of the same gap.</p>
+      </div>
+      <div class="pm-note">
         <span class="pm-note-label">Root cause</span>
-        <p class="pm-note-text">These weren't four separate problems. They were four symptoms of a single missing layer: collector identity. The brand knew its distributors. It didn't know its collectors.</p>
+        <p class="pm-note-text">These weren't four separate problems. They were four symptoms of a single missing layer: collector identity. As it turns out, the brand knew its distributors, but not its collectors.</p>
       </div>
     </section>
 
@@ -257,8 +262,49 @@
       <div class="section-eyebrow">03 &nbsp;·&nbsp; The Insight</div>
       <h2>Identity before loyalty</h2>
       <p>The first product wasn't Vault. It was the identity layer underneath it: scan once, exist in the system.</p>
-      <div class="img-placeholder" style="height: 180px;">Flow — collector buys → QR scan → collector identity → Vault (campaigns, rewards, progression)</div>
-      <p>Authentication and ownership registration had to happen in one action. QR over NFC was the right call — not because it was cheaper, but because it eliminated friction users couldn't resolve on their own. NFC tags were invisible, reader location was unclear, and some devices needed manual activation. QR needs no explanation.</p>
+      <div style="margin: 28px 0; overflow-x: auto;">
+        <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;font-family:'DM Sans',sans-serif;">
+          <!-- Node backgrounds -->
+          <rect x="0" y="34" width="140" height="100" rx="3" fill="#F2EDE4" stroke="#E0D8CE" stroke-width="1"/>
+          <rect x="178" y="34" width="140" height="100" rx="3" fill="#F2EDE4" stroke="#E0D8CE" stroke-width="1"/>
+          <rect x="356" y="34" width="140" height="100" rx="3" fill="#FEED1E" stroke="#E0D8CE" stroke-width="1"/>
+          <rect x="534" y="14" width="186" height="152" rx="3" fill="#F2EDE4" stroke="#E0D8CE" stroke-width="1"/>
+
+          <!-- Arrows -->
+          <line x1="140" y1="84" x2="174" y2="84" stroke="#E0D8CE" stroke-width="1.5"/>
+          <polygon points="174,79 184,84 174,89" fill="#E0D8CE"/>
+          <line x1="318" y1="84" x2="352" y2="84" stroke="#E0D8CE" stroke-width="1.5"/>
+          <polygon points="352,79 362,84 352,89" fill="#E0D8CE"/>
+          <line x1="496" y1="84" x2="530" y2="84" stroke="#E0D8CE" stroke-width="1.5"/>
+          <polygon points="530,79 540,84 530,89" fill="#E0D8CE"/>
+
+          <!-- Step 01 -->
+          <text x="8" y="52" font-family="'DM Mono',monospace" font-size="8" letter-spacing="0.1em" fill="#B8AFA8">STEP 01</text>
+          <text x="8" y="76" font-family="'DM Sans',sans-serif" font-size="13" font-weight="400" fill="#1A1614">Collector</text>
+          <text x="8" y="93" font-family="'DM Sans',sans-serif" font-size="13" font-weight="400" fill="#1A1614">buys product</text>
+          <text x="8" y="116" font-family="'DM Sans',sans-serif" font-size="11" fill="#7A6F68">via retail / distributor</text>
+
+          <!-- Step 02 -->
+          <text x="186" y="52" font-family="'DM Mono',monospace" font-size="8" letter-spacing="0.1em" fill="#B8AFA8">STEP 02</text>
+          <text x="186" y="76" font-family="'DM Sans',sans-serif" font-size="13" font-weight="400" fill="#1A1614">Scans QR</text>
+          <text x="186" y="93" font-family="'DM Sans',sans-serif" font-size="13" font-weight="400" fill="#1A1614">on packaging</text>
+          <text x="186" y="116" font-family="'DM Sans',sans-serif" font-size="11" fill="#7A6F68">one action, no friction</text>
+
+          <!-- Step 03 -->
+          <text x="364" y="52" font-family="'DM Mono',monospace" font-size="8" letter-spacing="0.1em" fill="#7A6F68">STEP 03</text>
+          <text x="364" y="76" font-family="'DM Sans',sans-serif" font-size="13" font-weight="500" fill="#1A1614">Collector</text>
+          <text x="364" y="93" font-family="'DM Sans',sans-serif" font-size="13" font-weight="500" fill="#1A1614">identity created</text>
+          <text x="364" y="116" font-family="'DM Sans',sans-serif" font-size="11" fill="#7A6F68">auth + registration in one</text>
+
+          <!-- Vault -->
+          <text x="542" y="34" font-family="'DM Mono',monospace" font-size="8" letter-spacing="0.1em" fill="#B8AFA8">VAULT</text>
+          <text x="542" y="62" font-family="'DM Sans',sans-serif" font-size="12" fill="#1A1614">· Campaigns &amp; missions</text>
+          <text x="542" y="84" font-family="'DM Sans',sans-serif" font-size="12" fill="#1A1614">· Points &amp; rewards</text>
+          <text x="542" y="106" font-family="'DM Sans',sans-serif" font-size="12" fill="#1A1614">· IP-specific progression</text>
+          <text x="542" y="128" font-family="'DM Sans',sans-serif" font-size="12" fill="#1A1614">· Loyalty tiers</text>
+        </svg>
+      </div>
+      <p>Authentication and ownership registration had to happen in one action. QR over NFC was the right call, because it eliminated friction users couldn't resolve on their own. NFC tags were invisible, reader location was unclear, and some devices needed manual activation. On the other hand, QR needs no explanation.</p>
     </section>
 
     <section class="cs-section" id="decisions">
@@ -273,11 +319,11 @@
         <div class="decision-cols">
           <div class="decision-col">
             <span class="decision-col-label label-tension">Before: NFC</span>
-            <p>NFC tags were embedded and invisible. Users couldn't find the reader, some devices needed manual activation, and completion rates were very low.</p>
+            <p>NFC tags were embedded and invisible. Users couldn't find the reader, some devices needed manual activation, and completion rates were low enough that the flow was effectively broken.</p>
           </div>
           <div class="decision-col">
             <span class="decision-col-label label-resolution">After: QR</span>
-            <p>QR needs no explanation. The primary driver wasn't cost. It was eliminating friction users couldn't resolve on their own.</p>
+            <p>QR needs no explanation. The reason wasn't cost. It was friction users couldn't resolve on their own.</p>
           </div>
         </div>
       </div>
@@ -294,13 +340,9 @@
           </div>
           <div class="decision-col">
             <span class="decision-col-label label-resolution">My position</span>
-            <p>Scanning had to be the entry point: ownership registration, collector identity, campaign access. A verify-only system has no reason to be opened twice.</p>
+            <p>Scanning had to be the entry point: ownership registration, collector identity, campaign access. Once you've scanned, there's somewhere to go.</p>
           </div>
         </div>
-      </div>
-      <div class="pm-note">
-        <span class="pm-note-label">How alignment happened</span>
-        <p class="pm-note-text">Alignment came from reframing: not stopping fakes, but building collector relationships. That connected directly to what marketing and licensing were already asking for.</p>
       </div>
 
       <div class="decision-block">
@@ -310,12 +352,12 @@
         </div>
         <div class="decision-cols">
           <div class="decision-col">
-            <span class="decision-col-label label-tension">What we cut</span>
-            <p>Tiered loyalty, social profiles, and secondary market transfer were all on the table. All were premature.</p>
+            <span class="decision-col-label label-tension">What we deferred</span>
+            <p>Tiered loyalty, social profiles, and secondary market transfer were all on the table. Top-collector tiers and social features needed engagement history first. Shipping them before anyone had scanned anything would have been structure without substance.</p>
           </div>
           <div class="decision-col">
-            <span class="decision-col-label label-resolution">What we shipped</span>
-            <p>Campaign-based engagement: time-bound missions, milestone unlocks, IP-specific challenges. Loyalty tiers need engagement history. Campaigns build it.</p>
+            <span class="decision-col-label label-resolution">The sequence</span>
+            <p>Campaign-based engagement shipped first: time-bound missions, milestone unlocks, IP-specific challenges. Once the behaviour loop was established, a loyalty tier for the most active collectors followed. Private drops, early access, built on real scan data rather than assumptions.</p>
           </div>
         </div>
       </div>
@@ -324,34 +366,34 @@
     <section class="cs-section" id="outcomes">
       <div class="section-eyebrow">05 &nbsp;·&nbsp; Outcomes</div>
       <h2>Foundation for loyalty, <em>not the finished system</em></h2>
-      <p>The core outcome: Mighty Jaxx can now identify who its collectors are.</p>
+      <p>Mighty Jaxx can now identify who its collectors are, which did not exist before.</p>
       <div class="stat-row">
         <div class="stat-cell">
           <span class="stat-num">0→1</span>
-          <span class="stat-label">Collector identity</span>
-          <span class="stat-sub">Thousands of verified registrations within the first authenticated product waves.</span>
+          <span class="stat-label">Collector identity layer</span>
+          <span class="stat-sub">QR Auth created something that didn't previously exist. A growing, queryable database of collectors tied to specific products and IPs, built entirely through post-purchase behaviour.</span>
         </div>
         <div class="stat-cell">
-          <span class="stat-num">↑</span>
-          <span class="stat-label">Auth completion</span>
-          <span class="stat-sub">NFC to QR drove a meaningful lift in completion rate.</span>
+          <span class="stat-num">QR</span>
+          <span class="stat-label">Friction removed by design</span>
+          <span class="stat-sub">NFC required knowing where to tap, manual activation on some devices, and precise positioning, while QR requires none of that. The switch meant collectors could scan straight from the packaging with any phone camera, no setup or instruction needed.</span>
         </div>
         <div class="stat-cell">
           <span class="stat-num">✓</span>
-          <span class="stat-label">Campaign validation</span>
-          <span class="stat-sub">One Piece Egghead pilot: meaningful completion rates when scanning tied to real progression.</span>
+          <span class="stat-label">Loop validated</span>
+          <span class="stat-sub">With the success of the IP campaign pilot, the core behaviour was validated. Collectors scan, register, and return when scanning is tied to real progression.</span>
         </div>
       </div>
-      <p><strong>Channel model unchanged.</strong> Distributor and retail relationships unchanged. Identity layer intercepts post-purchase without disrupting the channel.</p>
-      <p><strong>Marketing and licensing unblocked.</strong> Both teams can now segment and activate collectors. IP-specific targeting became possible.</p>
-      <p><strong>Infrastructure for what comes next.</strong> Vault is the prerequisite for what comes next, not the endpoint.</p>
+      <p><strong>Marketing and licensing unblocked.</strong> Both teams can now segment and activate collectors. IP-specific targeting, previously impossible, became a standard campaign input.</p>
+      <p><strong>Infrastructure for what comes next.</strong> Given the identity layer QR Auth created, marketing and licensing could now build loyalty tiers for top collectors, run campaign mechanics, and target by IP, all on real collector data.</p>
     </section>
 
     <section class="cs-section" id="reflection">
       <div class="section-eyebrow">06 &nbsp;·&nbsp; Since launch</div>
       <h2>The loop works. <em>The between-launches problem remains.</em></h2>
-      <p>QR Auth created a collector identity layer that didn't previously exist — thousands of verified registrations for a brand that previously knew only bulk distributor volumes.</p>
-      <p>The One Piece Egghead campaign pilot confirmed the core loop works: scan, register, unlock. What it revealed is a second problem the infrastructure alone can't solve: the platform needs a reason to open between launches, not just during them.</p>
+      <p>QR Auth created a collector identity layer that didn't previously exist. For a brand that knew only bulk distributor volumes, that shift is structural, not incremental.</p>
+      <p>An IP campaign pilot confirmed the core loop: scan, register, unlock. Collectors engage when scanning is tied to real progression. What the campaign also revealed is the next constraint. The platform currently has the strongest reason to open at launch, when the scan moment happens. Between product waves, there's no natural pull.</p>
+      <p>That's the problem the next phase is designed to test. If IP-based campaigns can create habitual opens between launches, through time-limited missions, IP-specific content, and loyalty progression, then Vault becomes a retention surface, not just an onboarding one. The first structured IP campaign is the live test of that thesis.</p>
     </section>
 
   </div>
