@@ -549,6 +549,147 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
+
+    /* ─── VOICE QUALITIES ─────────────────────────────────── */
+    .voice-qualities {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .vq-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 24px 28px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .vq-title {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .vq-body {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── CONTENT-TYPE BLOCKS ──────────────────────────────── */
+    .ct-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .ct-block {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid var(--border);
+    }
+
+    .ct-block h4 {
+      font-family: 'Fraunces', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .ct-warning {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ct-examples {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .ct-ex {
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .ct-ex.before { background: rgba(255,255,255,0.4); }
+    .ct-ex.after  { background: #FFF5EF; border-color: rgba(244,116,59,0.2); }
+
+    .ct-ex-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--faint);
+      margin-bottom: 8px;
+    }
+
+    .ct-ex.after .ct-ex-label { color: var(--coral); }
+
+    .ct-ex p {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .ct-ex.after p {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    /* ─── CHECKLIST ────────────────────────────────────────── */
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      background: var(--surface);
+      padding: 16px 24px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+
+    .checklist-item:first-child { border-radius: 14px 14px 3px 3px; }
+    .checklist-item:last-child  { border-radius: 3px 3px 14px 14px; }
+
+    .checklist-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--faint);
+      flex-shrink: 0;
+      width: 16px;
+    }
+
+    .checklist-item p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .checklist-item p strong { font-weight: 500; }
   </style>
 </head>
 <body>
