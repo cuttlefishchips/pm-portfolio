@@ -635,21 +635,13 @@
 
   </div>
 
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     const nav = document.getElementById('nav');
-  </script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-  <script>
     AOS.init({ duration: 700, easing: 'ease-out-quart', once: true, offset: 60 });
-
-    const lenis = new Lenis({ lerp: 0.12, smoothWheel: true });
-    lenis.on('scroll', ({ scroll }) => {
-      nav.classList.toggle('scrolled', scroll > 40);
-      AOS.refresh();
-    });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
   </script>
   <script src="gate.js"></script>
 
