@@ -157,6 +157,15 @@
     .stat-cell:last-child { border-bottom: none; }
   }
 </style>
+  <style>
+    .site-footer { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; border-top: 1px solid #E0D8CE; }
+    .footer-open { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 15px; color: #7A6F68; letter-spacing: -0.01em; }
+    .footer-contact-icons { display: flex; gap: 12px; align-items: center; }
+    .footer-contact-icon { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #E0D8CE; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #B8AFA8; transition: border-color 0.2s, color 0.2s; }
+    .footer-contact-icon:hover { border-color: #F4743B; color: #F4743B; }
+    .footer-contact-icon svg { width: 14px; height: 14px; }
+    @media (max-width: 768px) { .site-footer { flex-direction: column; gap: 16px; text-align: center; } }
+  </style>
   <style id="gate-hide">html{visibility:hidden}</style>
 </head>
 <body>
@@ -399,20 +408,14 @@
   </div>
 </div>
 
-<div class="cs-footer-wrap">
-  <div class="cs-footer-sidebar"></div>
-  <footer class="cs-footer">
-    <a href="../../work/index.html" class="cs-footer-back">← Back to Work</a>
-    <div class="cs-footer-icons">
-      <a href="mailto:reiko98@live.com.sg" class="cs-footer-icon" aria-label="Email">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      </a>
-      <a href="https://t.me/rracko" class="cs-footer-icon" aria-label="Telegram">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-      </a>
-    </div>
-  </footer>
-</div>
+<footer class="site-footer" style="padding-left: 48px; padding-right: 48px;">
+  <span class="footer-open">Open to work.</span>
+  <div class="footer-contact-icons">
+    <a href="mailto:reiko98@live.com.sg" class="footer-contact-icon" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></a>
+    <a href="https://t.me/rracko" class="footer-contact-icon" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 3.5 2.5 10.5l7 2m12-9-5 17-5-7m5-10-7 9"/></svg></a>
+    <a href="https://www.linkedin.com/in/reikotan" class="footer-contact-icon" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg></a>
+  </div>
+</footer>
 
 <script>
   const nav = document.getElementById('nav');
