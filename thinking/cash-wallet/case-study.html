@@ -889,6 +889,14 @@
     line-height: 1.65;
   }
 
+  /* ── SITE FOOTER ── */
+  .site-footer { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; border-top: 1px solid var(--border); }
+  .footer-open { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 15px; color: var(--text-muted); letter-spacing: -0.01em; }
+  .footer-contact-icons { display: flex; gap: 12px; align-items: center; }
+  .footer-contact-icon { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--text-faint); transition: border-color 0.2s, color 0.2s; }
+  .footer-contact-icon:hover { border-color: var(--coral); color: var(--coral); }
+  .footer-contact-icon svg { width: 14px; height: 14px; }
+
   /* ── MOBILE ── */
   @media (max-width: 900px) {
     .sect-btn {
