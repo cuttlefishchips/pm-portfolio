@@ -3,551 +3,655 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Granola Open Items — PM Case Study</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<title>Open Items — A Granola Feature Proposal | Reiko Tan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green: #2D6A4F;
-    --green-light: #52B788;
-    --green-pale: #D8F3DC;
-    --black: #0D0D0D;
-    --off-white: #F7F5F0;
-    --warm-white: #FDFCFA;
-    --text: #1A1A1A;
-    --text-2: #55554E;
-    --text-3: #88887F;
-    --border: #E5E2DB;
-    --card: #FFFFFF;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-  body { font-family:'DM Sans',sans-serif; background:var(--warm-white); color:var(--text); line-height:1.65; font-size:16px; -webkit-font-smoothing:antialiased; }
-
-  nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(253,252,250,0.92); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); padding:0 40px; height:56px; display:flex; align-items:center; justify-content:space-between; }
-  .nav-brand { font-family:'DM Serif Display',serif; font-size:0.95rem; color:var(--green); }
-  .nav-links { display:flex; gap:28px; list-style:none; }
-  .nav-links a { font-size:0.72rem; font-weight:500; color:var(--text-3); text-decoration:none; letter-spacing:0.07em; text-transform:uppercase; transition:color 0.15s; }
-  .nav-links a:hover { color:var(--green); }
-  .nav-left { display:flex; align-items:center; gap:0.5rem; }
-  .nav-left span { font-size:0.75rem; color:var(--text-3); letter-spacing:0.04em; }
-  .nav-back { display: flex; align-items: center; gap: 1.25rem; }
-  .nav-back-link { font-size:0.72rem; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
-  .nav-back-link:hover { color:var(--green); }
-  .nav-back-link.nav-current { color:var(--green); }
-  .nav-icon { display:flex; align-items:center; color:var(--text-3); text-decoration:none; transition:color 0.15s; }
-  .nav-icon:hover { color:var(--green); }
-  .reading-progress { position:fixed; top:56px; left:0; right:0; height:2px; background:var(--border); z-index:99; }
-  .reading-progress-bar { height:100%; background:var(--green); width:0%; transition:width 0.1s linear; }
-
-  .wrap { max-width:800px; margin:0 auto; padding:0 32px; }
-  section { padding:88px 0; border-bottom:1px solid var(--border); }
-
-  h1 { font-family:'DM Serif Display',serif; font-size:clamp(2.6rem,5vw,4.2rem); line-height:1.05; letter-spacing:-0.02em; color:var(--black); font-weight:400; }
-  h2 { font-family:'DM Serif Display',serif; font-size:clamp(1.6rem,3vw,2rem); line-height:1.2; letter-spacing:-0.01em; color:var(--black); font-weight:400; margin-bottom:16px; }
-  p { color:var(--text-2); font-weight:300; font-size:0.975rem; }
-
-  .eyebrow { font-size:0.7rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--green); display:flex; align-items:center; gap:8px; margin-bottom:20px; }
-  .eyebrow::before { content:''; display:block; width:20px; height:1px; background:var(--green); }
-  .lead { font-size:1.05rem; font-weight:300; color:var(--text-2); line-height:1.75; margin-bottom:40px; max-width:620px; }
-
-  .hero { padding:144px 0 88px; border-bottom:1px solid var(--border); }
-  .hero-tag { display:inline-flex; align-items:center; gap:8px; background:var(--green-pale); color:var(--green); font-size:0.72rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; padding:6px 14px; border-radius:100px; margin-bottom:28px; }
-  .dot { width:6px; height:6px; border-radius:50%; background:var(--green-light); animation:blink 2s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .hero h1 em { font-style:italic; color:var(--green); }
-  .hero > .wrap > p { font-size:1.05rem; max-width:540px; margin:20px 0 48px; line-height:1.7; }
-  .meta-row { display:flex; flex-wrap:wrap; border-top:1px solid var(--border); padding-top:32px; gap:0; }
-  .meta-item { padding-right:32px; margin-right:32px; border-right:1px solid var(--border); }
-  .meta-item:last-child { border-right:none; }
-  .meta-label { font-size:0.65rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
-  .meta-val { font-size:0.9rem; font-weight:500; color:var(--text); }
-
-  .loop { display:flex; margin:32px 0; border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-  .loop-step { flex:1; padding:20px 16px; text-align:center; border-right:1px solid var(--border); background:var(--off-white); }
-  .loop-step:last-child { border-right:none; background:var(--green); }
-  .loop-lbl { font-size:0.6rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:4px; }
-  .loop-step:last-child .loop-lbl { color:rgba(255,255,255,0.6); }
-  .loop-word { font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--text); }
-  .loop-step:last-child .loop-word { color:#fff; }
-  .loop-note { font-size:0.6rem; color:rgba(255,255,255,0.65); margin-top:3px; letter-spacing:0.06em; }
-
-  .callout { border-left:3px solid var(--green); background:var(--green-pale); padding:20px 24px; border-radius:0 8px 8px 0; margin:32px 0; }
-  .callout p { color:var(--green); font-size:1rem; font-weight:400; line-height:1.65; }
-
-  .decisions { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-top:40px; }
-  .decision { padding:32px 36px; border-bottom:1px solid var(--border); display:grid; grid-template-columns:36px 1fr; gap:20px; background:var(--card); transition:background 0.15s; }
-  .decision:last-child { border-bottom:none; }
-  .decision:hover { background:#FAFAF8; }
-  .d-num { font-family:'DM Serif Display',serif; font-size:1.8rem; color:var(--border); line-height:1; padding-top:2px; }
-  .d-title { font-family:'DM Serif Display',serif; font-size:1.1rem; color:var(--black); margin-bottom:8px; line-height:1.3; }
-  .d-body { font-size:0.9rem; color:var(--text-2); font-weight:300; line-height:1.7; margin-bottom:12px; }
-  .d-rejected { display:flex; gap:8px; align-items:baseline; font-size:0.82rem; color:var(--text-3); font-weight:300; background:var(--off-white); border-radius:6px; padding:10px 14px; }
-  .d-rej-tag { font-size:0.65rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#B04A40; white-space:nowrap; }
-
-  .phases { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:40px; }
-  .phase { border:1px solid var(--border); border-radius:10px; overflow:hidden; }
-  .phase-head { padding:18px 20px; }
-  .phase:nth-child(1) .phase-head { background:var(--green); }
-  .phase:nth-child(2) .phase-head { background:#1A3A5C; }
-  .phase:nth-child(3) .phase-head { background:#3D1A5C; }
-  .phase-tag { font-size:0.6rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:3px; }
-  .phase-name { font-family:'DM Serif Display',serif; font-size:1.15rem; color:#fff; }
-  .phase-body { padding:18px 20px; background:var(--card); }
-  .phase-item { font-size:0.82rem; color:var(--text-2); font-weight:300; padding:5px 0; border-bottom:1px solid var(--border); line-height:1.5; display:flex; gap:8px; }
-  .phase-item:last-child { border-bottom:none; }
-  .phase-item::before { content:'->'; color:var(--green-light); font-size:0.75rem; flex-shrink:0; padding-top:1px; }
-
-  .metrics-wrap { margin-top:40px; }
-  .metric-ns { background:var(--green); border-radius:10px; padding:28px 32px; margin-bottom:12px; }
-  .metric-ns-tag { font-size:0.65rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:8px; }
-  .metric-ns-name { font-family:'DM Serif Display',serif; font-size:1.25rem; color:#fff; margin-bottom:8px; }
-  .metric-ns-def { font-size:0.875rem; color:rgba(255,255,255,0.7); font-weight:300; line-height:1.6; }
-  .metrics-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
-  .metric { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:22px; transition:border-color 0.15s; }
-  .metric:hover { border-color:var(--green-light); }
-  .metric-cat { font-size:0.62rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-bottom:8px; }
-  .metric-name { font-size:0.9rem; font-weight:600; color:var(--text); margin-bottom:6px; line-height:1.4; }
-  .metric-def { font-size:0.82rem; color:var(--text-3); font-weight:300; line-height:1.6; margin-bottom:10px; }
-  .metric-target { font-size:0.72rem; font-weight:500; color:var(--green); background:var(--green-pale); display:inline-block; padding:3px 10px; border-radius:100px; }
-  .not-measuring { margin-top:12px; border:1px solid var(--border); border-left:3px solid #B04A40; background:var(--off-white); border-radius:0 8px 8px 0; padding:18px 22px; }
-  .nm-tag { font-size:0.65rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#B04A40; margin-bottom:6px; }
-  .not-measuring p { font-size:0.875rem; color:var(--text-2); font-weight:300; }
-
-  .tradeoffs { margin-top:40px; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-  .tradeoff { padding:28px 32px; border-bottom:1px solid var(--border); display:grid; grid-template-columns:180px 1fr; gap:32px; background:var(--card); }
-  .tradeoff:last-child { border-bottom:none; }
-  .to-label { font-size:0.875rem; font-weight:600; color:var(--text); line-height:1.4; }
-  .to-body { font-size:0.875rem; color:var(--text-2); font-weight:300; line-height:1.7; }
-
-  .cta-section { background:var(--black); padding:72px 0; }
-  .cta-inner { display:flex; align-items:center; justify-content:space-between; gap:32px; }
-  .cta-section h2 { color:#fff; font-size:1.6rem; }
-  .cta-section p { color:rgba(255,255,255,0.5); margin-top:8px; font-size:0.875rem; }
-  .cta-btn { display:inline-flex; align-items:center; gap:8px; background:var(--green); color:#fff; font-size:0.875rem; font-weight:500; padding:14px 24px; border-radius:8px; text-decoration:none; white-space:nowrap; transition:background 0.15s, transform 0.1s; flex-shrink:0; }
-  .cta-btn:hover { background:var(--green-light); transform:translateY(-1px); }
-
-  footer { padding:28px 32px; text-align:center; background:var(--off-white); border-top:1px solid var(--border); }
-  footer p { font-size:0.75rem; color:var(--text-3); font-weight:300; }
-
-  .fade { opacity:0; transform:translateY(16px); transition:opacity 0.5s ease, transform 0.5s ease; }
-  .fade.in { opacity:1; transform:none; }
-
-  @media(max-width:640px) {
-    .nav-links { display:none; }
-    .phases { grid-template-columns:1fr; }
-    .metrics-grid { grid-template-columns:1fr; }
-    .tradeoff { grid-template-columns:1fr; gap:10px; }
-    .cta-inner { flex-direction:column; text-align:center; }
-    .meta-row { gap:16px; }
-    .meta-item { border-right:none; }
+    --base:       #FAF7F2;
+    --surface:    #F2EDE4;
+    --surface-2:  #EAE3D8;
+    --border:     #E0D8CE;
+    --text:       #1A1614;
+    --text-muted: #7A6F68;
+    --text-faint: #B8AFA8;
+    --mj:         #FEED1E;
+    --coral:      #F4743B;
+    --coral-dim:  #FDEEE6;
+    --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+    --accent:     #5B4FE9;
   }
 
-  /* ── HERO FOCUS ── */
-  .hero-focus {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-3);
-    margin-bottom: 1rem;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--base);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
   }
 
-  /* ── SECTIONS DROPDOWN NAV ── */
-  .sect-btn {
-    background: none; border: 1.5px solid rgba(45,106,79,0.35);
-    color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.07em; text-transform: uppercase;
-    padding: 5px 12px; border-radius: 3px;
-    cursor: pointer; display: flex; align-items: center; gap: 5px;
-    transition: background 0.15s, border-color 0.15s;
-    white-space: nowrap;
+  /* ── READING PROGRESS ── */
+  .reading-progress {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 2px; z-index: 200; pointer-events: none;
   }
-  .sect-btn:hover { background: rgba(45,106,79,0.07); border-color: var(--green); }
-  .sect-btn.open { background: var(--green); color: white; border-color: var(--green); }
-  .sect-btn-arrow { transition: transform 0.2s; display: inline-block; }
-  .sect-btn.open .sect-btn-arrow { transform: rotate(180deg); }
+  .reading-progress-bar { height: 100%; background: var(--accent); width: 0; transition: width 0.1s linear; }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px; border-bottom: 1px solid transparent; background: transparent;
+    transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out), backdrop-filter 0.3s var(--ease-out);
+  }
+  .nav.scrolled {
+    background: rgba(242, 237, 228, 0.88); backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); border-bottom-color: var(--border);
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+    font-size: 17px; color: var(--text); letter-spacing: -0.01em; text-decoration: none;
+  }
+  .nav-right { display: flex; gap: 20px; align-items: center; }
+  .nav-back {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em;
+    color: var(--text-faint); text-decoration: none; transition: color 0.15s;
+  }
+  .nav-back:hover { color: var(--text); }
+  .sect-btn { display: none; }
+
+  /* ── SECTIONS DROPDOWN (mobile) ── */
   .sect-dropdown {
-    position: fixed; top: 58px; right: 40px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px; min-width: 210px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    z-index: 200;
-    visibility: hidden; opacity: 0; pointer-events: none;
-    transform: translateY(-6px);
+    position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    visibility: hidden; opacity: 0; transform: translateY(-6px);
     transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
   }
   .sect-dropdown.open {
-    visibility: visible; opacity: 1; pointer-events: all;
-    transform: translateY(0);
+    visibility: visible; opacity: 1; transform: translateY(0);
     transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
   }
-  .sect-dropdown-top { padding: 10px 14px; border-bottom: 1px solid var(--border); }
-  .sect-dropdown-top a {
-    font-size: 11px; font-weight: 500;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--text-3); text-decoration: none;
-    display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+  .sect-dropdown-inner { padding: 8px 0 12px; }
+  .sect-dropdown a {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 10px 24px; text-decoration: none;
+    font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.04em;
+    color: var(--text-muted); transition: background 0.1s, color 0.1s;
   }
-  .sect-dropdown-top a:hover { color: var(--green); }
-  .sect-dropdown ul { list-style: none; max-height: 65vh; overflow-y: auto; padding: 6px 0; }
-  .sect-dropdown ul li a {
-    display: block; font-size: 13px; font-weight: 400;
-    color: var(--text-2); text-decoration: none;
-    padding: 8px 14px; transition: background 0.1s, color 0.1s;
-    font-family: 'DM Sans', sans-serif; line-height: 1.3;
-  }
-  .sect-dropdown ul li a:hover { background: var(--off-white); color: var(--text); }
-  .sect-dropdown ul li a.active {
-    color: var(--green); font-weight: 500;
-    background: var(--green-pale);
-    border-left: 3px solid var(--green-light); padding-left: 11px;
-  }
-  /* ── BACK TO TOP ── */
-  .back-to-top {
-    position: fixed; bottom: 24px; right: 24px;
-    width: 38px; height: 38px;
-    background: var(--warm-white); border: 1.5px solid var(--border);
-    color: var(--text-3); border-radius: 50%;
-    font-size: 15px; cursor: pointer;
-    display: none; align-items: center; justify-content: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-    z-index: 9999; transition: background 0.15s, color 0.15s;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .back-to-top:hover { background: var(--green-pale); color: var(--green); }
-  .back-to-top.visible { display: flex; }
-  @media (max-width: 600px) { .sect-dropdown { right: 16px; left: 16px; min-width: unset; } }
+  .sect-dropdown a:hover { background: var(--surface-2); color: var(--text); }
+  .sect-dropdown a .dn { font-size: 9px; color: var(--text-faint); }
+  .nav-icon { display: flex; align-items: center; color: var(--text-muted); transition: color 0.15s; text-decoration: none; }
+  .nav-icon:hover { color: var(--text); }
 
+  /* ── HERO ── */
+  .hero {
+    border-top: 4px solid var(--accent);
+    padding: 64px 48px 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px;
+  }
+  .hero-focus {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.07em; color: var(--text-faint); margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif; font-weight: 300;
+    font-size: clamp(34px, 4vw, 52px); line-height: 1.08;
+    letter-spacing: -0.02em; color: var(--text); margin-bottom: 24px; max-width: 820px;
+  }
+  .hero h1 em { font-style: italic; }
+  .hero-sub {
+    font-size: 17px; font-weight: 300; color: var(--text-muted);
+    line-height: 1.65; max-width: 660px; margin-bottom: 28px;
+  }
+  .hero-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 36px; }
+  .hero-tag {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em;
+    color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 2px; padding: 4px 10px; background: var(--surface);
+  }
+  .hero-meta-row { display: flex; border-top: 1px solid var(--border); padding-top: 28px; max-width: 820px; }
+  .hero-meta-item { flex: 1; }
+  .hero-meta-item + .hero-meta-item { padding-left: 28px; border-left: 1px solid var(--border); }
+  .hero-meta-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: 5px;
+  }
+  .hero-meta-value { font-size: 14px; font-weight: 400; color: var(--text); }
+
+  /* ── BODY LAYOUT: sidebar + content ── */
+  .body-layout { display: grid; grid-template-columns: 220px 1fr; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: sticky; top: 57px; height: calc(100vh - 57px);
+    overflow-y: auto; background: var(--surface);
+    border-right: 1px solid var(--border); padding: 40px 0 80px;
+  }
+  .sidebar-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-faint); padding: 0 24px 16px; display: block;
+  }
+  .toc-item {
+    display: flex; align-items: baseline; padding: 7px 24px; text-decoration: none;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.03em;
+    color: var(--text-faint); line-height: 1.4; border-left: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .toc-item:hover { color: var(--text-muted); background: var(--surface-2); }
+  .toc-item.active { color: var(--text); border-left-color: var(--accent); background: var(--surface-2); }
+  .toc-num { font-size: 9px; color: var(--text-faint); margin-right: 10px; flex-shrink: 0; }
+  .toc-item.active .toc-num { color: var(--text-muted); }
+
+  /* ── CONTENT ── */
+  .content { padding: 0 72px 120px; min-width: 0; }
+  .cs-section { padding: 72px 0 0; }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint);
+    margin-bottom: 18px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .cs-section h2 {
+    font-family: 'Fraunces', serif; font-weight: 300; font-size: 30px;
+    line-height: 1.18; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px;
+  }
+  .cs-section h2 em { font-style: italic; }
+
+  .cs-section p {
+    font-size: 16px; font-weight: 300; color: var(--text-muted);
+    line-height: 1.8; margin-bottom: 20px;
+  }
+  .cs-section p:last-child { margin-bottom: 0; }
+  .cs-section p strong { color: var(--text); font-weight: 400; }
+
+  /* ── INLINE PM NOTE ── */
+  .pm-note {
+    border-left: 2px solid var(--coral);
+    background: var(--coral-dim);
+    padding: 14px 18px; margin: 28px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .pm-note-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--coral); display: block; margin-bottom: 6px;
+  }
+  .pm-note-text {
+    font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.65;
+    margin-bottom: 0;
+  }
+
+  /* ── AUDIENCE CARDS ── */
+  .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .audience-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .audience-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 22px 24px; }
+  .audience-card-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: 8px;
+  }
+  .audience-card h3 { font-family: 'Fraunces', serif; font-weight: 300; font-size: 20px; color: var(--text); margin-bottom: 10px; }
+  .audience-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 0; }
+  .audience-card ul {
+    margin: 8px 0 0; padding: 0; list-style: none;
+  }
+  .audience-card ul li {
+    font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    padding: 4px 0; border-bottom: 1px solid var(--border);
+    display: flex; gap: 8px;
+  }
+  .audience-card ul li:last-child { border-bottom: none; }
+  .audience-card ul li::before { content: '→'; color: var(--text-faint); flex-shrink: 0; font-size: 11px; padding-top: 2px; }
+
+  /* ── STAT ROW ── */
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 28px 0; }
+  .stat-cell { padding: 20px 24px; border-right: 1px solid var(--border); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 36px; line-height: 1; color: var(--text); display: block; margin-bottom: 6px; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+
+  /* ── DECISION BLOCK ── */
+  .decision-block { margin: 28px 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .decision-header {
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 18px 22px; border-bottom: 1px solid var(--border); background: var(--surface);
+  }
+  .decision-num {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
+    background: var(--text); padding: 2px 7px; border-radius: 2px; flex-shrink: 0;
+  }
+  .decision-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400; color: var(--text); line-height: 1.4; }
+  .decision-cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .decision-col { padding: 18px 22px; }
+  .decision-col + .decision-col { border-left: 1px solid var(--border); }
+  .decision-col-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; display: block; margin-bottom: 8px;
+  }
+  .label-tension { color: var(--coral); }
+  .label-resolution { color: var(--text-faint); }
+  .decision-col p { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 0; }
+
+  /* ── IMAGE PLACEHOLDER ── */
+  .img-placeholder {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-faint); margin: 28px 0;
+  }
+
+  /* ── FOOTER ── */
+  .cs-footer-wrap { display: grid; grid-template-columns: 220px 1fr; border-top: 1px solid var(--border); }
+  .cs-footer-sidebar { background: var(--surface); border-right: 1px solid var(--border); }
+  .cs-footer { padding: 32px 72px; display: flex; justify-content: space-between; align-items: center; }
+  .cs-footer-back {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em;
+    color: var(--text-faint); text-decoration: none; transition: color 0.15s;
+  }
+  .cs-footer-back:hover { color: var(--text); }
+  .cs-footer-icons { display: flex; gap: 16px; }
+  .cs-footer-icon { color: var(--text-faint); transition: color 0.15s; text-decoration: none; }
+  .cs-footer-icon:hover { color: var(--text); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .sect-btn {
+      display: flex; background: none; border: 1.5px solid var(--border);
+      color: var(--text-muted); font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 3px; cursor: pointer;
+      align-items: center; gap: 5px; transition: background 0.15s, color 0.15s;
+    }
+    .sect-btn:hover, .sect-btn.open { background: var(--accent); border-color: var(--accent); color: white; }
+    .nav { padding: 16px 24px; }
+    .hero { padding: 48px 24px 40px; }
+    .hero-meta-row { flex-wrap: wrap; gap: 16px; }
+    .hero-meta-item + .hero-meta-item { padding-left: 0; border-left: none; }
+    .body-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .content { padding: 0 24px 80px; }
+    .cs-footer-wrap { grid-template-columns: 1fr; }
+    .cs-footer-sidebar { display: none; }
+    .cs-footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .decision-cols { grid-template-columns: 1fr; }
+    .decision-col + .decision-col { border-left: none; border-top: 1px solid var(--border); }
+    .stat-row { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-cell:last-child { border-bottom: none; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .audience-grid-3 { grid-template-columns: 1fr; }
+  }
 </style>
-  <style>
-    .site-footer { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; border-top: 1px solid #E0D8CE; }
-    .footer-open { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 15px; color: #7A6F68; letter-spacing: -0.01em; }
-    .footer-contact-icons { display: flex; gap: 12px; align-items: center; }
-    .footer-contact-icon { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #E0D8CE; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #B8AFA8; transition: border-color 0.2s, color 0.2s; }
-    .footer-contact-icon:hover { border-color: #F4743B; color: #F4743B; }
-    .footer-contact-icon svg { width: 14px; height: 14px; }
-    @media (max-width: 768px) { .site-footer { flex-direction: column; gap: 16px; text-align: center; } }
-  </style>
-  <style id="gate-hide">html{visibility:hidden}</style>
+<style id="gate-hide">html{visibility:hidden}</style>
 </head>
 <body>
 
-
-<!-- Sections dropdown -->
-<div role="navigation" aria-label="Page sections" class="sect-dropdown" id="sectDropdown" inert>
-  <div class="sect-dropdown-top">
-    <a href="#" id="dropTopLink">&#8593; Back to top</a>
-  </div>
-  <ul>
-    <li><a href="#problem" class="sect-link">01 Problem</a></li>
-    <li><a href="#decisions" class="sect-link">02 Decisions</a></li>
-    <li><a href="#solution" class="sect-link">03 Solution</a></li>
-    <li><a href="#metrics" class="sect-link">04 Metrics</a></li>
-    <li><a href="#tradeoffs" class="sect-link">05 Tradeoffs</a></li>
-  </ul>
-</div>
-
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
-<nav>
-  <a href="../../index.html" class="nav-brand">Reiko Tan<span style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></a>
-  <div class="nav-back">
-    <button class="sect-btn" id="sectBtn"
-      aria-haspopup="true" aria-expanded="false" aria-controls="sectDropdown">
-      Sections <span class="sect-btn-arrow" aria-hidden="true">&#8964;</span>
-    </button>
+<!-- ── NAV ── -->
+<nav class="nav" id="nav">
+  <a href="../../index.html" class="nav-logo">Reiko</a>
+  <div class="nav-right">
+    <a href="../../thinking/index.html" class="nav-back">← Thinking</a>
+    <button class="sect-btn" id="sectBtn" aria-expanded="false" aria-controls="sectDropdown">Sections &#8964;</button>
     <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     </a>
-    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram" target="_blank" rel="noopener">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
     </a>
   </div>
 </nav>
 
-<!-- Back to top -->
-<button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
+<!-- ── SECTIONS DROPDOWN (mobile only) ── -->
+<div class="sect-dropdown" id="sectDropdown" aria-hidden="true">
+  <div class="sect-dropdown-inner">
+    <a href="#problem"    onclick="closeDropdown()"><span class="dn">01</span>Problem</a>
+    <a href="#decisions"  onclick="closeDropdown()"><span class="dn">02</span>Decisions</a>
+    <a href="#solution"   onclick="closeDropdown()"><span class="dn">03</span>Solution</a>
+    <a href="#metrics"    onclick="closeDropdown()"><span class="dn">04</span>Metrics</a>
+    <a href="#tradeoffs"  onclick="closeDropdown()"><span class="dn">05</span>Tradeoffs</a>
+    <a href="#reflection" onclick="closeDropdown()"><span class="dn">06</span>Reflection</a>
+  </div>
+</div>
 
-<section class="hero">
-  <div class="wrap">
-    <p style="font-size:0.72rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:1rem;">Reiko Tan &nbsp;&middot;&nbsp; Senior Product Manager &nbsp;&middot;&nbsp; Singapore</p>
-    <div class="hero-tag"><span class="dot"></span> PM Case Study &nbsp;&middot;&nbsp; Feature Design</div>
-    <div class="hero-focus">Deep dive — product scope</div>
-    <h1>Granola<br><em>Open Items</em></h1>
-    <p>Granola solved capture. The question is whether the product's job ends at the meeting — or extends into what you were supposed to do because of it.</p>
-    <div class="meta-row">
-      <div class="meta-item"><div class="meta-label">Product</div><div class="meta-val">Granola AI</div></div>
-      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-val">Feature Addition</div></div>
-      <div class="meta-item"><div class="meta-label">Scope</div><div class="meta-val">Discovery &rarr; PRD</div></div>
-      <div class="meta-item"><div class="meta-label">Method</div><div class="meta-val">BMAD Framework</div></div>
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Granola AI &nbsp;&middot;&nbsp; Feature Proposal &nbsp;&middot;&nbsp; 2025</div>
+  <div class="hero-focus">Deep dive: product scope</div>
+  <h1><em>Open Items</em></h1>
+  <p class="hero-sub">Granola is an AI meeting recorder. It solved capture. The question is whether the product's job ends at the meeting, or extends into what you were supposed to do because of it.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Feature Design</span>
+    <span class="hero-tag">Product Scope</span>
+    <span class="hero-tag">Pricing Strategy</span>
+    <span class="hero-tag">Anti-patterns</span>
+    <span class="hero-tag">BMAD Framework</span>
+  </div>
+  <div class="hero-meta-row">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Product</span>
+      <span class="hero-meta-value">Granola AI</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Type</span>
+      <span class="hero-meta-value">Feature Addition</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Scope</span>
+      <span class="hero-meta-value">Discovery &rarr; PRD</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Status</span>
+      <span class="hero-meta-value">Hypothetical</span>
     </div>
   </div>
-</section>
+</div>
 
-<section id="problem">
-  <div class="wrap">
-    <div class="eyebrow">01 · The Problem</div>
-    <h2>Granola stops at recall.<br>The real value is what happens after.</h2>
-    <p class="lead">Granola has solved capture. Commitments stay buried in individual notes, organized by when the meeting happened, not by what still needs doing.</p>
+<!-- ── BODY ── -->
+<div class="body-layout">
 
-    <div class="loop fade">
-      <div class="loop-step"><div class="loop-lbl">Step 1</div><div class="loop-word">Meet</div></div>
-      <div class="loop-step"><div class="loop-lbl">Step 2</div><div class="loop-word">Capture</div></div>
-      <div class="loop-step"><div class="loop-lbl">Step 3</div><div class="loop-word">Recall</div></div>
-      <div class="loop-step"><div class="loop-lbl">Missing</div><div class="loop-word">Act</div><div class="loop-note">Open Items fills this</div></div>
+  <!-- ── SIDEBAR (desktop TOC) ── -->
+  <aside class="sidebar">
+    <span class="sidebar-label">Contents</span>
+    <a href="#problem"    class="toc-item active"><span class="toc-num">01</span>Problem</a>
+    <a href="#decisions"  class="toc-item"><span class="toc-num">02</span>Decisions</a>
+    <a href="#solution"   class="toc-item"><span class="toc-num">03</span>Solution</a>
+    <a href="#metrics"    class="toc-item"><span class="toc-num">04</span>Metrics</a>
+    <a href="#tradeoffs"  class="toc-item"><span class="toc-num">05</span>Tradeoffs</a>
+    <a href="#reflection" class="toc-item"><span class="toc-num">06</span>Reflection</a>
+  </aside>
+
+  <!-- ── CONTENT ── -->
+  <div class="content">
+
+    <!-- ══ 01 PROBLEM ══ -->
+    <section class="cs-section" id="problem">
+      <div class="section-eyebrow">01 &nbsp;&middot;&nbsp; Problem</div>
+      <h2>Granola stops at recall. <em>The real value is what happens after.</em></h2>
+      <p>Granola has solved capture. Commitments stay buried in individual notes, organised by when the meeting happened, not by what still needs doing.</p>
+      <p>For users in 4&ndash;7 meetings daily, this means maintaining a <strong>parallel task system outside Granola</strong>, always slightly out of date. Granola's co-founder has stated the ambition: <em>"It is not about just capturing a meeting, but a space where you can work, even post meetings."</em></p>
+
+      <div class="pm-note">
+        <span class="pm-note-label">The gap</span>
+        <p class="pm-note-text">The current loop stops at Recall: Meet &rarr; Capture &rarr; Recall. Open Items closes it by adding Act. The feature exists in the transcript. It just hasn't been surfaced yet.</p>
+      </div>
+
+      <div class="img-placeholder" style="height: 160px;">Workflow diagram: Meet &rarr; Capture &rarr; Recall &rarr; Act (Open Items fills this step)</div>
+    </section>
+
+    <!-- ══ 02 DECISIONS ══ -->
+    <section class="cs-section" id="decisions">
+      <div class="section-eyebrow">02 &nbsp;&middot;&nbsp; Key Decisions</div>
+      <h2>Three choices that <em>shaped the feature</em></h2>
+      <p>Three decisions where I chose a direction and rejected an alternative. Each one reflects a judgment about where feature trust comes from and what breaks it.</p>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">01</span>
+          <h3>Precision over recall in extraction: conservative by default</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">The alternative</span>
+            <p>Broad extraction with user-side filtering. Surface everything, let users cull the noise. Maximises recall on day one.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">The call</span>
+            <p>If the first list contains noise, users conclude the feature is broken and don't return. Better to surface 6 high-confidence items than 12 that include noise. Completion rate within a fixed timeframe is also excluded: a 2-hour action and a 2-week follow-up are different kinds of items, and a fixed window incentivises the wrong extractions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">02</span>
+          <h3>60-day full trial, then paid only: no permanent free tier</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">The alternative</span>
+            <p>A permanent free tier with caps. Builds a larger user base. Alternatively, a short capped preview to create an early conversion moment.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">The call</span>
+            <p>A permanent free tier subsidises non-converters and spends the pricing lever early. A capped preview creates friction at peak engagement. A full trial avoids both: the user accumulates 60 days of evidence before a conversion decision. Expiry is framed around items and history at risk, not feature marketing.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">03</span>
+          <h3>Open Items must never require user input to function</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">The alternative</span>
+            <p>Mandatory priority fields, required labelling, AI-inferred due dates. More structured output. Closer to how most task tools work.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">The call</span>
+            <p>Every addition must be additive, never required. If a user never touches a configuration option, Open Items must still be fully useful. Once users fill in fields to make the list work, it becomes a worse version of every task manager they already use.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 03 SOLUTION ══ -->
+    <section class="cs-section" id="solution">
+      <div class="section-eyebrow">03 &nbsp;&middot;&nbsp; Solution</div>
+      <h2><em>Open Items</em></h2>
+      <p>A native Granola view that extracts personal commitments from meeting notes and surfaces them in one consolidated list, with source context. No setup. No configuration.</p>
+      <p>Each item carries the action text, a context snippet from the transcript, the source meeting and date, and a status: Open, Done, or Dismissed. Done and Dismissed are intentionally distinct: completing a task and deciding it's no longer relevant are different signals.</p>
+
+      <div class="pm-note">
+        <span class="pm-note-label">Vision</span>
+        <p class="pm-note-text">Transform Granola from a place where your meetings live into a system that ensures your meetings actually lead to something.</p>
+      </div>
+
+      <div class="audience-grid audience-grid-3">
+        <div class="audience-card">
+          <span class="audience-card-label">Phase 1 &middot; MVP</span>
+          <h3>Personal</h3>
+          <ul>
+            <li>Auto-extraction, cross-meeting view</li>
+            <li>Done and Dismissed states</li>
+            <li>Context snippets and source links</li>
+            <li>Sidebar badge for new items</li>
+            <li>60-day trial, then paid</li>
+          </ul>
+        </div>
+        <div class="audience-card">
+          <span class="audience-card-label">Phase 2 &middot; Growth</span>
+          <h3>Team</h3>
+          <ul>
+            <li>Team view across shared folders</li>
+            <li>AI-inferred priority (opt-in)</li>
+            <li>Smart grouping by theme</li>
+            <li>Custom labels and tags</li>
+            <li>Item assignment to teammates</li>
+          </ul>
+        </div>
+        <div class="audience-card">
+          <span class="audience-card-label">Phase 3 &middot; Vision</span>
+          <h3>Enterprise</h3>
+          <ul>
+            <li>Open Items in People and Companies views</li>
+            <li>Commitments by contact or deal</li>
+            <li>Export to Linear, Notion, Asana</li>
+            <li>System of record across the org</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 04 METRICS ══ -->
+    <section class="cs-section" id="metrics">
+      <div class="section-eyebrow">04 &nbsp;&middot;&nbsp; Success Metrics</div>
+      <h2>Measuring list trust, <em>not list completion</em></h2>
+      <p>The north star is whether Open Items becomes part of the daily workflow. Completion rate within a fixed timeframe is explicitly not a metric: a 2-hour action and a 2-week follow-up are different kinds of items, and a fixed window rewards short-horizon items over long ones.</p>
+
+      <div class="pm-note">
+        <span class="pm-note-label">North Star</span>
+        <p class="pm-note-text"><strong>Weekly Active Open Items Users / Weekly Active Granola Users.</strong> Whether the feature is part of the core workflow, not tried once and abandoned.</p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-cell">
+          <span class="stat-num">&lt;15%</span>
+          <span class="stat-label">Immediate Dismissal Rate</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">20%</span>
+          <span class="stat-label">Session Entry via Open Items (90 days)</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-num">Exceed</span>
+          <span class="stat-label">Trial-to-Paid vs. Existing Benchmark</span>
+        </div>
+      </div>
+
+      <p><strong>Immediate Dismissal Rate</strong> measures items dismissed within 60 seconds. It's the strongest passive proxy for extraction noise, and the one metric that signals a feature-ending problem before it compounds.</p>
+      <p><strong>Session Entry via Open Items</strong> is the habit signal: the share of daily active users who open Granola through Open Items first. Once it's load-bearing, the number moves.</p>
+      <p><strong>Trial-to-Paid Conversion</strong> is benchmarked against Granola's existing conversion rates, not an absolute target. The feature has to pull its own weight in the monetisation model.</p>
+    </section>
+
+    <!-- ══ 05 TRADEOFFS ══ -->
+    <section class="cs-section" id="tradeoffs">
+      <div class="section-eyebrow">05 &nbsp;&middot;&nbsp; Tradeoffs</div>
+      <h2>What we gave up, <em>and why</em></h2>
+      <p>Two tradeoffs that shaped the launch conditions.</p>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">01</span>
+          <h3>Feature gravity locks the pricing decision</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">The constraint</span>
+            <p>Pricing decisions can usually be revisited as a feature matures. The instinct is to launch and adjust.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">The reality</span>
+            <p>Once placed in the paid plan, the feature can't migrate to a higher tier. The launch decision is also the pricing ceiling decision. This had to be right at the start, not corrected later.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision-block">
+        <div class="decision-header">
+          <span class="decision-num">02</span>
+          <h3>Extraction quality is the only day-one kill switch</h3>
+        </div>
+        <div class="decision-cols">
+          <div class="decision-col">
+            <span class="decision-col-label label-tension">The constraint</span>
+            <p>Most feature risks surface gradually after launch, leaving room to iterate. The usual instinct is to ship and learn.</p>
+          </div>
+          <div class="decision-col">
+            <span class="decision-col-label label-resolution">The reality</span>
+            <p>Extraction quality kills the feature on first impression. There is no recovery window. Human-rated quality checks are required before launch, not after, and the bar for acceptable noise is set by the dismissal rate target, not internal judgment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 06 REFLECTION ══ -->
+    <section class="cs-section" id="reflection">
+      <div class="section-eyebrow">06 &nbsp;&middot;&nbsp; Reflection</div>
+      <h2>The question <em>that stays open</em></h2>
+      <p>Open Items is a hypothetical extension, not a shipped feature. What the exercise clarified is that rule is harder to hold in practice than it is to state. Every Phase 2 addition (team sharing, assignment, labels) puts pressure on that constraint. The design question for any future build is not what to add, but what to refuse.</p>
+
+      <div class="pm-note">
+        <span class="pm-note-label">What I'd do differently</span>
+        <p class="pm-note-text">The hypothetical framing made it easy to hold to that rule. In a real build, there would be pressure to add team features earlier. I'd want a formal constraint review at the start of every phase, not only at the feature level, to make the tradeoff explicit before it's already locked in.</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="cs-footer-wrap">
+  <div class="cs-footer-sidebar"></div>
+  <footer class="cs-footer">
+    <a href="../../thinking/index.html" class="cs-footer-back">← Back to Thinking</a>
+    <div class="cs-footer-icons">
+      <a href="mailto:reiko98@live.com.sg" class="cs-footer-icon" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+      <a href="https://t.me/rracko" class="cs-footer-icon" aria-label="Telegram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </a>
     </div>
-
-    <p style="margin-bottom:16px;">For users in 4&ndash;7 meetings daily, this means maintaining a <strong style="color:var(--text);font-weight:500;">parallel task system outside Granola</strong>, always slightly out of date. Granola&rsquo;s co-founder has stated the ambition: <em>&ldquo;It is not about just capturing a meeting, but a space where you can work, even post meetings.&rdquo;</em></p>
-  </div>
-</section>
-
-<section id="decisions">
-  <div class="wrap">
-    <div class="eyebrow">02 · Key Decisions</div>
-    <h2>The choices that shaped the feature</h2>
-    <p class="lead">Three decisions where I chose a direction and rejected an alternative.</p>
-
-    <div class="decisions fade">
-      <div class="decision">
-        <div class="d-num">01</div>
-        <div>
-          <div class="d-title">Precision over recall in extraction: conservative by default</div>
-          <p class="d-body">If the first list contains noise, users conclude the feature is broken and don't return. Better to surface 6 high-confidence items than 12 that include noise. Completion rate within a fixed timeframe is also excluded — a 2-hour action and a 2-week follow-up are different kinds of items, and a fixed window incentivises the wrong extractions.</p>
-          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Broad extraction with user-side filtering: puts the burden on users and confirms the feature is untrustworthy before trust is established.</div>
-        </div>
-      </div>
-
-      <div class="decision">
-        <div class="d-num">02</div>
-        <div>
-          <div class="d-title">60-day full trial, then paid only: no permanent free tier</div>
-          <p class="d-body">A permanent free tier subsidizes non-converters and spends the pricing lever early. A capped preview creates friction at peak engagement. A full trial avoids both: the user accumulates 60 days of evidence before a conversion decision. Expiry is framed around items and history at risk, not feature marketing.</p>
-          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Permanent free tier with caps: adversarial conversion moment, eliminates future pricing flexibility, subsidizes non-converting users at scale.</div>
-        </div>
-      </div>
-
-      <div class="decision">
-        <div class="d-num">03</div>
-        <div>
-          <div class="d-title">The Anti-Jira Principle: Open Items must never require user input to function</div>
-          <p class="d-body">Every addition must be additive, never required. If a user never touches a configuration option, Open Items must still be fully useful. Once users fill in fields to make the list work, it becomes a worse version of every task manager they already use.</p>
-          <div class="d-rejected"><span class="d-rej-tag">Rejected</span> Mandatory priority fields, required labelling, AI-inferred due dates: all violate the principle and erode what makes this distinctly Granola.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="solution">
-  <div class="wrap">
-    <div class="eyebrow">03 · The Solution</div>
-    <h2>Open Items</h2>
-    <p class="lead">A native Granola view that extracts personal commitments from meeting notes and surfaces them in one consolidated list, with source context. No setup. No configuration.</p>
-
-    <div class="callout">
-      <p><strong>Vision:</strong> Transform Granola from a place where your meetings live into a system that ensures your meetings actually lead to something.</p>
-    </div>
-
-    <p style="margin-bottom:32px;">Each item carries the action text, a context snippet from the transcript, the source meeting and date, and a status: Open, Done, or Dismissed. Done and Dismissed are intentionally distinct: completing a task and deciding it's no longer relevant are different signals.</p>
-
-    <div class="phases fade">
-      <div class="phase">
-        <div class="phase-head">
-          <div class="phase-tag">Phase 1: MVP</div>
-          <div class="phase-name">Personal</div>
-        </div>
-        <div class="phase-body">
-          <div class="phase-item">Auto-extraction, cross-meeting view</div>
-          <div class="phase-item">Done + Dismissed states</div>
-          <div class="phase-item">Context snippets + source links</div>
-          <div class="phase-item">Sidebar badge for new items</div>
-          <div class="phase-item">60-day trial then paid</div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-head">
-          <div class="phase-tag">Phase 2: Growth</div>
-          <div class="phase-name">Team</div>
-        </div>
-        <div class="phase-body">
-          <div class="phase-item">Team view across shared folders</div>
-          <div class="phase-item">AI-inferred priority (opt-in override)</div>
-          <div class="phase-item">Smart AI grouping by theme</div>
-          <div class="phase-item">Custom labels and tags</div>
-          <div class="phase-item">Item assignment to teammates</div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-head">
-          <div class="phase-tag">Phase 3: Vision</div>
-          <div class="phase-name">Enterprise</div>
-        </div>
-        <div class="phase-body">
-          <div class="phase-item">Open Items in People + Companies views</div>
-          <div class="phase-item">Commitments by contact or deal</div>
-          <div class="phase-item">Export to Linear, Notion, Asana</div>
-          <div class="phase-item">System of record across the org</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="metrics">
-  <div class="wrap">
-    <div class="eyebrow">04 · Success Metrics</div>
-    <h2>Measuring list trust,<br>not list completion</h2>
-    <p class="lead">The north star is whether Open Items becomes part of the daily workflow. Completion rate within a fixed timeframe is explicitly not a metric.</p>
-
-    <div class="metrics-wrap fade">
-      <div class="metric-ns">
-        <div class="metric-ns-tag">North Star</div>
-        <div class="metric-ns-name">Weekly Active Open Items Users / Weekly Active Granola Users</div>
-        <p class="metric-ns-def">Whether the feature is part of the core workflow, not just tried once and abandoned.</p>
-      </div>
-      <div class="metrics-grid">
-        <div class="metric">
-          <div class="metric-cat">Extraction Quality</div>
-          <div class="metric-name">Immediate Dismissal Rate</div>
-          <p class="metric-def">Items dismissed within 60 seconds. The strongest passive proxy for extraction noise.</p>
-          <span class="metric-target">Below 15%</span>
-        </div>
-        <div class="metric">
-          <div class="metric-cat">Habit Formation</div>
-          <div class="metric-name">Session Entry via Open Items</div>
-          <p class="metric-def">% of daily active users opening Granola via Open Items first. Signals the feature has become load-bearing.</p>
-          <span class="metric-target">20% within 90 days</span>
-        </div>
-        <div class="metric">
-          <div class="metric-cat">Monetization</div>
-          <div class="metric-name">Trial-to-Paid Conversion</div>
-          <p class="metric-def">% upgrading at or before trial expiry, benchmarked against Granola&rsquo;s existing conversion rates.</p>
-          <span class="metric-target">Exceed existing benchmark</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="tradeoffs">
-  <div class="wrap">
-    <div class="eyebrow">05 · Tradeoffs</div>
-    <h2>What we gave up and why</h2>
-    <p class="lead">Two tradeoffs named explicitly.</p>
-
-    <div class="tradeoffs fade">
-      <div class="tradeoff">
-        <div class="to-label">Feature gravity locks the pricing decision</div>
-        <p class="to-body">Once placed in the paid plan, the feature can't migrate to a higher tier — the launch decision is also the pricing ceiling decision.</p>
-      </div>
-      <div class="tradeoff">
-        <div class="to-label">Extraction quality is the only dependency that can kill the feature on day one</div>
-        <p class="to-body">Extraction quality is the only dependency that can kill the feature on first impression; human-rated checks are required before launch, not after.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="what-happened-after">
-  <div class="wrap">
-    <div class="eyebrow">The constraint that matters</div>
-    <h2>Open questions and success signals</h2>
-    <p>Open Items is a hypothetical extension, not a shipped feature. What the exercise clarified is that the Anti-Jira Principle — the feature must be fully useful without any user input — is harder to hold in practice than it is to state. Every phase 2 addition (team sharing, assignment, labels) puts pressure on that constraint. The design question for any future build is not what to add, but what to refuse.</p>
-  </div>
-</section>
-
-
-<footer class="site-footer" style="padding-left: 32px; padding-right: 32px; max-width: 800px; margin: 0 auto;">
-  <span class="footer-open">Open to work.</span>
-  <div class="footer-contact-icons">
-    <a href="mailto:reiko98@live.com.sg" class="footer-contact-icon" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></a>
-    <a href="https://t.me/rracko" class="footer-contact-icon" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 3.5 2.5 10.5l7 2m12-9-5 17-5-7m5-10-7 9"/></svg></a>
-    <a href="https://www.linkedin.com/in/reikotan" class="footer-contact-icon" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg></a>
-  </div>
-</footer>
+  </footer>
+</div>
 
 <script>
-  // Fade-in animations
-  const fadeObs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fade').forEach(el => fadeObs.observe(el));
-
-  // Reading progress + back-to-top
+  const nav = document.getElementById('nav');
   const bar = document.getElementById('progress');
-  const backToTop = document.getElementById('backToTop');
   window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
     const doc = document.documentElement;
     bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-    backToTop.classList.toggle('visible', window.scrollY > 400);
   }, { passive: true });
-  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  // Sections dropdown
-  const sectBtn = document.getElementById('sectBtn');
-  const sectDropdown = document.getElementById('sectDropdown');
-
-  function openDropdown() {
-    sectDropdown.classList.add('open');
-    sectDropdown.removeAttribute('inert');
-    sectBtn.classList.add('open');
-    sectBtn.setAttribute('aria-expanded', 'true');
-    const first = sectDropdown.querySelector('a');
-    if (first) first.focus();
-  }
-  function closeDropdown() {
-    sectDropdown.classList.remove('open');
-    sectDropdown.setAttribute('inert', '');
-    sectBtn.classList.remove('open');
-    sectBtn.setAttribute('aria-expanded', 'false');
-  }
-  function toggleDropdown() {
-    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
-  }
-
-  sectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(); });
-
-  document.addEventListener('keydown', (e) => {
-    if (!sectDropdown.classList.contains('open')) return;
-    const links = [...sectDropdown.querySelectorAll('a')];
-    const idx = links.indexOf(document.activeElement);
-    if (e.key === 'Escape') { e.preventDefault(); closeDropdown(); sectBtn.focus(); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); links[(idx + 1) % links.length].focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); links[(idx - 1 + links.length) % links.length].focus(); }
-    if (e.key === 'Tab' && !e.shiftKey && idx === links.length - 1) { closeDropdown(); }
-    if (e.key === 'Tab' && e.shiftKey && idx === 0) { closeDropdown(); }
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!sectDropdown.contains(e.target) && e.target !== sectBtn) closeDropdown();
-  });
-
-  document.getElementById('dropTopLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    closeDropdown();
-    sectBtn.focus();
-  });
-
-  document.querySelectorAll('.sect-link').forEach(a => {
-    a.addEventListener('click', () => closeDropdown());
-  });
-
-  // Active section highlighting
-  const sectLinks = [...sectDropdown.querySelectorAll('a[href^="#"]')];
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        sectLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
+  // TOC active state (desktop sidebar)
+  const sections = document.querySelectorAll('.cs-section[id]');
+  const tocItems = document.querySelectorAll('.toc-item');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocItems.forEach(t => t.classList.remove('active'));
+        const active = document.querySelector(`.toc-item[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
       }
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
-  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
+  sections.forEach(s => observer.observe(s));
+
+  // Sections dropdown (mobile only)
+  const sectBtn = document.getElementById('sectBtn');
+  const sectDropdown = document.getElementById('sectDropdown');
+
+  function closeDropdown() {
+    sectDropdown.classList.remove('open');
+    sectDropdown.setAttribute('aria-hidden', 'true');
+    sectBtn.classList.remove('open');
+    sectBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  sectBtn.addEventListener('click', () => {
+    const isOpen = sectDropdown.classList.contains('open');
+    isOpen ? closeDropdown() : openDropdown();
+  });
+
+  function openDropdown() {
+    sectDropdown.classList.add('open');
+    sectDropdown.setAttribute('aria-hidden', 'false');
+    sectBtn.classList.add('open');
+    sectBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  document.addEventListener('click', e => {
+    if (!sectBtn.contains(e.target) && !sectDropdown.contains(e.target)) closeDropdown();
+  });
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDropdown(); });
 </script>
-  <script src="../../gate.js"></script>
+<script src="../../gate.js"></script>
 </body>
 </html>
