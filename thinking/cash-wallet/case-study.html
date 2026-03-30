@@ -1,1133 +1,1058 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[Company] Cash Wallet - Reiko Tan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --ink: #111111;
-      --ink-2: #444444;
-      --ink-3: #888888;
-      --rule: #e0e0e0;
-      --bg: #fafaf8;
-      --bg-2: #f2f1ee;
-      --accent: #1a3c5e;
-      --accent-warm: #c8773a;
-      --serif: 'DM Serif Display', Georgia, serif;
-      --sans: 'DM Sans', system-ui, sans-serif;
-      --max: 740px;
-      --max-wide: 1040px;
-    }
-
-    html { font-size: 17px; scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-weight: 300;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: var(--bg);
-      border-bottom: 1px solid var(--rule);
-      padding: 0 2rem;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    nav a {
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--ink-2);
-      transition: color 0.2s;
-    }
-
-    nav a:hover { color: var(--ink); }
-
-    .nav-left { display: flex; align-items: center; gap: 0.5rem; color: var(--ink-3); font-size: 0.75rem; }
-    .nav-left span { color: var(--ink-3); font-size: 0.75rem; letter-spacing: 0.05em; }
-    .nav-right { display: flex; align-items: center; gap: 1.25rem; }
-    .nav-link { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
-    .nav-link:hover { color: var(--ink); }
-    .nav-link.nav-current { color: var(--accent); }
-    .nav-icon { display: flex; align-items: center; color: var(--ink-3); text-decoration: none; transition: color 0.2s; }
-    .nav-icon:hover { color: var(--ink); }
-
-    /* ── LAYOUT ── */
-    .page { padding-top: 52px; }
-
-    .container {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    .container-wide {
-      max-width: var(--max-wide);
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    /* ── HERO ── */
-    .hero {
-      padding: 5rem 0 3.5rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .hero-byline {
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      margin-bottom: 1.25rem;
-    }
-
-    .hero-meta {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      border: 1px solid var(--rule);
-      padding: 0.3rem 0.7rem;
-      border-radius: 2px;
-    }
-
-    .tag.accent {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      color: var(--ink);
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .hero-lede {
-      font-size: 1.15rem;
-      font-weight: 300;
-      color: var(--ink-2);
-      line-height: 1.65;
-      max-width: 580px;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border: 1px solid var(--rule);
-      margin-top: 2rem;
-    }
-
-    .stat {
-      padding: 1.25rem 1.5rem;
-      border-right: 1px solid var(--rule);
-    }
-
-    .stat:last-child { border-right: none; }
-
-    .stat-value {
-      font-family: var(--serif);
-      font-size: 1.9rem;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 0.35rem;
-    }
-
-    .stat-label {
-      font-size: 0.72rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-    }
-
-    /* ── SECTIONS ── */
-    section {
-      padding: 88px 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    section:last-child { border-bottom: none; }
-
-    .section-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 1px;
-      background: currentColor;
-    }
-
-    h2 {
-      font-family: var(--serif);
-      font-size: clamp(1.5rem, 3vw, 1.9rem);
-      font-weight: 400;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      margin-bottom: 16px;
-      color: var(--ink);
-    }
-
-    h3 {
-      font-family: var(--sans);
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-2);
-      margin-bottom: 0.75rem;
-      margin-top: 2rem;
-    }
-
-    h3:first-child { margin-top: 0; }
-
-    p {
-      color: var(--ink-2);
-      margin-bottom: 1rem;
-      font-size: 0.97rem;
-    }
-
-    p:last-child { margin-bottom: 0; }
-
-    /* ── CALLOUT ── */
-    .callout {
-      border-left: 3px solid var(--accent);
-      padding: 1rem 1.5rem;
-      background: var(--bg-2);
-      margin: 2rem 0;
-    }
-
-    .callout p {
-      font-size: 0.95rem;
-      color: var(--ink);
-      font-weight: 300;
-      margin: 0;
-    }
-
-    .callout strong {
-      font-weight: 500;
-      color: var(--ink);
-    }
-
-    /* ── TWO COL ── */
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .two-col-wide {
-      display: grid;
-      grid-template-columns: 2fr 3fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    /* ── PROBLEM ZONES ── */
-    .zones {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
-      margin: 2rem 0;
-    }
-
-    .zone {
-      background: var(--bg);
-      padding: 1.75rem;
-    }
-
-    .zone-num {
-      font-family: var(--serif);
-      font-size: 2.5rem;
-      color: var(--rule);
-      line-height: 1;
-      margin-bottom: 0.5rem;
-    }
-
-    .zone h4 {
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-
-    .zone p {
-      font-size: 0.88rem;
-      color: var(--ink-2);
-      margin: 0;
-      line-height: 1.6;
-    }
-
-    /* ── PERSONA CARDS ── */
-    .personas {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
-      margin: 2rem 0;
-    }
-
-    .persona {
-      background: var(--bg);
-      padding: 1.75rem;
-    }
-
-    .persona-initial {
-      width: 36px;
-      height: 36px;
-      background: var(--accent);
-      color: white;
-      font-family: var(--serif);
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
-
-    .persona h4 {
-      font-family: var(--sans);
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 0.2rem;
-    }
-
-    .persona-type {
-      font-size: 0.72rem;
-      color: var(--ink-3);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 0.9rem;
-    }
-
-    .persona p {
-      font-size: 0.85rem;
-      color: var(--ink-2);
-      margin: 0;
-      line-height: 1.55;
-    }
-
-    /* ── SOLUTION BLOCKS ── */
-    .solutions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-
-    .solution-block {
-      border: 1px solid var(--rule);
-      padding: 1.75rem;
-      position: relative;
-    }
-
-    .solution-block::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px;
-      height: 100%;
-      background: var(--accent);
-    }
-
-    .solution-block h4 {
-      font-family: var(--sans);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.6rem;
-    }
-
-    .solution-block p {
-      font-size: 0.87rem;
-      color: var(--ink-2);
-      margin: 0;
-      line-height: 1.6;
-    }
-
-    /* ── WIREFRAME ── */
-    .wireframe-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      margin: 2rem 0;
-    }
-
-    .wireframe-card {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .wireframe-label {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-    }
-
-    .wireframe-frame {
-      background: white;
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      overflow: hidden;
-      font-family: var(--sans);
-      font-size: 10px;
-      color: var(--ink-2);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    }
-
-    .wf-statusbar {
-      background: var(--bg-2);
-      height: 14px;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .wf-header {
-      background: white;
-      padding: 8px 10px;
-      border-bottom: 1px solid var(--rule);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 9px;
-      font-weight: 500;
-      color: var(--ink);
-    }
-
-    .wf-body { padding: 10px; }
-
-    .wf-hero {
-      text-align: center;
-      padding: 12px 8px;
-      border-bottom: 1px solid var(--rule);
-      margin-bottom: 8px;
-    }
-
-    .wf-icon {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--accent);
-      margin: 0 auto 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 10px;
-    }
-
-    .wf-title { font-size: 10px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
-    .wf-sub { font-size: 8px; color: var(--ink-3); line-height: 1.4; }
-
-    .wf-strip {
-      background: var(--bg-2);
-      border: 1px solid var(--rule);
-      padding: 6px 8px;
-      margin-bottom: 6px;
-      font-size: 8px;
-      color: var(--ink-2);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .wf-strip-link { color: var(--accent); font-weight: 500; }
-
-    .wf-card {
-      border: 1px solid var(--rule);
-      padding: 8px;
-      margin-bottom: 6px;
-    }
-
-    .wf-card-label {
-      font-size: 7px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 3px;
-    }
-
-    .wf-card-title { font-size: 9px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
-    .wf-card-meta { font-size: 7px; color: var(--ink-3); }
-
-    .wf-btn {
-      background: var(--accent);
-      color: white;
-      padding: 7px 10px;
-      text-align: center;
-      font-size: 9px;
-      font-weight: 500;
-      margin-top: 8px;
-      letter-spacing: 0.04em;
-    }
-
-    .wf-btn-ghost {
-      text-align: center;
-      font-size: 8px;
-      color: var(--ink-3);
-      margin-top: 5px;
-    }
-
-    .wf-label { font-size: 8px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
-
-    .wf-input {
-      border: 1px solid var(--rule);
-      padding: 5px 7px;
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .wf-input-hint { font-size: 7px; color: var(--ink-3); margin-bottom: 8px; }
-
-    .wf-tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 8px;
-    }
-
-    .wf-tab {
-      padding: 3px 7px;
-      border: 1px solid var(--rule);
-      font-size: 8px;
-      color: var(--ink-3);
-    }
-
-    .wf-tab.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-    }
-
-    .wf-qr {
-      background: white;
-      border: 1px solid var(--rule);
-      width: 80px;
-      margin: 0 auto 6px;
-      padding: 4px;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      overflow: hidden;
-    }
-
-    .qrow {
-      display: flex;
-    }
-
-    .q1 {
-      width: calc(72px / 21);
-      height: calc(72px / 21);
-      background: #111;
-      flex-shrink: 0;
-    }
-
-    .q0 {
-      width: calc(72px / 21);
-      height: calc(72px / 21);
-      background: white;
-      flex-shrink: 0;
-    }
-
-    .wf-ref {
-      font-size: 8px;
-      background: var(--bg-2);
-      padding: 4px 6px;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-      color: var(--ink-2);
-    }
-
-    .wf-ref-copy { color: var(--accent); font-weight: 500; }
-
-    .wf-timer { font-size: 7px; color: var(--ink-3); text-align: center; margin-bottom: 6px; }
-
-    .wf-expand {
-      border: 1px solid var(--rule);
-      padding: 5px 8px;
-      font-size: 8px;
-      color: var(--ink-3);
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .wf-amount-big {
-      font-family: var(--serif);
-      font-size: 18px;
-      color: var(--ink);
-      margin-bottom: 3px;
-    }
-
-    .wf-amount-meta { font-size: 7px; color: var(--ink-3); margin-bottom: 10px; }
-
-    .wf-step {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 8px;
-      align-items: flex-start;
-    }
-
-    .wf-step-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .wf-step-dot.done { background: var(--accent); }
-    .wf-step-dot.active {
-      background: var(--accent);
-      box-shadow: 0 0 0 3px rgba(26,60,94,0.15);
-    }
-    .wf-step-dot.pending { border: 1px solid var(--rule); background: white; }
-
-    .wf-step-line {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .wf-step-name { font-size: 9px; font-weight: 500; color: var(--ink); }
-    .wf-step-name.pending { color: var(--ink-3); font-weight: 400; }
-    .wf-step-time { font-size: 7px; color: var(--ink-3); }
-    .wf-step-desc { font-size: 7.5px; color: var(--ink-2); margin-top: 1px; line-height: 1.4; }
-
-    .wf-connector {
-      width: 1px;
-      height: 6px;
-      background: var(--rule);
-      margin-left: 4px;
-      margin-bottom: 2px;
-    }
-
-    .wf-connector.done { background: var(--accent); }
-
-    .wf-footer-link {
-      text-align: center;
-      font-size: 7.5px;
-      color: var(--accent);
-      padding-top: 6px;
-      border-top: 1px solid var(--rule);
-      margin-top: 6px;
-    }
-
-    .wireframe-caption {
-      font-size: 0.8rem;
-      color: var(--ink-3);
-      line-height: 1.5;
-    }
-
-    .wireframe-caption strong {
-      display: block;
-      color: var(--ink-2);
-      font-weight: 500;
-      margin-bottom: 0.2rem;
-    }
-
-    /* ── METRICS TABLE ── */
-    .metrics-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.5rem 0;
-      font-size: 0.88rem;
-    }
-
-    .metrics-table th {
-      text-align: left;
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      padding: 0.6rem 1rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .metrics-table td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--rule);
-      color: var(--ink-2);
-      vertical-align: top;
-      line-height: 1.5;
-    }
-
-    .metrics-table tr:last-child td { border-bottom: none; }
-
-    .metrics-table td:first-child {
-      font-weight: 400;
-      color: var(--ink);
-      white-space: nowrap;
-    }
-
-    .metric-role {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
-
-    /* ── CONSTRAINTS ── */
-    .constraints {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1px;
-      background: var(--rule);
-      border: 1px solid var(--rule);
-      margin: 1.5rem 0;
-    }
-
-    .constraint {
-      background: var(--bg);
-      padding: 1.25rem 1.5rem;
-    }
-
-    .constraint-label {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--accent-warm);
-      margin-bottom: 0.4rem;
-    }
-
-    .constraint p {
-      font-size: 0.84rem;
-      color: var(--ink-2);
-      margin: 0;
-      line-height: 1.55;
-    }
-
-    /* ── LEARNINGS ── */
-    .learning {
-      display: grid;
-      grid-template-columns: 40px 1fr;
-      gap: 1.25rem;
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--rule);
-      align-items: start;
-    }
-
-    .learning:last-child { border-bottom: none; }
-
-    .learning-num {
-      font-family: var(--serif);
-      font-size: 1.4rem;
-      color: var(--rule);
-      line-height: 1;
-      padding-top: 3px;
-    }
-
-    .learning h4 {
-      font-family: var(--sans);
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 0.4rem;
-    }
-
-    .learning p {
-      font-size: 0.87rem;
-      color: var(--ink-2);
-      margin: 0;
-    }
-
-    /* ── RESEARCH SIGNALS ── */
-    .research-signals {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--rule);
-      margin: 1.5rem 0 1rem;
-    }
-
-    .research-signal {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .research-signal:last-child { border-bottom: none; }
-
-    .signal-source {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-
-    .research-signal p {
-      font-size: 0.87rem;
-      color: var(--ink-2);
-      margin: 0;
-      line-height: 1.65;
-    }
-
-    .research-signal p + p { margin-top: 0.5rem; }
-
-    /* ── SIGNAL PIVOTS ── */
-    .signal-pivot-list {
-      display: flex;
-      flex-direction: column;
-      margin: 1.5rem 0 0;
-    }
-
-    .signal-pivot {
-      padding: 1.5rem 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .signal-pivot:last-child { border-bottom: none; }
-
-    .pivot-condition {
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--ink);
-      background: var(--bg-2);
-      display: inline-block;
-      padding: 0.3rem 0.75rem;
-      margin-bottom: 0.75rem;
-      border-left: 3px solid var(--accent-warm);
-    }
-
-    .signal-pivot p {
-      font-size: 0.87rem;
-      color: var(--ink-2);
-      margin: 0;
-      line-height: 1.65;
-    }
-
-    /* ── FOOTER ── */
-    .case-footer {
-      padding: 4rem 0;
-      border-top: 1px solid var(--rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .case-footer-left p {
-      font-size: 0.8rem;
-      color: var(--ink-3);
-      margin: 0;
-    }
-
-    .case-footer-left a {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.8rem;
-    }
-
-    .back-link {
-      font-size: 0.78rem;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .back-link:hover { color: var(--ink); }
-
-    /* ── PROGRESS BAR ── */
-    .reading-progress {
-      position: fixed;
-      top: 52px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--rule);
-      z-index: 99;
-    }
-
-    .reading-progress-bar {
-      height: 100%;
-      background: var(--accent);
-      width: 0%;
-      transition: width 0.1s linear;
-    }
-
-    @media (max-width: 700px) {
-      .two-col, .two-col-wide { grid-template-columns: 1fr; }
-      .wireframe-grid { grid-template-columns: 1fr; }
-      .hero-stats { grid-template-columns: 1fr; }
-      .stat { border-right: none; border-bottom: 1px solid var(--rule); }
-      .stat:last-child { border-bottom: none; }
-      .zones, .personas, .solutions, .constraints { grid-template-columns: 1fr; }
-    }
-
-  /* ── SECTIONS DROPDOWN NAV ── */
-  .sect-btn {
-    background: none; border: 1px solid var(--rule);
-    color: var(--ink-2); font-family: var(--sans);
-    font-size: 11px; font-weight: 400;
-    letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 5px 12px; border-radius: 3px;
-    cursor: pointer; display: flex; align-items: center; gap: 5px;
-    transition: background 0.15s, border-color 0.15s;
-    white-space: nowrap;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Wallet: Activation + Infrastructure | Reiko Tan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;1,9..144,200;1,9..144,300;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base:       #FAF7F2;
+    --surface:    #F2EDE4;
+    --surface-2:  #EAE3D8;
+    --border:     #E0D8CE;
+    --text:       #1A1614;
+    --text-muted: #7A6F68;
+    --text-faint: #B8AFA8;
+    --mj:         #FEED1E;
+    --coral:      #F4743B;
+    --coral-dim:  #FDEEE6;
+    --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+    --accent:     #1a3c5e;
+    --mono:       'DM Mono', monospace;
   }
-  .sect-btn:hover { background: var(--bg-2); border-color: var(--ink-3); }
-  .sect-btn.open { background: var(--accent); color: white; border-color: var(--accent); }
-  .sect-btn-arrow { transition: transform 0.2s; display: inline-block; }
-  .sect-btn.open .sect-btn-arrow { transform: rotate(180deg); }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--base);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── READING PROGRESS ── */
+  .reading-progress {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 2px; z-index: 200; pointer-events: none;
+  }
+  .reading-progress-bar { height: 100%; background: var(--accent); width: 0; transition: width 0.1s linear; }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 48px; border-bottom: 1px solid transparent; background: transparent;
+    transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out), backdrop-filter 0.3s var(--ease-out);
+  }
+  .nav.scrolled {
+    background: rgba(242, 237, 228, 0.88); backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); border-bottom-color: var(--border);
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+    font-size: 17px; color: var(--text); letter-spacing: -0.01em; text-decoration: none;
+  }
+  .nav-right { display: flex; gap: 20px; align-items: center; }
+  .nav-back {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em;
+    color: var(--text-faint); text-decoration: none; transition: color 0.15s;
+  }
+  .nav-back:hover { color: var(--text); }
+  .sect-btn { display: none; }
+
+  /* ── SECTIONS DROPDOWN (mobile) ── */
   .sect-dropdown {
-    position: fixed; top: 54px; right: 2rem;
-    background: var(--bg);
-    border: 1px solid var(--rule);
-    border-radius: 6px; min-width: 210px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    z-index: 200;
-    visibility: hidden; opacity: 0; pointer-events: none;
-    transform: translateY(-6px);
+    position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    visibility: hidden; opacity: 0; transform: translateY(-6px);
     transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
   }
   .sect-dropdown.open {
-    visibility: visible; opacity: 1; pointer-events: all;
-    transform: translateY(0);
+    visibility: visible; opacity: 1; transform: translateY(0);
     transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
   }
-  .sect-dropdown-top { padding: 10px 14px; border-bottom: 1px solid var(--rule); }
-  .sect-dropdown-top a {
-    font-size: 11px; font-weight: 400;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--ink-3); text-decoration: none;
-    display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+  .sect-dropdown-inner { padding: 8px 0 12px; }
+  .sect-dropdown a {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 10px 24px; text-decoration: none;
+    font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.04em;
+    color: var(--text-muted); transition: background 0.1s, color 0.1s;
   }
-  .sect-dropdown-top a:hover { color: var(--ink); }
-  .sect-dropdown ul { list-style: none; max-height: 65vh; overflow-y: auto; padding: 6px 0; }
-  .sect-dropdown ul li a {
-    display: block; font-size: 13px; font-weight: 300;
-    color: var(--ink-2); text-decoration: none;
-    padding: 8px 14px; transition: background 0.1s, color 0.1s;
-    font-family: var(--sans); line-height: 1.3;
-  }
-  .sect-dropdown ul li a:hover { background: var(--bg-2); color: var(--ink); }
-  .sect-dropdown ul li a.active {
-    color: var(--accent); font-weight: 400;
-    background: color-mix(in srgb, var(--accent) 8%, transparent);
-    border-left: 3px solid var(--accent); padding-left: 11px;
-  }
-  /* ── BACK TO TOP ── */
-  .back-to-top {
-    position: fixed; bottom: 24px; right: 24px;
-    width: 38px; height: 38px;
-    background: var(--bg); border: 1px solid var(--rule);
-    color: var(--ink-3); border-radius: 50%;
-    font-size: 15px; cursor: pointer;
-    display: none; align-items: center; justify-content: center;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-    z-index: 9999; transition: background 0.15s, color 0.15s;
-    font-family: var(--sans);
-  }
-  .back-to-top:hover { background: var(--bg-2); color: var(--accent); }
-  .back-to-top.visible { display: flex; }
-  @media (max-width: 600px) { .sect-dropdown { right: 1rem; left: 1rem; min-width: unset; } }
+  .sect-dropdown a:hover { background: var(--surface-2); color: var(--text); }
+  .sect-dropdown a .dn { font-size: 9px; color: var(--text-faint); }
+  .nav-icon { display: flex; align-items: center; color: var(--text-muted); transition: color 0.15s; text-decoration: none; }
+  .nav-icon:hover { color: var(--text); }
 
-  /* ── HERO FOCUS ── */
+  /* ── HERO ── */
+  .hero {
+    border-top: 4px solid var(--accent);
+    padding: 64px 48px 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px;
+  }
   .hero-focus {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 0.07em; color: var(--text-faint); margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif; font-weight: 300;
+    font-size: clamp(34px, 4vw, 52px); line-height: 1.08;
+    letter-spacing: -0.02em; color: var(--text); margin-bottom: 24px; max-width: 820px;
+  }
+  .hero h1 em { font-style: italic; }
+  .hero-sub {
+    font-size: 17px; font-weight: 300; color: var(--text-muted);
+    line-height: 1.65; max-width: 660px; margin-bottom: 28px;
+  }
+  .hero-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 36px; }
+  .hero-tag {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.06em;
+    color: var(--text-muted); border: 1px solid var(--border);
+    border-radius: 2px; padding: 4px 10px; background: var(--surface);
+  }
+  .hero-meta-row { display: flex; border-top: 1px solid var(--border); padding-top: 28px; max-width: 820px; }
+  .hero-meta-item { flex: 1; }
+  .hero-meta-item + .hero-meta-item { padding-left: 28px; border-left: 1px solid var(--border); }
+  .hero-meta-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: 5px;
+  }
+  .hero-meta-value { font-size: 14px; font-weight: 400; color: var(--text); }
+
+  /* ── HERO STATS ── */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-top: 28px;
+    max-width: 820px;
+  }
+  .stat {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-value {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--text-faint);
+  }
+
+  /* ── BODY LAYOUT: sidebar + content ── */
+  .body-layout { display: grid; grid-template-columns: 220px 1fr; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: sticky; top: 57px; height: calc(100vh - 57px);
+    overflow-y: auto; background: var(--surface);
+    border-right: 1px solid var(--border); padding: 40px 0 80px;
+  }
+  .sidebar-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-faint); padding: 0 24px 16px; display: block;
+  }
+  .toc-item {
+    display: flex; align-items: baseline; padding: 7px 24px; text-decoration: none;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.03em;
+    color: var(--text-faint); line-height: 1.4; border-left: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .toc-item:hover { color: var(--text-muted); background: var(--surface-2); }
+  .toc-item.active { color: var(--text); border-left-color: var(--accent); background: var(--surface-2); }
+  .toc-num { font-size: 9px; color: var(--text-faint); margin-right: 10px; flex-shrink: 0; }
+  .toc-item.active .toc-num { color: var(--text-muted); }
+
+  /* ── CONTENT ── */
+  .content { padding: 0 72px 120px; min-width: 0; }
+  .cs-section { padding: 72px 0 0; }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint);
+    margin-bottom: 18px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .cs-section h2 {
+    font-family: 'Fraunces', serif; font-weight: 300; font-size: 30px;
+    line-height: 1.18; letter-spacing: -0.01em; color: var(--text); margin-bottom: 20px;
+  }
+  .cs-section h2 em { font-style: italic; }
+
+  .cs-section p {
+    font-size: 16px; font-weight: 300; color: var(--text-muted);
+    line-height: 1.8; margin-bottom: 20px;
+  }
+  .cs-section p:last-child { margin-bottom: 0; }
+  .cs-section p strong { color: var(--text); font-weight: 400; }
+
+  /* ── INLINE PM NOTE ── */
+  .pm-note {
+    border-left: 2px solid var(--coral);
+    background: var(--coral-dim);
+    padding: 14px 18px; margin: 28px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .pm-note-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--coral); display: block; margin-bottom: 6px;
+  }
+  .pm-note-text {
+    font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.65;
+    margin-bottom: 0;
+  }
+
+  /* ── AUDIENCE CARDS ── */
+  .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .audience-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 22px 24px; }
+  .audience-card-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-faint); display: block; margin-bottom: 8px;
+  }
+  .audience-card h3 { font-family: 'Fraunces', serif; font-weight: 300; font-size: 20px; color: var(--text); margin-bottom: 10px; }
+  .audience-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 0; }
+
+  /* ── STAT ROW ── */
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 28px 0; }
+  .stat-cell { padding: 20px 24px; border-right: 1px solid var(--border); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 36px; line-height: 1; color: var(--text); display: block; margin-bottom: 6px; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); }
+
+  /* ── DECISION BLOCK ── */
+  .decision-block { margin: 28px 0; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .decision-header {
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 18px 22px; border-bottom: 1px solid var(--border); background: var(--surface);
+  }
+  .decision-num {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent);
+    background: var(--text); padding: 2px 7px; border-radius: 2px; flex-shrink: 0;
+  }
+  .decision-header h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400; color: var(--text); line-height: 1.4; }
+  .decision-cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .decision-col { padding: 18px 22px; }
+  .decision-col + .decision-col { border-left: 1px solid var(--border); }
+  .decision-col-label {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; display: block; margin-bottom: 8px;
+  }
+  .label-tension { color: var(--coral); }
+  .label-resolution { color: var(--text-faint); }
+  .decision-col p { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 0; }
+
+  /* ── IMAGE PLACEHOLDER ── */
+  .img-placeholder {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-faint); margin: 28px 0;
+  }
+
+  /* ── FOOTER ── */
+  .cs-footer-wrap { display: grid; grid-template-columns: 220px 1fr; border-top: 1px solid var(--border); }
+  .cs-footer-sidebar { background: var(--surface); border-right: 1px solid var(--border); }
+  .cs-footer { padding: 32px 72px; display: flex; justify-content: space-between; align-items: center; }
+  .cs-footer-back {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em;
+    color: var(--text-faint); text-decoration: none; transition: color 0.15s;
+  }
+  .cs-footer-back:hover { color: var(--text); }
+  .cs-footer-icons { display: flex; gap: 16px; }
+  .cs-footer-icon { color: var(--text-faint); transition: color 0.15s; text-decoration: none; }
+  .cs-footer-icon:hover { color: var(--text); }
+
+  /* ── TWO COL ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .two-col-wide {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* ── PROBLEM ZONES ── */
+  .zones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .zone {
+    background: var(--base);
+    padding: 1.75rem;
+  }
+
+  .zone-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .zone h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .zone p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── PERSONA CARDS ── */
+  .personas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .persona {
+    background: var(--base);
+    padding: 1.75rem;
+  }
+
+  .persona-initial {
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 1rem;
   }
 
+  .persona h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .persona-type {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 0.9rem;
+  }
+
+  .persona p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── SOLUTION BLOCKS ── */
+  .solutions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .solution-block {
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    position: relative;
+  }
+
+  .solution-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+  }
+
+  .solution-block h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .solution-block p {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── WIREFRAME ── */
+  .wireframe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+
+  .wireframe-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .wireframe-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .wireframe-frame {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text-muted);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+
+  .wf-statusbar {
+    background: var(--surface);
+    height: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wf-header {
+    background: white;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .wf-body { padding: 10px; }
+
+  .wf-hero {
+    text-align: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  .wf-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin: 0 auto 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+  }
+
+  .wf-title { font-size: 10px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+  .wf-sub { font-size: 8px; color: var(--text-faint); line-height: 1.4; }
+
+  .wf-strip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    font-size: 8px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .wf-strip-link { color: var(--accent); font-weight: 500; }
+
+  .wf-card {
+    border: 1px solid var(--border);
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+
+  .wf-card-label {
+    font-size: 7px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3px;
+  }
+
+  .wf-card-title { font-size: 9px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+  .wf-card-meta { font-size: 7px; color: var(--text-faint); }
+
+  .wf-btn {
+    background: var(--accent);
+    color: white;
+    padding: 7px 10px;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 500;
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .wf-btn-ghost {
+    text-align: center;
+    font-size: 8px;
+    color: var(--text-faint);
+    margin-top: 5px;
+  }
+
+  .wf-label { font-size: 8px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+
+  .wf-input {
+    border: 1px solid var(--border);
+    padding: 5px 7px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .wf-input-hint { font-size: 7px; color: var(--text-faint); margin-bottom: 8px; }
+
+  .wf-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .wf-tab {
+    padding: 3px 7px;
+    border: 1px solid var(--border);
+    font-size: 8px;
+    color: var(--text-faint);
+  }
+
+  .wf-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  .wf-qr {
+    background: white;
+    border: 1px solid var(--border);
+    width: 80px;
+    margin: 0 auto 6px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .qrow {
+    display: flex;
+  }
+
+  .q1 {
+    width: calc(72px / 21);
+    height: calc(72px / 21);
+    background: #111;
+    flex-shrink: 0;
+  }
+
+  .q0 {
+    width: calc(72px / 21);
+    height: calc(72px / 21);
+    background: white;
+    flex-shrink: 0;
+  }
+
+  .wf-ref {
+    font-size: 8px;
+    background: var(--surface);
+    padding: 4px 6px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    color: var(--text-muted);
+  }
+
+  .wf-ref-copy { color: var(--accent); font-weight: 500; }
+
+  .wf-timer { font-size: 7px; color: var(--text-faint); text-align: center; margin-bottom: 6px; }
+
+  .wf-expand {
+    border: 1px solid var(--border);
+    padding: 5px 8px;
+    font-size: 8px;
+    color: var(--text-faint);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .wf-amount-big {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .wf-amount-meta { font-size: 7px; color: var(--text-faint); margin-bottom: 10px; }
+
+  .wf-step {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: flex-start;
+  }
+
+  .wf-step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .wf-step-dot.done { background: var(--accent); }
+  .wf-step-dot.active {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(26,60,94,0.15);
+  }
+  .wf-step-dot.pending { border: 1px solid var(--border); background: white; }
+
+  .wf-step-line {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wf-step-name { font-size: 9px; font-weight: 500; color: var(--text); }
+  .wf-step-name.pending { color: var(--text-faint); font-weight: 400; }
+  .wf-step-time { font-size: 7px; color: var(--text-faint); }
+  .wf-step-desc { font-size: 7.5px; color: var(--text-muted); margin-top: 1px; line-height: 1.4; }
+
+  .wf-connector {
+    width: 1px;
+    height: 6px;
+    background: var(--border);
+    margin-left: 4px;
+    margin-bottom: 2px;
+  }
+
+  .wf-connector.done { background: var(--accent); }
+
+  .wf-footer-link {
+    text-align: center;
+    font-size: 7.5px;
+    color: var(--accent);
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+    margin-top: 6px;
+  }
+
+  .wireframe-caption {
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    line-height: 1.5;
+  }
+
+  .wireframe-caption strong {
+    display: block;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+
+  /* ── METRICS TABLE ── */
+  .metrics-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.88rem;
+  }
+
+  .metrics-table th {
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .metrics-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .metrics-table tr:last-child td { border-bottom: none; }
+
+  .metrics-table td:first-child {
+    font-weight: 400;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .metric-role {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ── CONSTRAINTS ── */
+  .constraints {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .constraint {
+    background: var(--base);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .constraint-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 0.4rem;
+  }
+
+  .constraint p {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── LEARNINGS ── */
+  .learning {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .learning:last-child { border-bottom: none; }
+
+  .learning-num {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    color: var(--border);
+    line-height: 1;
+    padding-top: 3px;
+  }
+
+  .learning h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .learning p {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  /* ── RESEARCH SIGNALS ── */
+  .research-signals {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    margin: 1.5rem 0 1rem;
+  }
+
+  .research-signal {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .research-signal:last-child { border-bottom: none; }
+
+  .signal-source {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .research-signal p {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .research-signal p + p { margin-top: 0.5rem; }
+
+  /* ── SIGNAL PIVOTS ── */
+  .signal-pivot-list {
+    display: flex;
+    flex-direction: column;
+    margin: 1.5rem 0 0;
+  }
+
+  .signal-pivot {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .signal-pivot:last-child { border-bottom: none; }
+
+  .pivot-condition {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--surface);
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    margin-bottom: 0.75rem;
+    border-left: 3px solid var(--coral);
+  }
+
+  .signal-pivot p {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .sect-btn {
+      display: flex; background: none; border: 1.5px solid var(--border);
+      color: var(--text-muted); font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 3px; cursor: pointer;
+      align-items: center; gap: 5px; transition: background 0.15s, color 0.15s;
+    }
+    .sect-btn:hover, .sect-btn.open { background: var(--accent); border-color: var(--accent); color: var(--base); }
+    .nav { padding: 16px 24px; }
+    .hero { padding: 48px 24px 40px; }
+    .hero-meta-row { flex-wrap: wrap; gap: 16px; }
+    .hero-meta-item + .hero-meta-item { padding-left: 0; border-left: none; }
+    .body-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .content { padding: 0 24px 80px; }
+    .cs-footer-wrap { grid-template-columns: 1fr; }
+    .cs-footer-sidebar { display: none; }
+    .cs-footer { padding: 24px; flex-direction: column; gap: 16px; align-items: flex-start; }
+    .decision-cols { grid-template-columns: 1fr; }
+    .decision-col + .decision-col { border-left: none; border-top: 1px solid var(--border); }
+    .stat-row { grid-template-columns: 1fr; }
+    .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-cell:last-child { border-bottom: none; }
+    .audience-grid { grid-template-columns: 1fr; }
+    .two-col, .two-col-wide { grid-template-columns: 1fr; }
+    .wireframe-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat:last-child { border-bottom: none; }
+    .zones, .personas, .solutions, .constraints { grid-template-columns: 1fr; }
+  }
 </style>
-  <style>
-    .site-footer { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; border-top: 1px solid #E0D8CE; }
-    .footer-open { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 15px; color: #7A6F68; letter-spacing: -0.01em; }
-    .footer-contact-icons { display: flex; gap: 12px; align-items: center; }
-    .footer-contact-icon { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #E0D8CE; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #B8AFA8; transition: border-color 0.2s, color 0.2s; }
-    .footer-contact-icon:hover { border-color: #F4743B; color: #F4743B; }
-    .footer-contact-icon svg { width: 14px; height: 14px; }
-    @media (max-width: 768px) { .site-footer { flex-direction: column; gap: 16px; text-align: center; } }
-  </style>
   <style id="gate-hide">html{visibility:hidden}</style>
 </head>
 <body>
 
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
-<!-- Sections dropdown -->
-<div role="navigation" aria-label="Page sections" class="sect-dropdown" id="sectDropdown" inert>
-  <div class="sect-dropdown-top">
-    <a href="#" id="dropTopLink">&#8593; Back to top</a>
-  </div>
-  <ul>
-    <li><a href="#overview" class="sect-link">01 Overview</a></li>
-    <li><a href="#context" class="sect-link">02 Context</a></li>
-    <li><a href="#users" class="sect-link">03 Users</a></li>
-    <li><a href="#solution" class="sect-link">04 Solution</a></li>
-    <li><a href="#ux" class="sect-link">05 UX Design</a></li>
-    <li><a href="#metrics" class="sect-link">06 Metrics</a></li>
-    <li><a href="#learnings" class="sect-link">07 Learnings</a></li>
-    <li><a href="#signals" class="sect-link">08 Signals</a></li>
-  </ul>
-</div>
-
-<nav>
-  <a href="../../index.html" class="nav-brand">Reiko Tan<span style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></a>
+<nav class="nav" id="nav">
+  <a href="../../index.html" class="nav-logo">Reiko</a>
   <div class="nav-right">
-    <button class="sect-btn" id="sectBtn"
-      aria-haspopup="true" aria-expanded="false" aria-controls="sectDropdown">
-      Sections <span class="sect-btn-arrow" aria-hidden="true">&#8964;</span>
-    </button>
+    <a href="../../thinking/index.html" class="nav-back">← Thinking</a>
+    <button class="sect-btn" id="sectBtn" aria-expanded="false" aria-controls="sectDropdown">Sections &#8964;</button>
     <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     </a>
-    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram" target="_blank" rel="noopener">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+    <a href="https://t.me/rracko" class="nav-icon" aria-label="Telegram">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
     </a>
   </div>
 </nav>
 
-<!-- Back to top -->
-<button class="back-to-top" id="backToTop" aria-label="Back to top">&#8593;</button>
+<div class="sect-dropdown" id="sectDropdown" aria-hidden="true">
+  <div class="sect-dropdown-inner">
+    <a href="#overview"  onclick="closeDropdown()"><span class="dn">01</span>Overview</a>
+    <a href="#context"   onclick="closeDropdown()"><span class="dn">02</span>Context</a>
+    <a href="#users"     onclick="closeDropdown()"><span class="dn">03</span>Users</a>
+    <a href="#solution"  onclick="closeDropdown()"><span class="dn">04</span>Solution</a>
+    <a href="#ux"        onclick="closeDropdown()"><span class="dn">05</span>UX Design</a>
+    <a href="#metrics"   onclick="closeDropdown()"><span class="dn">06</span>Metrics</a>
+    <a href="#learnings" onclick="closeDropdown()"><span class="dn">07</span>Learnings</a>
+    <a href="#signals"          onclick="closeDropdown()"><span class="dn">08</span>Signals</a>
+    <a href="#what-happened-after" onclick="closeDropdown()"><span class="dn">↳</span>What it clarified</a>
+  </div>
+</div>
 
-<div class="page">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="container">
-      <p class="hero-byline">Reiko Tan &nbsp;&middot;&nbsp; Senior Product Manager &nbsp;&middot;&nbsp; Singapore</p>
-      <div class="hero-focus">Deep dive — infrastructure misdiagnosis</div>
-      <div class="hero-meta">
-        <span class="tag accent">Case Study</span>
-        <span class="tag">Fintech</span>
-        <span class="tag">Product</span>
-        <span class="tag">Singapore</span>
-      </div>
-      <h1>Getting <em>verified investors</em> to their first deposit</h1>
-      <p class="hero-lede">The deposit flow looked like a UX problem. It wasn't. The proof email existed because there was no automated reconciliation — removing it meant fixing the infrastructure, not redesigning the screen.</p>
-      <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-value">20%</div>
-          <div class="stat-label">Estimated baseline conversion KYC to first deposit</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">5 days</div>
-          <div class="stat-label">Confirmation wait time under current flow</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">40%</div>
-          <div class="stat-label">Target conversion rate post Phase 1</div>
-        </div>
-      </div>
+<div class="hero">
+  <div class="hero-eyebrow">[Company] &nbsp;·&nbsp; Product Manager &nbsp;·&nbsp; 2024</div>
+  <div class="hero-focus">Deep dive: infrastructure misdiagnosis</div>
+  <h1>Getting <em>verified investors</em> to their first deposit</h1>
+  <p class="hero-sub">The deposit flow looked like a UX problem. It wasn't. The proof email existed because there was no automated reconciliation. Removing it meant fixing the infrastructure, not redesigning the screen.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Case Study</span>
+    <span class="hero-tag">Fintech</span>
+    <span class="hero-tag">Product</span>
+    <span class="hero-tag">Singapore</span>
+  </div>
+  <div class="hero-meta-row">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Role</span>
+      <span class="hero-meta-value">Product Manager</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Company</span>
+      <span class="hero-meta-value">[Company]</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Scope</span>
+      <span class="hero-meta-value">Activation + Infrastructure</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Status</span>
+      <span class="hero-meta-value">Concept</span>
     </div>
   </div>
-
-  <!-- OVERVIEW -->
-  <section id="overview">
-    <div class="container">
-      <p class="section-label">01 - Overview</p>
-      <div>
-        <div>
-          <h2>A verified investor who never deposits is a missed investment</h2>
-          <div class="callout" style="margin-bottom:1.5rem;">
-            <p>An estimated 80% of KYC-verified investors had never deposited. The deposit flow's email step had no regulatory basis — it was a manual workaround for broken reconciliation. Fixing activation meant fixing that infrastructure, not the screens.</p>
-          </div>
-          <p>[Company] is a vertically integrated alternative assets platform: deal sourcing, tokenisation, custody, exchange, and secondary market. The deposit flow required users to bank transfer to a static DBS account, email a screenshot to cs@[company].com, and wait up to 5 working days with no feedback. That flow broke at two points.</p>
-          <div class="zones">
-            <div class="zone">
-              <div class="zone-num">01</div>
-              <h4>Post-KYC Dead Zone</h4>
-              <p>After KYC approval, users received no contextual prompt, no deal recommendation, no yield signal. They re-entered a cold, undifferentiated product state with no trigger to act.</p>
-            </div>
-            <div class="zone">
-              <div class="zone-num">02</div>
-              <h4>Deposit Execution Loop</h4>
-              <p>Users were pushed off-platform, required to type static account details, then email a proof screenshot. The email step had no regulatory basis. It existed because automated reconciliation didn't.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
+  <div class="hero-stats" style="margin-top: 28px;">
+    <div class="stat">
+      <div class="stat-value">20%</div>
+      <div class="stat-label">Estimated baseline conversion KYC to first deposit</div>
     </div>
-  </section>
+    <div class="stat">
+      <div class="stat-value">5 days</div>
+      <div class="stat-label">Confirmation wait time under current flow</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">40%</div>
+      <div class="stat-label">Target conversion rate post Phase 1</div>
+    </div>
+  </div>
+</div>
 
-  <!-- CONTEXT -->
-  <section id="context">
-    <div class="container">
-      <p class="section-label">02 - Context and Constraints</p>
+<div class="body-layout">
+  <aside class="sidebar">
+    <span class="sidebar-label">Contents</span>
+    <a href="#overview"  class="toc-item active"><span class="toc-num">01</span>Overview</a>
+    <a href="#context"   class="toc-item"><span class="toc-num">02</span>Context</a>
+    <a href="#users"     class="toc-item"><span class="toc-num">03</span>Users</a>
+    <a href="#solution"  class="toc-item"><span class="toc-num">04</span>Solution</a>
+    <a href="#ux"        class="toc-item"><span class="toc-num">05</span>UX Design</a>
+    <a href="#metrics"   class="toc-item"><span class="toc-num">06</span>Metrics</a>
+    <a href="#learnings" class="toc-item"><span class="toc-num">07</span>Learnings</a>
+    <a href="#signals"          class="toc-item"><span class="toc-num">08</span>Signals</a>
+    <a href="#what-happened-after" class="toc-item"><span class="toc-num">↳</span>What it clarified</a>
+  </aside>
+
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <section class="cs-section" id="overview">
+      <div class="section-eyebrow">01 &nbsp;·&nbsp; OVERVIEW</div>
+      <h2>A verified investor who never deposits is a missed investment</h2>
+      <div class="pm-note">
+        <span class="pm-note-label">PM Note</span>
+        <p class="pm-note-text">An estimated 80% of KYC-verified investors had never deposited. The deposit flow's email step had no regulatory basis: it was a manual workaround for broken reconciliation. Fixing activation meant fixing that infrastructure, not the screens.</p>
+      </div>
+      <p>[Company] is a vertically integrated alternative assets platform: deal sourcing, tokenisation, custody, exchange, and secondary market. The deposit flow required users to bank transfer to a static DBS account, email a screenshot to cs@[company].com, and wait up to 5 working days with no feedback. That flow broke at two points.</p>
+      <div class="zones">
+        <div class="zone">
+          <div class="zone-num">01</div>
+          <h4>Post-KYC Dead Zone</h4>
+          <p>After KYC approval, users received no contextual prompt, no deal recommendation, no yield signal. They re-entered a cold, undifferentiated product state with no trigger to act.</p>
+        </div>
+        <div class="zone">
+          <div class="zone-num">02</div>
+          <h4>Deposit Execution Loop</h4>
+          <p>Users were pushed off-platform, required to type static account details, then email a proof screenshot. The email step had no regulatory basis. It existed because automated reconciliation didn't.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTEXT -->
+    <section class="cs-section" id="context">
+      <div class="section-eyebrow">02 &nbsp;·&nbsp; CONTEXT</div>
       <h2>MAS regulation shapes the solution space</h2>
       <p>[Company] is MAS-licensed for capital markets services. This defines what can and cannot be built.</p>
 
-      <div class="callout">
-        <p><strong>The key regulatory constraint:</strong> Funds must be traceable to the investor's own verified bank account. Card funding, third-party processors, and digital wallets are out. PayNow and bank transfer are the only compliant rails. The solution had to make those work better, not replace them.</p>
+      <div class="pm-note">
+        <span class="pm-note-label">Regulatory Constraint</span>
+        <p class="pm-note-text">Funds must be traceable to the investor's own verified bank account. Card funding, third-party processors, and digital wallets are out. PayNow and bank transfer are the only compliant rails. The solution had to make those work better, not replace them.</p>
       </div>
 
-      <h3>Why the proof email could be eliminated</h3>
+      <h3 style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.75rem;margin-top:2rem;">Why the proof email could be eliminated</h3>
       <p>The email existed to trigger reconciliation and create an audit trail. Neither required user action. Unique per-transaction references capture payer identity automatically. Automated reconciliation is a better audit trail than screenshots: system-generated, tamper-proof, immediately auditable.</p>
 
       <div class="constraints">
@@ -1148,22 +1073,18 @@
           <p>Multi-currency FX conversion, full withdrawal flow redesign, open banking APIs. Each requires a dedicated workstream before design or engineering investment is justified.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- USERS -->
-  <section id="users">
-    <div class="container">
-      <p class="section-label">03 - Users</p>
+    <!-- USERS -->
+    <section class="cs-section" id="users">
+      <div class="section-eyebrow">03 &nbsp;·&nbsp; USERS</div>
       <h2>Three types of verified investor, three different failure modes</h2>
       <p>Three investor archetypes failed at different points: the passive wealth allocator stalled because he couldn't confirm what happened after he transferred; the curious first-timer lost momentum when KYC approval led to a cold, undifferentiated home screen; the sophisticated diversifier routed capital elsewhere when 5-day confirmation silence made deal deadlines unconfirmable. Designing for the most trust-sensitive user raises the floor for all three.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- SOLUTION -->
-  <section id="solution">
-    <div class="container">
-      <p class="section-label">04 - Solution</p>
+    <!-- SOLUTION -->
+    <section class="cs-section" id="solution">
+      <div class="section-eyebrow">04 &nbsp;·&nbsp; SOLUTION</div>
       <h2>Fix the transaction enabler first. Build the financial home second.</h2>
       <p>Phase 1 is scoped to existing payment rails without regulatory changes or cross-product dependencies.</p>
 
@@ -1194,20 +1115,17 @@
         </div>
       </div>
 
-      <div class="callout">
-        <p><strong>Phase 2 direction:</strong> Deal-triggered funding nudges, a wallet health dashboard (idle balance, deployed balance, MMF yield accrued), and an open banking deposit rail (pending MAS review).</p>
+      <div class="pm-note">
+        <span class="pm-note-label">Phase 2</span>
+        <p class="pm-note-text">Deal-triggered funding nudges, a wallet health dashboard (idle balance, deployed balance, MMF yield accrued), and an open banking deposit rail (pending MAS review).</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- UX -->
-  <section id="ux">
-    <div class="container-wide">
-      <div class="container" style="padding:0; max-width:var(--max);">
-        <p class="section-label">05 - UX Design</p>
-        <h2>Three screens that carry the whole story</h2>
-        <p>From a 12-screen inventory, these three directly address the two failure zones and trace to the North Star metric.</p>
-      </div>
+    <!-- UX -->
+    <section class="cs-section" id="ux">
+      <div class="section-eyebrow">05 &nbsp;·&nbsp; UX DESIGN</div>
+      <h2>Three screens that carry the whole story</h2>
+      <p>From a 12-screen inventory, these three directly address the two failure zones and trace to the North Star metric.</p>
 
       <div class="wireframe-grid" style="margin-top: 2.5rem;">
 
@@ -1217,7 +1135,7 @@
           <div class="wireframe-frame">
             <div class="wf-statusbar"></div>
             <div class="wf-header">
-              <span style="color:var(--ink-3)">-</span>
+              <span style="color:var(--text-faint)">-</span>
               <span>x</span>
             </div>
             <div class="wf-body">
@@ -1372,13 +1290,11 @@
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- METRICS -->
-  <section id="metrics">
-    <div class="container">
-      <p class="section-label">06 - Metrics</p>
+    <!-- METRICS -->
+    <section class="cs-section" id="metrics">
+      <div class="section-eyebrow">06 &nbsp;·&nbsp; METRICS</div>
       <h2>What success looks like, and why</h2>
       <p>The North Star is scoped to deposit, not investment completion. Investment outcomes depend on deal quality and market timing, outside the wallet PM's control.</p>
 
@@ -1424,126 +1340,100 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </section>
+    </section>
 
-  <!-- LEARNINGS -->
-  <section id="learnings">
-    <div class="container">
-      <p class="section-label">07 - Learnings</p>
+    <!-- LEARNINGS -->
+    <section class="cs-section" id="learnings">
+      <div class="section-eyebrow">07 &nbsp;·&nbsp; LEARNINGS</div>
       <h2>What this work surfaced</h2>
 
-      <p>The proof email was a symptom of a reconciliation gap, not a compliance requirement — removing it required building what was missing, not negotiating what existed.</p>
+      <p>The proof email was a symptom of a reconciliation gap, not a compliance requirement. Removing it required building what was missing, not negotiating what existed.</p>
       <p>Compliance was brought in as a co-author of the exception spec rather than a late reviewer, which converted a potential launch blocker into a two-week design sprint.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- SIGNALS -->
-  <section id="signals">
-    <div class="container">
-      <p class="section-label">08 - Signals &amp; Iteration</p>
+    <!-- SIGNALS -->
+    <section class="cs-section" id="signals">
+      <div class="section-eyebrow">08 &nbsp;·&nbsp; SIGNALS</div>
       <h2>Signals and what they tell us</h2>
-      <p>Success is KYC-to-deposit conversion reaching 40% within 30 days, paired with a 60% drop in CS deposit confirmation tickets — the latter isolates causation in a way the North Star can't. The lagging health check is AUC growth: conversion rising while AUC stays flat signals low-intent activations, not genuine wallet adoption.</p>
-    </div>
-  </section>
+      <p>Success is KYC-to-deposit conversion reaching 40% within 30 days, paired with a 60% drop in CS deposit confirmation tickets. The latter isolates causation in a way the North Star can't. The lagging health check is AUC growth: conversion rising while AUC stays flat signals low-intent activations, not genuine wallet adoption.</p>
+    </section>
 
-  <!-- WHAT HAPPENED AFTER -->
-  <section id="what-happened-after">
-    <div class="container">
-      <p class="section-label">What it clarified</p>
-      <p>The work established that the proof email was an operational patch, not a product feature — and that removing it required building automated reconciliation, not designing a better confirmation screen. Phase 1 was scoped entirely to what existing payment rails could support without regulatory change. Whether the activation problem is primarily an infrastructure failure or a post-KYC dead zone problem is the question Phase 1 data would answer.</p>
-    </div>
-  </section>
+    <!-- WHAT HAPPENED AFTER -->
+    <section class="cs-section" id="what-happened-after">
+      <div class="section-eyebrow">WHAT IT CLARIFIED</div>
+      <p>The work established that the proof email was an operational patch, not a product feature. Removing it required building automated reconciliation, not designing a better confirmation screen. Phase 1 was scoped entirely to what existing payment rails could support without regulatory change. Whether the activation problem is primarily an infrastructure failure or a post-KYC dead zone problem is the question Phase 1 data would answer.</p>
+    </section>
 
-  <!-- FOOTER -->
-  <div class="container">
-    <footer class="site-footer">
-      <span class="footer-open">Open to work.</span>
-      <div class="footer-contact-icons">
-        <a href="mailto:reiko98@live.com.sg" class="footer-contact-icon" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></a>
-        <a href="https://t.me/rracko" class="footer-contact-icon" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 3.5 2.5 10.5l7 2m12-9-5 17-5-7m5-10-7 9"/></svg></a>
-        <a href="https://www.linkedin.com/in/reikotan" class="footer-contact-icon" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg></a>
-      </div>
-    </footer>
   </div>
+</div>
 
+<div class="cs-footer-wrap">
+  <div class="cs-footer-sidebar"></div>
+  <footer class="cs-footer">
+    <a href="../../thinking/index.html" class="cs-footer-back">← Back to Thinking</a>
+    <div class="cs-footer-icons">
+      <a href="mailto:reiko98@live.com.sg" class="cs-footer-icon" aria-label="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+      <a href="https://t.me/rracko" class="cs-footer-icon" aria-label="Telegram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </a>
+    </div>
+  </footer>
 </div>
 
 <script>
-  // Reading progress + back-to-top
+  const nav = document.getElementById('nav');
   const bar = document.getElementById('progress');
-  const backToTop = document.getElementById('backToTop');
   window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
     const doc = document.documentElement;
     bar.style.width = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100) + '%';
-    backToTop.classList.toggle('visible', window.scrollY > 400);
   }, { passive: true });
-  backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-  // Sections dropdown
-  const sectBtn = document.getElementById('sectBtn');
-  const sectDropdown = document.getElementById('sectDropdown');
-
-  function openDropdown() {
-    sectDropdown.classList.add('open');
-    sectDropdown.removeAttribute('inert');
-    sectBtn.classList.add('open');
-    sectBtn.setAttribute('aria-expanded', 'true');
-    const first = sectDropdown.querySelector('a');
-    if (first) first.focus();
-  }
-  function closeDropdown() {
-    sectDropdown.classList.remove('open');
-    sectDropdown.setAttribute('inert', '');
-    sectBtn.classList.remove('open');
-    sectBtn.setAttribute('aria-expanded', 'false');
-  }
-  function toggleDropdown() {
-    sectDropdown.classList.contains('open') ? closeDropdown() : openDropdown();
-  }
-
-  sectBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(); });
-
-  document.addEventListener('keydown', (e) => {
-    if (!sectDropdown.classList.contains('open')) return;
-    const links = [...sectDropdown.querySelectorAll('a')];
-    const idx = links.indexOf(document.activeElement);
-    if (e.key === 'Escape') { e.preventDefault(); closeDropdown(); sectBtn.focus(); }
-    if (e.key === 'ArrowDown') { e.preventDefault(); links[(idx + 1) % links.length].focus(); }
-    if (e.key === 'ArrowUp')   { e.preventDefault(); links[(idx - 1 + links.length) % links.length].focus(); }
-    if (e.key === 'Tab' && !e.shiftKey && idx === links.length - 1) { closeDropdown(); }
-    if (e.key === 'Tab' && e.shiftKey && idx === 0) { closeDropdown(); }
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!sectDropdown.contains(e.target) && e.target !== sectBtn) closeDropdown();
-  });
-
-  document.getElementById('dropTopLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    closeDropdown();
-    sectBtn.focus();
-  });
-
-  document.querySelectorAll('.sect-link').forEach(a => {
-    a.addEventListener('click', () => closeDropdown());
-  });
-
-  // Active section highlighting
-  const sectLinks = [...sectDropdown.querySelectorAll('a[href^="#"]')];
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        sectLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
+  // TOC active state (desktop sidebar)
+  const sections = document.querySelectorAll('.cs-section[id]');
+  const tocItems = document.querySelectorAll('.toc-item');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocItems.forEach(t => t.classList.remove('active'));
+        const active = document.querySelector(`.toc-item[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
       }
     });
   }, { rootMargin: '-20% 0px -70% 0px' });
-  document.querySelectorAll('section[id]').forEach(s => sectionObserver.observe(s));
-</script>
+  sections.forEach(s => observer.observe(s));
 
-  <script src="../../gate.js"></script>
+  // Sections dropdown (mobile only)
+  const sectBtn = document.getElementById('sectBtn');
+  const sectDropdown = document.getElementById('sectDropdown');
+
+  function closeDropdown() {
+    sectDropdown.classList.remove('open');
+    sectDropdown.setAttribute('aria-hidden', 'true');
+    sectBtn.classList.remove('open');
+    sectBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  sectBtn.addEventListener('click', () => {
+    const isOpen = sectDropdown.classList.contains('open');
+    isOpen ? closeDropdown() : openDropdown();
+  });
+
+  function openDropdown() {
+    sectDropdown.classList.add('open');
+    sectDropdown.setAttribute('aria-hidden', 'false');
+    sectBtn.classList.add('open');
+    sectBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  document.addEventListener('click', e => {
+    if (!sectBtn.contains(e.target) && !sectDropdown.contains(e.target)) closeDropdown();
+  });
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDropdown(); });
+</script>
+<script src="../../gate.js"></script>
 </body>
 </html>
