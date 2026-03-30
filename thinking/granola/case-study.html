@@ -243,6 +243,46 @@
   .label-resolution { color: var(--text-faint); }
   .decision-col p { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 0; }
 
+  /* ── WORKFLOW LOOP DIAGRAM ── */
+  .workflow-loop {
+    width: 100%; margin-top: 32px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+    padding: 36px 40px 32px;
+  }
+  .wl-track {
+    display: flex; align-items: center; gap: 0;
+    justify-content: center; flex-wrap: wrap; row-gap: 24px;
+  }
+  .wl-node {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    position: relative; min-width: 72px;
+  }
+  .wl-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--surface-2); border: 2px solid var(--border);
+    transition: background 0.2s;
+  }
+  .wl-label {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    color: var(--text-muted); white-space: nowrap;
+  }
+  .wl-sub {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.05em;
+    color: var(--text-faint); white-space: nowrap;
+  }
+  .wl-existing .wl-dot { background: var(--surface-2); border-color: var(--border); }
+  .wl-existing .wl-label { color: var(--text-muted); }
+  .wl-break .wl-label { color: var(--text); }
+  .wl-break .wl-dot { background: var(--border); border-color: var(--text-faint); }
+  .wl-new .wl-dot { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 3px rgba(91,79,233,0.12); }
+  .wl-new .wl-label { color: var(--accent); font-weight: 500; }
+  .wl-new .wl-sub { color: var(--accent); opacity: 0.7; }
+  .wl-arrow {
+    display: flex; align-items: center; color: var(--border); margin: 0 4px;
+    flex-shrink: 0; padding-bottom: 18px; /* align with dot row */
+  }
+  .wl-arrow-accent { color: var(--accent); opacity: 0.5; }
+
   /* ── IMAGE PLACEHOLDER ── */
   .img-placeholder {
     width: 100%; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px;
@@ -293,6 +333,15 @@
     .audience-grid-3 { grid-template-columns: 1fr; }
   }
 </style>
+<style>
+  .site-footer { display: flex; justify-content: space-between; align-items: center; padding: 28px 48px; border-top: 1px solid var(--border); }
+  .footer-open { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: 15px; color: var(--text-muted); letter-spacing: -0.01em; }
+  .footer-contact-icons { display: flex; gap: 12px; align-items: center; }
+  .footer-contact-icon { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--text-faint); transition: border-color 0.2s, color 0.2s; }
+  .footer-contact-icon:hover { border-color: var(--coral); color: var(--coral); }
+  .footer-contact-icon svg { width: 14px; height: 14px; }
+  @media (max-width: 768px) { .site-footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px; } }
+</style>
 <style id="gate-hide">html{visibility:hidden}</style>
 </head>
 <body>
@@ -301,7 +350,7 @@
 
 <!-- ── NAV ── -->
 <nav class="nav" id="nav">
-  <a href="../../index.html" class="nav-logo">Reiko</a>
+  <a href="../../index.html" class="nav-logo">Reiko Tan<span style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></a>
   <div class="nav-right">
     <a href="../../thinking/index.html" class="nav-back">← Thinking</a>
     <button class="sect-btn" id="sectBtn" aria-expanded="false" aria-controls="sectDropdown">Sections &#8964;</button>
@@ -388,7 +437,37 @@
         <p class="pm-note-text">The current loop stops at Recall: Meet &rarr; Capture &rarr; Recall. Open Items closes it by adding Act. The feature exists in the transcript. It just hasn't been surfaced yet.</p>
       </div>
 
-      <div class="img-placeholder" style="height: 160px;">Workflow diagram: Meet &rarr; Capture &rarr; Recall &rarr; Act (Open Items fills this step)</div>
+      <div class="workflow-loop" role="img" aria-label="Workflow loop: Meet, Capture, Recall, then Act — the step Open Items fills">
+        <div class="wl-track">
+          <div class="wl-node wl-existing">
+            <div class="wl-dot"></div>
+            <span class="wl-label">Meet</span>
+          </div>
+          <div class="wl-arrow" aria-hidden="true">
+            <svg width="28" height="12" viewBox="0 0 28 12" fill="none"><line x1="0" y1="6" x2="22" y2="6" stroke="currentColor" stroke-width="1.5"/><polyline points="16,1 22,6 16,11" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="wl-node wl-existing">
+            <div class="wl-dot"></div>
+            <span class="wl-label">Capture</span>
+          </div>
+          <div class="wl-arrow" aria-hidden="true">
+            <svg width="28" height="12" viewBox="0 0 28 12" fill="none"><line x1="0" y1="6" x2="22" y2="6" stroke="currentColor" stroke-width="1.5"/><polyline points="16,1 22,6 16,11" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="wl-node wl-existing wl-break">
+            <div class="wl-dot"></div>
+            <span class="wl-label">Recall</span>
+            <span class="wl-sub">old loop ends here</span>
+          </div>
+          <div class="wl-arrow wl-arrow-accent" aria-hidden="true">
+            <svg width="36" height="12" viewBox="0 0 36 12" fill="none"><line x1="0" y1="6" x2="30" y2="6" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/><polyline points="24,1 30,6 24,11" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="wl-node wl-new">
+            <div class="wl-dot"></div>
+            <span class="wl-label">Act</span>
+            <span class="wl-sub">Open Items</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ══ 02 DECISIONS ══ -->
@@ -585,20 +664,14 @@
 </div>
 
 <!-- ── FOOTER ── -->
-<div class="cs-footer-wrap">
-  <div class="cs-footer-sidebar"></div>
-  <footer class="cs-footer">
-    <a href="../../thinking/index.html" class="cs-footer-back">← Back to Thinking</a>
-    <div class="cs-footer-icons">
-      <a href="mailto:reiko98@live.com.sg" class="cs-footer-icon" aria-label="Email">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      </a>
-      <a href="https://t.me/rracko" class="cs-footer-icon" aria-label="Telegram">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-      </a>
-    </div>
-  </footer>
-</div>
+<footer class="site-footer">
+  <span class="footer-open">Open to work.</span>
+  <div class="footer-contact-icons">
+    <a href="mailto:reiko98@live.com.sg" class="footer-contact-icon" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg></a>
+    <a href="https://t.me/rracko" class="footer-contact-icon" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 3.5 2.5 10.5l7 2m12-9-5 17-5-7m5-10-7 9"/></svg></a>
+    <a href="https://www.linkedin.com/in/reikotan" class="footer-contact-icon" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="4"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg></a>
+  </div>
+</footer>
 
 <script>
   const nav = document.getElementById('nav');
