@@ -126,6 +126,24 @@
       background: var(--coral);
       color: var(--surface);
     }
+    .nav-menu-btn { display: none; }
+    .nav-dropdown {
+      position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      visibility: hidden; opacity: 0; transform: translateY(-6px);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+    }
+    .nav-dropdown.open {
+      visibility: visible; opacity: 1; transform: translateY(0);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
+    }
+    .nav-dropdown a {
+      display: block; padding: 12px 24px; text-decoration: none;
+      font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.07em;
+      color: var(--text-muted); transition: background 0.1s, color 0.1s;
+    }
+    .nav-dropdown a:hover { background: var(--surface-2); color: var(--text); }
 
     /* ── HERO ─────────────────────────────────────────── */
     .hero {
@@ -447,7 +465,15 @@
 
       /* Nav */
       .nav { padding: 18px 24px; }
-      .nav-links { gap: 20px; font-size: 10px; }
+      .nav-subtitle { display: none; }
+      .nav-page-link { display: none; }
+      .nav-links { gap: 16px; }
+      .nav-menu-btn {
+        display: flex; background: none; border: 1px solid var(--border);
+        color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 11px;
+        letter-spacing: 0.07em; padding: 5px 10px; border-radius: 2px;
+        cursor: pointer; align-items: center; gap: 4px;
+      }
 
       /* Hero */
       .hero { padding: 60px 0 56px; }
@@ -496,14 +522,20 @@
 
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <span class="nav-logo">Reiko Tan<span style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></span>
+    <span class="nav-logo">Reiko Tan<span class="nav-subtitle" style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></span>
     <div class="nav-links">
-      <a href="#work">Work</a>
-      <a href="#thinking">Thinking</a>
-      <a href="#building">Building</a>
+      <a href="#work" class="nav-page-link">Work</a>
+      <a href="#thinking" class="nav-page-link">Thinking</a>
+      <a href="#building" class="nav-page-link">Building</a>
       <a href="assets/resume.pdf" download class="nav-resume">Resume ↓</a>
+      <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navDropdown">Menu &#8964;</button>
     </div>
   </nav>
+  <div class="nav-dropdown" id="navDropdown">
+    <a href="#work">Work</a>
+    <a href="#thinking">Thinking</a>
+    <a href="#building">Building</a>
+  </div>
 
   <div class="page">
 
@@ -659,6 +691,20 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
+    const navMenuBtn = document.getElementById('navMenuBtn');
+    const navDropdown = document.getElementById('navDropdown');
+    if (navMenuBtn) {
+      navMenuBtn.addEventListener('click', () => {
+        const open = navDropdown.classList.toggle('open');
+        navMenuBtn.setAttribute('aria-expanded', open);
+      });
+      navDropdown.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          navDropdown.classList.remove('open');
+          navMenuBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
   </script>
   <script src="gate.js"></script>
 
