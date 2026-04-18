@@ -163,6 +163,8 @@
   .cs-footer-icon:hover { color: var(--text); }
 
   @media (max-width: 900px) {
+    .nav-subtitle { display: none; }
+    .nav-icon { display: none; }
     .sect-btn { display: flex; background: none; border: 1.5px solid var(--border); color: var(--text-muted); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 12px; border-radius: 3px; cursor: pointer; align-items: center; gap: 5px; transition: background 0.15s, color 0.15s; }
     .sect-btn:hover, .sect-btn.open { background: var(--accent); border-color: var(--accent); color: var(--text); }
     .nav { padding: 16px 24px; }
@@ -200,7 +202,7 @@
 <div class="reading-progress"><div class="reading-progress-bar" id="progress"></div></div>
 
 <nav class="nav" id="nav">
-  <a href="../../index.html" class="nav-logo">Reiko Tan<span style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></a>
+  <a href="../../index.html" class="nav-logo">Reiko Tan<span class="nav-subtitle" style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></a>
   <div class="nav-right">
     <a href="../../work/index.html" class="nav-back">← Work</a>
     <a href="../../assets/resume.pdf" download class="nav-resume">Resume ↓</a>

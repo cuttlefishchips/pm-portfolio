@@ -322,6 +322,8 @@
 
   /* ── MOBILE ── */
   @media (max-width: 900px) {
+    .nav-subtitle { display: none; }
+    .nav-icon { display: none; }
     .sect-btn {
       display: flex; background: none; border: 1.5px solid var(--border);
       color: var(--text-muted); font-family: 'DM Mono', monospace;
@@ -366,7 +368,7 @@
 
 <!-- ── NAV ── -->
 <nav class="nav" id="nav">
-  <a href="../../index.html" class="nav-logo">Reiko Tan<span style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></a>
+  <a href="../../index.html" class="nav-logo">Reiko Tan<span class="nav-subtitle" style="font-family:'DM Mono',monospace;font-style:normal;font-weight:400;font-size:10px;letter-spacing:0.07em;color:var(--text-muted);margin-left:6px;">| Senior Product Manager</span></a>
   <div class="nav-right">
     <a href="../../thinking/index.html" class="nav-back">← Thinking</a>
     <a href="../../assets/resume.pdf" download class="nav-resume">Resume ↓</a>
