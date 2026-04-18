@@ -93,6 +93,22 @@
   .sect-dropdown a .dn { font-size: 9px; color: var(--text-faint); }
   .nav-icon { display: flex; align-items: center; color: var(--text-muted); transition: color 0.15s; text-decoration: none; }
   .nav-icon:hover { color: var(--text); }
+  .nav-resume {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    color: var(--coral);
+    text-decoration: none;
+    border: 1.5px solid var(--coral);
+    border-radius: 2px;
+    padding: 5px 12px;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .nav-resume:hover {
+    background: var(--coral);
+    color: var(--surface);
+  }
 
   /* ── HERO ── */
   .hero {
@@ -304,6 +320,7 @@
   <div class="nav-right">
     <!-- UPDATE href to match parent section: /work, /thinking, /building -->
     <a href="../../work/index.html" class="nav-back">← Work</a>
+    <a href="../assets/resume.pdf" download class="nav-resume">Resume ↓</a>
     <button class="sect-btn" id="sectBtn" aria-expanded="false" aria-controls="sectDropdown">Sections &#8964;</button>
     <a href="mailto:reiko98@live.com.sg" class="nav-icon" aria-label="Email">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>

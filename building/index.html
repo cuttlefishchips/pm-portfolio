@@ -88,6 +88,22 @@
     }
     .nav-links a:hover,
     .nav-links a.active { color: var(--text); }
+    .nav-resume {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.07em;
+      color: var(--coral);
+      text-decoration: none;
+      border: 1.5px solid var(--coral);
+      border-radius: 2px;
+      padding: 5px 12px;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .nav-resume:hover {
+      background: var(--coral);
+      color: var(--surface);
+    }
 
     /* ── SECTION HEADER ── */
     .section-header {
@@ -302,6 +318,7 @@
       <a href="../work/index.html">Work</a>
       <a href="../thinking/index.html">Thinking</a>
       <a href="../building/index.html" class="active">Building</a>
+      <a href="../assets/resume.pdf" download class="nav-resume">Resume ↓</a>
     </div>
   </nav>
 
